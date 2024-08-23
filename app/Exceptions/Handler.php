@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\Exceptions;
 
+use App\Supports\ResponseHelpers;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -27,6 +31,30 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e): void {
 
+        });
+
+        $this->renderable(function (CoreException $e, $request) {
+            if ($this->shouldReturnJson($request, $e)) {
+                return ResponseHelpers::buildExceptionJson($e);
+            }
+
+            return $this->renderExceptionResponse($request, $e);
+        });
+
+        $this->renderable(function (NotFoundHttpException|ModelNotFoundException $e, $request) {
+            if ($this->shouldReturnJson($request, $e)) {
+                return ResponseHelpers::buildExceptionJson(new NotFoundException());
+            }
+
+            return $this->renderExceptionResponse($request, $e);
+        });
+
+        $this->renderable(function (AccessDeniedHttpException $e, $request) {
+            if ($this->shouldReturnJson($request, $e)) {
+                return ResponseHelpers::buildExceptionJson(new AccessDeniedException());
+            }
+
+            return $this->renderExceptionResponse($request, $e);
         });
     }
 }
