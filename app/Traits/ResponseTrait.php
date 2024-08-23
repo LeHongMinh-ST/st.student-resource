@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
-use App\Domain\Authentication\Values\AuthValues;
 use App\Enums\AuthApiSection;
+use App\Values\AuthValues;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use ReflectionClass;
