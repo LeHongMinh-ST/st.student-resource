@@ -1,0 +1,118 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Models;
+
+use App\Enums\StudentRole;
+use App\Enums\StudentStatus;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Storage;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+
+class Student extends Authenticatable implements JWTSubject
+{
+    use HasFactory;
+
+    public $timestamps = true;
+
+    protected $fillable = [
+        'last_name',
+        'first_name',
+        'email',
+        'code',
+        'password',
+        'school_year',
+        'admission_year',
+        'faculty_id',
+        'status',
+        'role',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+    ];
+
+    // ------------------------ RELATIONS -------------------------//
+    public function faculty(): BelongsTo
+    {
+        return $this->belongsTo(Faculty::class);
+    }
+
+    public function info(): HasOne
+    {
+        return $this->hasOne(StudentInfo::class);
+    }
+
+    public function families(): HasMany
+    {
+        return $this->hasMany(Family::class);
+    }
+
+    public function generalClass(): BelongsToMany
+    {
+        return $this->belongsToMany(GeneralClass::class, 'class_students', 'student_id', 'class_id')
+            ->withPivot(['status', 'start_date', 'end_date'])
+            ->withTimestamps();
+    }
+
+    public function reflects(): HasMany
+    {
+        return $this->hasMany(Reflect::class);
+    }
+
+    public function excelImportFileRecord(): MorphOne
+    {
+        return $this->morphOne(ExcelImportFileRecord::class, 'tableable', 'table_type', 'table_id');
+    }
+
+    // ---------------------- ACCESSORS AND MUTATORS --------------------//
+    public function getFullNameAttribute(): string
+    {
+        return $this->last_name . ' ' . $this->first_name;
+    }
+
+    public function getAvatarPathAttribute(): string
+    {
+        return $this->info->thumbnail ? asset(Storage::url($this->info->thumbnail)) : asset('assets/images/avatar_default.png');
+    }
+
+    //----------------------- SCOPES ----------------------------------//
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     */
+    public function getJWTIdentifier(): mixed
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     */
+    public function getJWTCustomClaims(): array
+    {
+        return [];
+    }
+
+    // ------------------------ CASTS -------------------------//
+    protected function casts(): array
+    {
+        return [
+            'status' => StudentStatus::class,
+            'role' => StudentRole::class,
+            'password' => 'hashed',
+        ];
+    }
+}
