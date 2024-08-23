@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Enums\AuthApiSection;
+use App\Models\Student;
+use App\Models\SystemAdmin;
+
 return [
 
     /*
@@ -15,9 +19,10 @@ return [
     |
     */
 
+
     'defaults' => [
-        'guard' => 'web',
-        'passwords' => 'users',
+        'guard' => env('AUTH_GUARD', AuthApiSection::Admin->value),
+        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
     ],
 
     /*
@@ -41,6 +46,21 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+        ],
+
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+        ],
+
+        'system' => [
+            'driver' => 'jwt',
+            'provider' => 'systems',
+        ],
+
+        'student' => [
+            'driver' => 'jwt',
+            'provider' => 'students',
         ],
     ],
 
@@ -66,6 +86,17 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
+
+        'systems' => [
+            'driver' => 'eloquent',
+            'model' => env('AUTH_SYSTEM_MODEL', SystemAdmin::class),
+        ],
+
+        'students' => [
+            'driver' => 'eloquent',
+            'model' => env('AUTH_STUDENT_MODEL', Student::class),
+        ],
+
 
         // 'users' => [
         //     'driver' => 'database',
@@ -96,6 +127,20 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'systems' => [
+            'provider' => 'systems',
+            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'students' => [
+            'provider' => 'systems',
+            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,
         ],
