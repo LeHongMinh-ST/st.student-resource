@@ -6,12 +6,12 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\Status;
+use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -40,8 +40,7 @@ class User extends Authenticatable implements JWTSubject
         'department_id',
         'status',
         'faculty_id',
-        'role_id',
-        'is_super_admin'
+        'role',
     ];
 
     /**
@@ -89,34 +88,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Post::class);
     }
 
-    public function role(): BelongsTo
-    {
-        return $this->belongsTo(Role::class);
-    }
-
-
     // ---------------------- ACCESSORS AND MUTATORS --------------------//
     public function getThumbnailPathAttribute(): string
     {
         return isset($this->thumbnail) ? asset(Storage::url($this->thumbnail)) : '';
     }
-
-
-    /**
-     * Get the permissions for the user through the role.
-     *
-     * @return Collection
-     */
-    public function getPermissionsAttribute(): Collection
-    {
-        if ($this->is_super_admin) {
-            return Permission::all();
-        }
-
-
-        return $this->role ? $this->role->permissions : collect([]);
-    }
-
 
     // ------------------------ CASTS -------------------------//
 
@@ -131,6 +107,7 @@ class User extends Authenticatable implements JWTSubject
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'status' => Status::class,
+            'role' => UserRole::class,
         ];
     }
 
