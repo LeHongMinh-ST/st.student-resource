@@ -1,0 +1,7 @@
+{
+    "section": "system",
+    "token_type": "Bearer",
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGci...",
+    "refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGci...",
+    "expires_in": 3600
+}
