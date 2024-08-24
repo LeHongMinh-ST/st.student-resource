@@ -36,7 +36,8 @@ abstract class ListRequest extends FormRequest
             'order' => ['nullable', Rule::enum(SortOrder::class)],
             'orderBy' => ['nullable', Rule::in(app($this->getOrderByRuleModel())->getFillable())],
             'limit' => ['nullable', 'integer'],
-            'page' => ['nullable', 'integer']
+            'page' => ['nullable', 'integer'],
+            'search' => ['nullable', 'string'],
         ];
     }
 }
