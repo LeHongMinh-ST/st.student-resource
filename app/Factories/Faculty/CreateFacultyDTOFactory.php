@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Faculties\Faculty;
+namespace App\Factories\Faculty;
 
 use App\DTO\Faculty\CreateFacultyDTO;
 use App\Http\Requests\Faculty\StoreFacultyRequest;

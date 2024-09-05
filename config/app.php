@@ -187,4 +187,6 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'password_default' => env('PASSWORD_DEFAULT', '123456aA@'),
+
 ];
