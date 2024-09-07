@@ -10,6 +10,7 @@ use App\Models\Faculty;
 use App\Supports\AvatarHelper;
 use App\Supports\Constants;
 use App\Supports\PasswordHelper;
+use Illuminate\Support\Str;
 
 class CreateUserDTOFactory
 {
