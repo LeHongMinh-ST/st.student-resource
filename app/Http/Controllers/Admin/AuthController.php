@@ -33,17 +33,13 @@ class AuthController extends Controller
 {
     public function __construct(
         private readonly AuthService $authService
-    ) {
-    }
-
+    ) {}
 
     /**
      * Login for admin
      *
      * This endpoint lets you log in with admin account
      *
-     * @param LoginRequest $request
-     * @return JsonResponse
      *
      * @responseFile 200 storage/responses/login.json
      *
@@ -54,7 +50,7 @@ class AuthController extends Controller
         $token = $this->authService->login(
             userName: $request->get('user_name'),
             password: $request->get('password'),
-            remember: $request->get('remember')
+            remember: (bool) ($request->get('remember'))
         );
 
         return $this->responseWithToken($token, AuthApiSection::Admin);
@@ -108,7 +104,6 @@ class AuthController extends Controller
         // Return a JSON response with the new token and the admin API section
         return $this->responseWithToken($token, AuthApiSection::Student);
     }
-
 
     /**
      * Get profile

@@ -1,0 +1,36 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Resources\GeneralClass;
+
+use App\Http\Resources\Faculty\FacultyForLoadResource;
+use App\Http\Resources\User\UserForLoadResource;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class GeneralClassResource extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(Request $request): array
+    {
+        return [
+            'id' => $this->id,
+            'code' => $this->code,
+            'name' => $this->name,
+            'type' => $this->type,
+            'status' => $this->status,
+            'teacher_id' => $this->teacher_id,
+            'faculty_id' => $this->faculty_id,
+            'major_id' => $this->major_id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'teacher' => new UserForLoadResource($this->whenLoaded('teacher')),
+            'faculty' => new FacultyForLoadResource($this->whenLoaded('faculty')),
+        ];
+    }
+}

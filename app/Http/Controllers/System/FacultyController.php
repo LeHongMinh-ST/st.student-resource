@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\System;
 
+use App\Factories\Faculty\CreateFacultyDTOFactory;
 use App\Factories\Faculty\ListFacultyDTOFactory;
-use App\Faculties\Faculty\CreateFacultyDTOFactory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Faculty\ListFacultyRequest;
 use App\Http\Requests\Faculty\StoreFacultyRequest;
