@@ -54,7 +54,7 @@ class AuthController extends Controller
             userName: $request->get('user_name'),
             password: $request->get('password'),
             section: AuthApiSection::Student,
-            remember: $request->get('remember')
+            remember: $request->get('remember', false)
         );
 
         return $this->responseWithToken($token, AuthApiSection::Student);

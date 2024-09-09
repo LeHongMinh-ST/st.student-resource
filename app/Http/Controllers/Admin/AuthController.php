@@ -33,7 +33,8 @@ class AuthController extends Controller
 {
     public function __construct(
         private readonly AuthService $authService
-    ) {}
+    ) {
+    }
 
     /**
      * Login for admin
@@ -50,7 +51,7 @@ class AuthController extends Controller
         $token = $this->authService->login(
             userName: $request->get('user_name'),
             password: $request->get('password'),
-            remember: (bool) ($request->get('remember'))
+            remember: $request->get('remember', false)
         );
 
         return $this->responseWithToken($token, AuthApiSection::Admin);

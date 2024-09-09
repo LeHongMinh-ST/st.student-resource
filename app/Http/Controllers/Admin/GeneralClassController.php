@@ -34,7 +34,8 @@ class GeneralClassController extends Controller
 {
     public function __construct(
         private readonly GeneralClassService $generalClassService
-    ) {}
+    ) {
+    }
 
     /**
      * List of class
