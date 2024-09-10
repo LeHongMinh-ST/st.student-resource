@@ -7,15 +7,13 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\GeneralClassController;
 use Illuminate\Support\Facades\Route;
 
-const AUTH_MIDDLEWARE_ADMIN = AuthApiSection::Admin;
-
 Route::prefix('auth')->group(function (): void {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
 });
 
-Route::middleware(['auth:' . AUTH_MIDDLEWARE_ADMIN->value])->group(function (): void {
+Route::middleware(['auth:api' . AuthApiSection::Admin->value])->group(function (): void {
     Route::prefix('classes')->group(function (): void {
         Route::get('/', [GeneralClassController::class, 'index']);
         Route::post('/', [GeneralClassController::class, 'store']);
