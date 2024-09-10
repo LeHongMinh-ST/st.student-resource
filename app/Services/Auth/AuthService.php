@@ -11,8 +11,8 @@ use App\Models\User;
 use App\Traits\AuthSupportTrait;
 use App\Values\AuthValues;
 use App\Values\RefreshTokenClaimsValues;
-use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
-use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthService
 {
