@@ -41,6 +41,12 @@ class User extends Authenticatable implements JWTSubject
         'status',
         'faculty_id',
         'role',
+        'is_super_admin',
+    ];
+
+    protected $casts = [
+        'status' => Status::class,
+        'role' => UserRole::class,
     ];
 
     /**
@@ -52,7 +58,6 @@ class User extends Authenticatable implements JWTSubject
         'password',
         'remember_token',
     ];
-
 
     // ------------------------ JWT FUNCTIONS -------------------------//
 

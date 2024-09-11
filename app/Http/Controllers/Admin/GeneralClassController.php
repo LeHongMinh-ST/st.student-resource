@@ -16,6 +16,7 @@ use App\Http\Resources\GeneralClass\GeneralClassResource;
 use App\Models\GeneralClass;
 use App\Services\GeneralClass\GeneralClassService;
 use App\Supports\Constants;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Knuckles\Scribe\Attributes\ResponseFromApiResource;
@@ -45,7 +46,6 @@ class GeneralClassController extends Controller
      *
      * @param  ListGeneralClassRequest  $request  The HTTP request object containing the role ID.
      * @return GeneralClassCollection Returns the list of GeneralClass.
-     *
      */
     #[ResponseFromApiResource(GeneralClassCollection::class, GeneralClass::class, Response::HTTP_OK, with: [
         'teacher', 'faculty',
@@ -117,13 +117,37 @@ class GeneralClassController extends Controller
      * @return JsonResponse Returns a response with no content upon successful deletion.
      *
      * @response 204 Indicates that the response will be a 204 No Content status.
+     *
+     * @throws AuthorizationException
      */
     public function destroy(Request $request, GeneralClass $generalClass): JsonResponse
     {
+        $this->authorize('admin.class.destroy');
         // Delete the generalClass
         $this->generalClassService->delete($generalClass);
 
         // Return a JSON response with no content (HTTP 204 status)
         return $this->noContent();
+    }
+
+    /**
+     * Show class.
+     *
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @param  Request  $request  The HTTP request object containing student data.
+     * @return GeneralClassResource Returns the newly GeneralClassResource as a resource.
+     *
+     * @throws AuthorizationException
+     */
+    #[ResponseFromApiResource(GeneralClassResource::class, GeneralClass::class, Response::HTTP_OK, with: [
+        'faculty',
+    ])]
+    public function show(GeneralClass $generalClass, Request $request): GeneralClassResource
+    {
+        $this->authorize('admin.class.index');
+
+        // Return a JSON response with the generated token and the admin API section
+        return new GeneralClassResource($generalClass);
     }
 }
