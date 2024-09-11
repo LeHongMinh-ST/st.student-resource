@@ -6,6 +6,7 @@ namespace App\Http\Requests\GeneralClass;
 
 use App\Enums\ClassType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class UpdateGeneralClassRequest extends FormRequest
@@ -15,7 +16,7 @@ class UpdateGeneralClassRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Gate::allows('admin.class.update');
     }
 
     /**
