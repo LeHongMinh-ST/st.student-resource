@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\GeneralClass;
+namespace App\Http\Requests\User;
 
 use App\Http\Requests\ListRequest;
-use App\Models\GeneralClass;
+use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 
-class ListGeneralClassRequest extends ListRequest
+class ListUserRequest extends ListRequest
 {
     public function authorize(): bool
     {
-        return Gate::allows('admin.class.index');
+        return Gate::allows('admin.user.index');
     }
 
     /**
@@ -23,15 +23,15 @@ class ListGeneralClassRequest extends ListRequest
     public function rules(): array
     {
         return [
-            'q' => 'nullable',
+            'q' => 'nullable|string',
+            'department_id' => 'nullable',
             'status' => 'nullable',
-            'teacher_id' => 'nullable',
             ...parent::rules(),
         ];
     }
 
     protected function getOrderByRuleModel(): string
     {
-        return GeneralClass::class;
+        return User::class;
     }
 }
