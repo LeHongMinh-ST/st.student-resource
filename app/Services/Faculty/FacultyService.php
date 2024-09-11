@@ -6,7 +6,7 @@ namespace App\Services\Faculty;
 
 use App\DTO\Faculty\CreateFacultyDTO;
 use App\DTO\Faculty\ListFacultyDTO;
-use App\Factories\User\CreateUserDTOFactory;
+use App\Factories\User\CreateUserFacultyDTOFactory;
 use App\Models\Faculty;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +26,7 @@ class FacultyService
     {
         return DB::transaction(function () use ($createFacultyDTO): Faculty {
             $faculty = Faculty::create($createFacultyDTO->toArray());
-            $userDTO = CreateUserDTOFactory::make($faculty, $createFacultyDTO->getEmailUser());
+            $userDTO = CreateUserFacultyDTOFactory::make($faculty, $createFacultyDTO->getEmailUser());
             User::create($userDTO->toArray());
 
             return $faculty;
