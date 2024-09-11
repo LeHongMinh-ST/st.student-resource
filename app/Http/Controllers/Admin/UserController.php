@@ -33,7 +33,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class UserController extends Controller
 {
-    public function __construct(private readonly UserService $userService) {}
+    public function __construct(private readonly UserService $userService)
+    {
+    }
 
     /**
      * List of user

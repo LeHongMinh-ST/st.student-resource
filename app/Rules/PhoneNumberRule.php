@@ -13,7 +13,9 @@ class PhoneNumberRule implements Rule
      *
      * @return void
      */
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     /**
      * Determine if the validation rule passes.
