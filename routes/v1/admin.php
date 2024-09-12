@@ -16,7 +16,7 @@ Route::prefix('auth')->group(function (): void {
 
 Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): void {
     Route::prefix('auth')->group(function (): void {
-        Route::post('profile', [AuthController::class, 'profile']);
+        Route::get('profile', [AuthController::class, 'profile']);
     });
 
     Route::prefix('classes')->group(function (): void {
