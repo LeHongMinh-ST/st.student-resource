@@ -14,7 +14,11 @@ Route::prefix('auth')->group(function (): void {
     Route::post('refresh', [AuthController::class, 'refresh']);
 });
 
-Route::middleware(['auth:api' . AuthApiSection::Admin->value])->group(function (): void {
+Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): void {
+    Route::prefix('auth')->group(function (): void {
+        Route::post('profile', [AuthController::class, 'profile']);
+    });
+
     Route::prefix('classes')->group(function (): void {
         Route::get('/', [GeneralClassController::class, 'index']);
         Route::post('/', [GeneralClassController::class, 'store']);
