@@ -6,7 +6,7 @@ namespace App\Factories\User;
 
 use App\DTO\User\UpdateUserDTO;
 use App\Enums\UserRole;
-use App\Http\Requests\User\UpdateUserRequest;
+use App\Http\Requests\Admin\User\UpdateUserRequest;
 use App\Models\User;
 use App\Supports\Constants;
 use App\Supports\ImageHelper;

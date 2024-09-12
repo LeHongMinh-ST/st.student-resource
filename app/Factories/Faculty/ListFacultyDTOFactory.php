@@ -6,7 +6,7 @@ namespace App\Factories\Faculty;
 
 use App\DTO\Faculty\ListFacultyDTO;
 use App\Enums\SortOrder;
-use App\Http\Requests\Faculty\ListFacultyRequest;
+use App\Http\Requests\SystemAdmin\Faculty\ListFacultyRequest;
 
 class ListFacultyDTOFactory
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\GeneralClass;
+namespace App\Http\Requests\Admin\GeneralClass;
 
 use App\Http\Requests\ListRequest;
 use App\Models\GeneralClass;

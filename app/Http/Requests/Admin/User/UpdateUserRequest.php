@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Admin\User;
 
 use App\Rules\PhoneNumberRule;
 use Illuminate\Foundation\Http\FormRequest;

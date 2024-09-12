@@ -6,7 +6,7 @@ namespace App\Factories\User;
 
 use App\DTO\User\ListUserDTO;
 use App\Enums\SortOrder;
-use App\Http\Requests\User\ListUserRequest;
+use App\Http\Requests\Admin\User\ListUserRequest;
 
 class ListUserDTOFactory
 {
