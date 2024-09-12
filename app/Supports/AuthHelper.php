@@ -12,7 +12,7 @@ class AuthHelper
     /**
      * Checks if the authenticated user's role matches any of the provided roles.
      *
-     * @param StudentRole ...$roles One or more roles to check against the authenticated user's role.
+     * @param  StudentRole  ...$roles  One or more roles to check against the authenticated user's role.
      * @return bool Returns true if the authenticated user's role is in the list of provided roles, false otherwise.
      */
     public static function isRoleStudent(StudentRole ...$roles): bool

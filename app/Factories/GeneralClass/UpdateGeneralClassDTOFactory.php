@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Factories\GeneralClass;
 
 use App\DTO\GeneralClass\UpdateGeneralClassDTO;
-use App\Http\Requests\GeneralClass\UpdateGeneralClassRequest;
+use App\Http\Requests\Admin\GeneralClass\UpdateGeneralClassRequest;
 use App\Models\GeneralClass;
 
 class UpdateGeneralClassDTOFactory

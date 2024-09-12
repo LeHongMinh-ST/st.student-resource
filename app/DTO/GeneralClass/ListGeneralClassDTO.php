@@ -10,8 +10,12 @@ use App\DTO\BaseListDTO;
 class ListGeneralClassDTO extends BaseListDTO implements BaseDTO
 {
     private ?string $q;
+
     private ?string $status;
+
     private ?int $teacherId;
+
+    private ?string $code;
 
     public function __construct()
     {
@@ -19,6 +23,7 @@ class ListGeneralClassDTO extends BaseListDTO implements BaseDTO
         $this->q = null;
         $this->status = null;
         $this->teacherId = null;
+        $this->code = null;
     }
 
     public function getTeacherId(): ?int
@@ -39,6 +44,16 @@ class ListGeneralClassDTO extends BaseListDTO implements BaseDTO
     public function setQ(?string $q): void
     {
         $this->q = $q;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->q;
+    }
+
+    public function setCode(?string $code): void
+    {
+        $this->code = $code;
     }
 
     public function getStatus(): ?string
