@@ -17,7 +17,7 @@ class ListFacultyDTOFactory
 
         // Set command properties based on the request parameters, if they exist
         if ($request->has('limit')) {
-            $command->setLimit($request->get('limit'));
+            $command->setLimit((int)$request->get('limit'));
         }
         if ($request->has('page')) {
             $command->setPage((int) $request->get('page'));
