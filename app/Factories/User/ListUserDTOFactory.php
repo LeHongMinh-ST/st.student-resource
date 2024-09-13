@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Factories\User;
 
 use App\DTO\User\ListUserDTO;
-use App\Enums\SortOrder;
 use App\Enums\UserRole;
 use App\Http\Requests\Admin\User\ListUserRequest;
+use App\Supports\MakeDataHelper;
 
 class ListUserDTOFactory
 {
@@ -17,21 +17,7 @@ class ListUserDTOFactory
         $command = new ListUserDTO();
 
         // Set command properties based on the request parameters, if they exist
-        if ($request->has('limit')) {
-            $command->setLimit((int)$request->get('limit'));
-        }
-
-        if ($request->has('page')) {
-            $command->setPage((int) $request->get('page'));
-        }
-
-        if ($request->has('orderBy')) {
-            $command->setOrderBy($request->get('orderBy'));
-        }
-
-        if ($request->has('order')) {
-            $command->setOrder(SortOrder::from($request->get('order')));
-        }
+        $command = MakeDataHelper::makeListData($request, $command);
 
         if ($request->has('department_id')) {
             $command->setDepartmentId((int) $request->get('department_id'));

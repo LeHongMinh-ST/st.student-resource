@@ -9,11 +9,13 @@ use App\DTO\Faculty\ListFacultyDTO;
 use App\Factories\User\CreateUserFacultyDTOFactory;
 use App\Models\Faculty;
 use App\Models\User;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 class FacultyService
 {
-    public function getList(ListFacultyDTO $listFacultyDTO)
+    public function getList(ListFacultyDTO $listFacultyDTO): Collection|LengthAwarePaginator|array
     {
         $query = Faculty::query()
             ->when($listFacultyDTO->getSearch(), fn ($q) => $q->where('name', 'like', $listFacultyDTO->getSearch()))
