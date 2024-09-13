@@ -20,7 +20,8 @@ abstract class StudentInfoUpdateState
 
     public function __construct(
         protected StudentInfoUpdateStatus $status
-    ) {}
+    ) {
+    }
 
     /**
      * Handle the approval of the student info update.

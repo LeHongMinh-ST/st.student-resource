@@ -25,7 +25,9 @@ use Illuminate\Support\Facades\Log;
 
 class StudentService
 {
-    public function __construct(private readonly StudentInfoService $studentInfoService) {}
+    public function __construct(private readonly StudentInfoService $studentInfoService)
+    {
+    }
 
     public function getList(ListStudentDTO $listStudentDTO): Collection|LengthAwarePaginator|array
     {

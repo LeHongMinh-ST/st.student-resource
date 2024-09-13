@@ -14,7 +14,7 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-//        'localhost', 'st-dse.vnua.edu.vn',
-//        'st.vnua.test',
+        //        'localhost', 'st-dse.vnua.edu.vn',
+        //        'st.vnua.test',
     ];
 }
