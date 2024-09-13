@@ -6,6 +6,7 @@ namespace App\DTO\User;
 
 use App\DTO\BaseDTO;
 use App\DTO\BaseListDTO;
+use App\Enums\UserRole;
 
 class ListUserDTO extends BaseListDTO implements BaseDTO
 {
@@ -16,6 +17,8 @@ class ListUserDTO extends BaseListDTO implements BaseDTO
     private ?int $departmentId;
 
     private ?int $facultyId;
+
+    private UserRole $userRole;
 
     public function __construct()
     {
@@ -63,6 +66,16 @@ class ListUserDTO extends BaseListDTO implements BaseDTO
     public function setStatus(?string $status): void
     {
         $this->status = $status;
+    }
+
+    public function getUserRole(): UserRole
+    {
+        return $this->userRole;
+    }
+
+    public function setUserRole(UserRole $userRole): void
+    {
+        $this->userRole = $userRole;
     }
 
     public function toArray(): array

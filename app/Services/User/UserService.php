@@ -18,10 +18,13 @@ class UserService
 
         $query = User::query()
             ->when($listUserDTO->getDepartmentId(), fn ($q) => $q->where('department_id', $listUserDTO->getDepartmentId()))
-            ->when($listUserDTO->getQ(), fn ($q) => $q
-                ->where(DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', '%' . $listUserDTO->getQ() . '%')
-                ->orWhere('email', 'like', '%' . $listUserDTO->getQ() . '%')
-                ->orWhere('user_name', 'like', '%' . $listUserDTO->getQ() . '%')
+            ->when($listUserDTO->getUserRole(), fn ($q) => $q->where('role', $listUserDTO->getUserRole()))
+            ->when(
+                $listUserDTO->getQ(),
+                fn ($q) => $q
+                    ->where(DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', '%' . $listUserDTO->getQ() . '%')
+                    ->orWhere('email', 'like', '%' . $listUserDTO->getQ() . '%')
+                    ->orWhere('user_name', 'like', '%' . $listUserDTO->getQ() . '%')
             )
             ->when($auth, fn ($q) => $q->where('faculty_id', $auth?->faculty_id))
             ->orderBy($listUserDTO->getOrderBy(), $listUserDTO->getOrder()->value);
