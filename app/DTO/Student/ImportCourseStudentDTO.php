@@ -11,6 +11,8 @@ class ImportCourseStudentDTO implements BaseDTO
 {
     private int $facultyId;
 
+    private int $admissionYearId;
+
     private UploadedFile $file;
 
     public function __construct()
@@ -39,11 +41,24 @@ class ImportCourseStudentDTO implements BaseDTO
         $this->file = $file;
     }
 
+    public function getAdmissionYearId(): int
+    {
+        return $this->admissionYearId;
+    }
+
+    public function setAdmissionYearId(int $admissionYearId): void
+    {
+        $this->admissionYearId = $admissionYearId;
+    }
+
+
+
     public function toArray(): array
     {
         return [
             'faculty_id' => $this->getFacultyId(),
             'file' => $this->getFile(),
+            'admission_year_id' => $this->admissionYearId
         ];
     }
 }

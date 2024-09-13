@@ -9,7 +9,6 @@ use App\Enums\Gender;
 use App\Enums\StudentRole;
 use App\Enums\StudentStatus;
 use App\Supports\PasswordHelper;
-use App\Supports\SchoolHelper;
 use App\Supports\StudentHelper;
 
 class CreateStudentCourseByFileDTO implements BaseDTO
@@ -30,9 +29,8 @@ class CreateStudentCourseByFileDTO implements BaseDTO
 
     private StudentRole $studentRole;
 
-    private string $schoolYear;
 
-    private int $admissionYear;
+    private int $admissionYearId;
 
     private Gender $gender;
 
@@ -164,26 +162,14 @@ class CreateStudentCourseByFileDTO implements BaseDTO
         $this->studentRole = $studentRole;
     }
 
-    public function getSchoolYear(): string
+    public function getAdmissionYearId(): int
     {
-        return $this->schoolYear;
+        return $this->admissionYearId;
     }
 
-    public function setSchoolYear(string $schoolYear): void
+    public function setAdmissionYearId(int $admissionYearId): void
     {
-        $this->schoolYear = $schoolYear;
-        [$startYear, $endYear] = SchoolHelper::getStartEndYearInSchoolYear($schoolYear);
-        $this->admissionYear = SchoolHelper::calculateAdmissionYear($startYear);
-    }
-
-    public function getAdmissionYear(): int
-    {
-        return $this->admissionYear;
-    }
-
-    public function setAdmissionYear(int $admissionYear): void
-    {
-        $this->admissionYear = $admissionYear;
+        $this->admissionYearId = $admissionYearId;
     }
 
     public function getGender(): Gender
@@ -208,8 +194,7 @@ class CreateStudentCourseByFileDTO implements BaseDTO
             'password' => $this->password,
             'status' => $this->status->value,
             'student_role' => $this->studentRole->value,
-            'school_year' => $this->schoolYear,
-            'admission_year' => $this->admissionYear,
+            'admission_year_id' => $this->admissionYearId,
             'gender' => $this->gender->value,
         ];
     }

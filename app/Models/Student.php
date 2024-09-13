@@ -28,8 +28,6 @@ class Student extends Authenticatable implements JWTSubject
         'email',
         'code',
         'password',
-        'school_year',
-        'admission_year',
         'faculty_id',
         'status',
         'role',
@@ -70,6 +68,11 @@ class Student extends Authenticatable implements JWTSubject
     public function reflects(): HasMany
     {
         return $this->hasMany(Reflect::class);
+    }
+
+    public function admissionYear(): BelongsTo
+    {
+        return $this->belongsTo(AdmissionYear::class);
     }
 
     public function excelImportFileRecord(): MorphOne

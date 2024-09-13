@@ -22,6 +22,7 @@ class ImportCourseStudentDTOFactory
 
         // Set properties of the command object from the request data
         $command->setFile($request->file('file'));
+        $command->setAdmissionYearId((int)$request->get('admission_year_id'));
 
         return $command;
     }

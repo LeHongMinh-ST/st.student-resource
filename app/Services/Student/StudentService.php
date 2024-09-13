@@ -135,6 +135,9 @@ class StudentService
         return $student->delete();
     }
 
+    /**
+     * @throws CreateResourceFailedException
+     */
     public function importCourse(ImportCourseStudentDTO $courseStudentDTO)
     {
         try {
@@ -148,11 +151,12 @@ class StudentService
                 'process_record' => 0,
                 'faculty_id' => auth()->user()->faculty_id,
                 'user_id' => auth()->id(),
+                'admission_year_id' => $courseStudentDTO->getAdmissionYearId()
             ]);
 
             foreach ($data['file_names'] as $fileName) {
                 // Create a new job to import student data
-                CreateStudentByFileCsvJob::dispatchSync($fileName, $excelImportFile->id, auth()->user()->faculty);
+                CreateStudentByFileCsvJob::dispatchSync($fileName, $excelImportFile->id, auth()->user()->faculty, $courseStudentDTO->getAdmissionYearId());
             }
 
             return $excelImportFile;

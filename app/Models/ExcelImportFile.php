@@ -23,6 +23,7 @@ class ExcelImportFile extends Model
         'process_record',
         'faculty_id',
         'user_id',
+        'admission_year_id'
     ];
 
     protected $casts = [
