@@ -37,7 +37,8 @@ class CreateStudentByFileCsvJob implements ShouldQueue
     public function __construct(
         private readonly string $fileName,
         private readonly int    $excelImportFileId,
-        private readonly Faculty $faculty
+        private readonly Faculty $faculty,
+        private readonly int $admissionYearId,
     ) {
     }
 
@@ -81,6 +82,7 @@ class CreateStudentByFileCsvJob implements ShouldQueue
             try {
                 $studentData = [
                     'faculty_id' => $this->faculty->id,
+                    'admission_year_id' => $this->admissionYearId,
                 ];
 
                 // map key column with value

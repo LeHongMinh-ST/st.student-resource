@@ -35,7 +35,7 @@ class CreateStudentByFileDTOFactory
 
         $command->setGender(Gender::mapValue(Arr::get($data, 'gender') ?? ''));
         $command->setStudentRole(StudentRole::Basic);
-        $command->setSchoolYear($data['school_year']);
+        $command->setAdmissionYearId($data['admission_year_id']);
         $command->setPhoneNumber(Arr::get($data, 'phone_number'));
         $command->setDob(Arr::get($data, 'dob') ? Carbon::createFromFormat('d/m/Y', $data['dob'])->format('Y-m-d') : null);
 

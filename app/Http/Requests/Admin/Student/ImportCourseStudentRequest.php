@@ -30,6 +30,7 @@ class ImportCourseStudentRequest extends FormRequest
                 'file',
                 'mimes:xlsx,xls',
             ],
+            'admission_year_id' => 'required|exists:admission_years,id',
         ];
     }
 }

@@ -26,7 +26,7 @@ class UserService
                     ->orWhere('email', 'like', '%' . $listUserDTO->getQ() . '%')
                     ->orWhere('user_name', 'like', '%' . $listUserDTO->getQ() . '%')
             )
-            ->when($auth, fn ($q) => $q->where('faculty_id', $auth?->faculty_id))
+            ->where('faculty_id', $auth?->faculty_id)
             ->orderBy($listUserDTO->getOrderBy(), $listUserDTO->getOrder()->value);
 
         return $listUserDTO->getPage() ? $query->paginate($listUserDTO->getLimit()) : $query->get();
