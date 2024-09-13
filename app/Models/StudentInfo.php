@@ -48,6 +48,7 @@ class StudentInfo extends Model
         return [
             'training_type' => TrainingType::class,
             'social_policy_object' => SocialPolicyObject::class,
+            'dob' => 'date',
         ];
     }
 

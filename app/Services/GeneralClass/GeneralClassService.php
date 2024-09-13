@@ -16,6 +16,7 @@ class GeneralClassService
         $query = GeneralClass::query()
             ->when($listFacultyDTO->getTeacherId(), fn ($q) => $q->where('teacher_id', $listFacultyDTO->getTeacherId()))
             ->when($listFacultyDTO->getQ(), fn ($q) => $q->where('name', 'like', $listFacultyDTO->getQ()))
+            ->when($listFacultyDTO->getCode(), fn ($q) => $q->where('code', $listFacultyDTO->getCode()))
             ->orderBy($listFacultyDTO->getOrderBy(), $listFacultyDTO->getOrder()->value);
 
         return $listFacultyDTO->getPage() ? $query->paginate($listFacultyDTO->getLimit()) : $query->get();
@@ -30,6 +31,7 @@ class GeneralClassService
     {
         $class = GeneralClass::where('id', $createFacultyDTO->getId())->first();
         $class->update($createFacultyDTO->toArray());
+
         return $class;
     }
 
@@ -43,5 +45,10 @@ class GeneralClassService
     public function getGeneralClassById(mixed $id): GeneralClass
     {
         return $id instanceof GeneralClass ? $id : GeneralClass::find($id);
+    }
+
+    public function getGeneralClassByCode(string $code): ?GeneralClass
+    {
+        return GeneralClass::where('code', $code)->first();
     }
 }

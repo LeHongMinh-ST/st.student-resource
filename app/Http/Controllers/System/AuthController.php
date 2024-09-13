@@ -7,7 +7,7 @@ namespace App\Http\Controllers\System;
 use App\Enums\AuthApiSection;
 use App\Exceptions\LoginFailedException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Authentication\LoginRequest;
+use App\Http\Requests\Admin\Authentication\LoginRequest;
 use App\Services\Auth\AuthService;
 use Illuminate\Http\JsonResponse;
 

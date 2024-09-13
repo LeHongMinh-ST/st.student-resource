@@ -6,7 +6,7 @@ namespace App\Factories\User;
 
 use App\DTO\User\CreateUserDTO;
 use App\Enums\UserRole;
-use App\Http\Requests\User\StoreUserRequest;
+use App\Http\Requests\Admin\User\StoreUserRequest;
 use App\Supports\AvatarHelper;
 use App\Supports\Constants;
 use App\Supports\ImageHelper;

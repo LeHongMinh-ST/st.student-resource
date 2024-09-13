@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Faculty;
+namespace App\Http\Requests\SystemAdmin\Faculty;
 
 use App\Http\Requests\ListRequest;
 use App\Models\Faculty;

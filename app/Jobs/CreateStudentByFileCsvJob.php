@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Domain\GeneralClass\Actions\CreateGeneralClassAction;
-use App\Domain\GeneralClass\Commands\GeneralClassCreateCommand;
-use App\Domain\Student\Actions\CreateStudentWithInfoByFileAction;
-use App\Domain\Student\Factories\CreateStudentByFileCommandFactory;
+use App\DTO\GeneralClass\CreateGeneralClassDTO;
 use App\Enums\Status;
+use App\Factories\Student\CreateStudentByFileDTOFactory;
 use App\Models\ExcelImportFile;
 use App\Models\ExcelImportFileError;
 use App\Models\ExcelImportFileJob;
 use App\Models\Faculty;
-use App\Models\GeneralClass;
+use App\Services\GeneralClass\GeneralClassService;
+use App\Services\Student\StudentService;
 use App\Supports\Constants;
 use Exception;
 use Illuminate\Bus\Queueable;
@@ -38,21 +37,19 @@ class CreateStudentByFileCsvJob implements ShouldQueue
     public function __construct(
         private readonly string $fileName,
         private readonly int    $excelImportFileId,
-        private Faculty         $faculty
-    ) {
-
-    }
+        private readonly Faculty $faculty
+    ) {}
 
     /**
      * Execute the job.
      */
     public function handle(
-        GeneralClass          $generalClassModel,
-        ExcelImportFile        $excelImportFileModel,
-        ExcelImportFileError   $excelImportFileErrorModel,
-        ExcelImportFileJob    $excelImportFileJobModel,
+        ExcelImportFile      $excelImportFileModel,
+        ExcelImportFileError $excelImportFileErrorModel,
+        ExcelImportFileJob   $excelImportFileJobModel,
+        GeneralClassService  $generalClassService,
+        StudentService       $studentService
     ): void {
-
         // store job if run sync
         if ($this->job->getJobId()) {
             $excelImportFileJobModel::create([
@@ -91,21 +88,21 @@ class CreateStudentByFileCsvJob implements ShouldQueue
                 }
 
                 // Check exist class if not exist create new class
-                $commandClass = new GeneralClassCreateCommand([
+                $commandClass = new CreateGeneralClassDTO([
                     'name' => $this->faculty->name,
                     'code' => $studentData['class_code'],
                     'faculty_id' => $this->faculty->id,
                 ]);
 
                 // get class or create new class
-                $generalClass = $generalClassModel->where('code', $commandClass->getCode())->first();
+                $generalClass = $generalClassService->getGeneralClassByCode($commandClass->getCode());
                 if (null === $generalClass) {
-                    $generalClass = app()->make(CreateGeneralClassAction::class)->execute($commandClass);
+                    $generalClass = $generalClassService->create($commandClass);
                 }
 
                 // create student with info
-                $commandStudentWithInfo = CreateStudentByFileCommandFactory::make($studentData);
-                $student = app()->make(CreateStudentWithInfoByFileAction::class)->execute($commandStudentWithInfo);
+                $commandStudentWithInfo = CreateStudentByFileDTOFactory::make($studentData);
+                $student = $studentService->createWithInfoStudentByFile($commandStudentWithInfo);
 
                 // create data excel import file record
                 $student->excelImportFileRecord()->create([
