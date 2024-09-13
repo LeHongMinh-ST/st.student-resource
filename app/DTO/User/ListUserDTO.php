@@ -69,12 +69,12 @@ class ListUserDTO extends BaseListDTO implements BaseDTO
         $this->status = $status;
     }
 
-    public function getUserRole(): UserRole
+    public function getUserRole(): UserRole|null
     {
         return $this->userRole;
     }
 
-    public function setUserRole(UserRole $userRole): void
+    public function setUserRole(?UserRole $userRole): void
     {
         $this->userRole = $userRole;
     }
