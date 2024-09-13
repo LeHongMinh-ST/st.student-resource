@@ -39,9 +39,7 @@ class User extends Authenticatable implements JWTSubject
         'thumbnail',
         'department_id',
         'status',
-        'faculty_id',
         'role',
-        'is_super_admin',
     ];
 
     protected $casts = [
