@@ -6,6 +6,7 @@ namespace App\Http\Requests\Admin\AdmissionYear;
 
 use App\Http\Requests\ListRequest;
 use App\Models\AdmissionYear;
+use Illuminate\Support\Facades\Gate;
 
 class ListAdmissionYearRequest extends ListRequest
 {
@@ -14,7 +15,7 @@ class ListAdmissionYearRequest extends ListRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Gate::allows('admin.admission.index');
     }
 
     /**
