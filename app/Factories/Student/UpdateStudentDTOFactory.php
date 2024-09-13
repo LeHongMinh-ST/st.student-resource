@@ -35,7 +35,6 @@ class UpdateStudentDTOFactory
         $studentDTO->setLastName($request->get('last_name'));
         $studentDTO->setFirstName($request->get('first_name')); // Corrected "last_name" to "first_name"
         $studentDTO->setStudentRole($request->has('role') ? StudentRole::from($request->get('role')) : null);
-        $studentDTO->setSchoolYear($request->get('school_year'));
 
         // Handle thumbnail image upload or generate an avatar if no image is uploaded
         $path = null;
