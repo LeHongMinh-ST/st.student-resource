@@ -18,7 +18,7 @@ class ListUserDTO extends BaseListDTO implements BaseDTO
 
     private ?int $facultyId;
 
-    private UserRole $userRole;
+    private ?UserRole $userRole;
 
     public function __construct()
     {
@@ -26,6 +26,7 @@ class ListUserDTO extends BaseListDTO implements BaseDTO
         $this->q = null;
         $this->status = null;
         $this->departmentId = null;
+        $this->userRole = null;
     }
 
     public function getDepartmentId(): ?int
