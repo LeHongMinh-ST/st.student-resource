@@ -7,7 +7,6 @@ namespace App\DTO\Student;
 use App\DTO\BaseDTO;
 use App\Enums\StudentRole;
 use App\Enums\StudentStatus;
-use App\Supports\SchoolHelper;
 use App\Supports\StudentHelper;
 
 class UpdateStudentDTO implements BaseDTO
@@ -27,10 +26,6 @@ class UpdateStudentDTO implements BaseDTO
     private ?StudentStatus $status;
 
     private ?StudentRole $studentRole;
-
-    private ?string $schoolYear;
-
-    private ?int $admissionYear;
 
     private UpdateStudentInfoDTO $infoDTO;
 
@@ -133,29 +128,6 @@ class UpdateStudentDTO implements BaseDTO
         return $this->schoolYear;
     }
 
-    public function setSchoolYear(?string $schoolYear): void
-    {
-        if (null === $schoolYear) {
-            $this->schoolYear = null;
-            $this->admissionYear = null;
-
-            return;
-        }
-        $this->schoolYear = $schoolYear;
-        [$startYear, $endYear] = SchoolHelper::getStartEndYearInSchoolYear($schoolYear);
-        $this->admissionYear = SchoolHelper::calculateAdmissionYear($startYear);
-    }
-
-    public function getAdmissionYear(): int
-    {
-        return $this->admissionYear;
-    }
-
-    public function setAdmissionYear(int $admissionYear): void
-    {
-        $this->admissionYear = $admissionYear;
-    }
-
     public function setInfoDTO(UpdateStudentInfoDTO $updateStudentInfoCommand): void
     {
         $this->infoDTO = $updateStudentInfoCommand;
@@ -176,7 +148,6 @@ class UpdateStudentDTO implements BaseDTO
             'faculty_id' => $this->facultyId,
             'status' => $this->status?->value,
             'role' => $this->studentRole?->value,
-            'admission_year' => $this->admissionYear,
         ], fn ($value) => null !== $value);
     }
 
