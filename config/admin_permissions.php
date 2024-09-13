@@ -5,6 +5,13 @@ declare(strict_types=1);
 use App\Enums\UserRole;
 
 return [
+    'admission' => [
+        'index' => [
+            UserRole::Admin,
+            UserRole::Office,
+            UserRole::Teacher,
+        ],
+    ],
     'user' => [
         'index' => [
             UserRole::Admin,
