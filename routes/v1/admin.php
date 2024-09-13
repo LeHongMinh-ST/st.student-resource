@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Enums\AuthApiSection;
+use App\Http\Controllers\Admin\AdmissionYearController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\GeneralClassController;
 use App\Http\Controllers\Admin\StudentController;
@@ -35,6 +36,10 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::post('/{user}', [UserController::class, 'update']);
         Route::delete('/{user}', [UserController::class, 'destroy']);
         Route::get('/{user}', [UserController::class, 'show']);
+    });
+
+    Route::prefix('admission-year')->group(function (): void {
+        Route::get('/', [AdmissionYearController::class, 'index']);
     });
 
     Route::prefix('students')->group(function (): void {

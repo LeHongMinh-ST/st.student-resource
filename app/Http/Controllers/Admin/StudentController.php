@@ -26,6 +26,15 @@ use Illuminate\Http\Request;
 use Knuckles\Scribe\Attributes\ResponseFromApiResource;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group Admin API
+ *
+ * APIs for admin
+ *
+ * @subgroup Student
+ *
+ * @subgroupDescription APIs for admin
+ */
 class StudentController extends Controller
 {
     public function __construct(
