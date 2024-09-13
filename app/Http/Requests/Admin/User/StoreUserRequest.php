@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Admin\User;
 
 use App\Enums\UserRole;
 use App\Rules\PhoneNumberRule;

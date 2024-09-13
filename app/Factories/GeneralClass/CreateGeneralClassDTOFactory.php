@@ -7,7 +7,7 @@ namespace App\Factories\GeneralClass;
 use App\DTO\GeneralClass\CreateGeneralClassDTO;
 use App\Enums\ClassType;
 use App\Enums\Status;
-use App\Http\Requests\GeneralClass\StoreGeneralClassRequest;
+use App\Http\Requests\Admin\GeneralClass\StoreGeneralClassRequest;
 
 class CreateGeneralClassDTOFactory
 {

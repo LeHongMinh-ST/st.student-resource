@@ -6,7 +6,7 @@ namespace App\Factories\GeneralClass;
 
 use App\DTO\GeneralClass\ListGeneralClassDTO;
 use App\Enums\SortOrder;
-use App\Http\Requests\GeneralClass\ListGeneralClassRequest;
+use App\Http\Requests\Admin\GeneralClass\ListGeneralClassRequest;
 
 class ListGeneralClassDTOFactory
 {

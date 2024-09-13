@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Admin\User;
 
 use App\Http\Requests\ListRequest;
 use App\Models\User;

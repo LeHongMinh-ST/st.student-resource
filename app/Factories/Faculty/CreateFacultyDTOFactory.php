@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Factories\Faculty;
 
 use App\DTO\Faculty\CreateFacultyDTO;
-use App\Http\Requests\Faculty\StoreFacultyRequest;
+use App\Http\Requests\SystemAdmin\Faculty\StoreFacultyRequest;
 
 class CreateFacultyDTOFactory
 {
