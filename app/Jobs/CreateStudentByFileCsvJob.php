@@ -38,7 +38,8 @@ class CreateStudentByFileCsvJob implements ShouldQueue
         private readonly string $fileName,
         private readonly int    $excelImportFileId,
         private readonly Faculty $faculty
-    ) {}
+    ) {
+    }
 
     /**
      * Execute the job.

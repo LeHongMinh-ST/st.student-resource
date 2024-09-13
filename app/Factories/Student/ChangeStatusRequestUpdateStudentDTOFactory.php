@@ -10,7 +10,6 @@ use App\Http\Requests\Admin\Student\ChangeStatusRequestUpdateStudentRequest as A
 use App\Http\Requests\Student\RequestUpdateInfo\ChangeStatusRequestUpdateStudentRequest;
 use InvalidArgumentException;
 
-
 class ChangeStatusRequestUpdateStudentDTOFactory
 {
     public static function make(

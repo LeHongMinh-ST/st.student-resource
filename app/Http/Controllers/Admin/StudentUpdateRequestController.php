@@ -14,7 +14,8 @@ class StudentUpdateRequestController extends Controller
 {
     public function __construct(
         private readonly ApproveStudentUpdateService $approveStudentUpdate
-    ) {}
+    ) {
+    }
 
     /**
      * Update student

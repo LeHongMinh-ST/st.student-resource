@@ -8,14 +8,18 @@ use App\DTO\User\CreateUserDTO;
 use App\DTO\User\ListUserDTO;
 use App\DTO\User\UpdateUserDTO;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class UserService
 {
     public function getList(ListUserDTO $listUserDTO): \Illuminate\Database\Eloquent\Collection|\Illuminate\Contracts\Pagination\LengthAwarePaginator|array
     {
+        $auth = auth('api')->user();
+
         $query = User::query()
             ->when($listUserDTO->getDepartmentId(), fn ($q) => $q->where('department_id', $listUserDTO->getDepartmentId()))
-            ->when($listUserDTO->getQ(), fn ($q) => $q->where('name', 'like', $listUserDTO->getQ()))
+            ->when($listUserDTO->getQ(), fn ($q) => $q->where(DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', '%' . $listUserDTO->getQ() . '%'))
+            ->when($auth, fn ($q) => $q->where('faculty_id', $auth?->faculty_id))
             ->orderBy($listUserDTO->getOrderBy(), $listUserDTO->getOrder()->value);
 
         return $listUserDTO->getPage() ? $query->paginate($listUserDTO->getLimit()) : $query->get();

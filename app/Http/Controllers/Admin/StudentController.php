@@ -30,7 +30,8 @@ class StudentController extends Controller
 {
     public function __construct(
         private readonly StudentService $studentService
-    ) {}
+    ) {
+    }
 
     /**
      * List of student
