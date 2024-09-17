@@ -40,6 +40,7 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
 
     Route::prefix('admission-year')->group(function (): void {
         Route::get('/', [AdmissionYearController::class, 'index']);
+        Route::get('/{admissionYear}/student-file-imports', [AdmissionYearController::class, 'getListStudentFileImports']);
     });
 
     Route::prefix('students')->group(function (): void {

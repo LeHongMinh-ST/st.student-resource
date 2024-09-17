@@ -22,4 +22,6 @@ class AdmissionYearService
             ->orderBy($admissionYearDTO->getOrderBy(), $admissionYearDTO->getOrder()->value);
         return $admissionYearDTO->getPage() ? $query->paginate($admissionYearDTO->getLimit()) : $query->get();
     }
+
+
 }

@@ -11,6 +11,10 @@ return [
             UserRole::Office,
             UserRole::Teacher,
         ],
+        'getListImportFile' => [
+            UserRole::Admin,
+            UserRole::Office,
+        ]
     ],
     'user' => [
         'index' => [
