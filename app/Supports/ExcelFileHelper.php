@@ -89,7 +89,7 @@ class ExcelFileHelper
             'STT' => 'index',
             'Lớp' => 'class_code',
             'Mã SV' => 'code',
-            'Niên khóa' => 'school_year',
+            //            'Niên khóa' => 'school_year',
             'Khoa' => 'faculty',
             'Họ tên' => 'full_name',
             'Giới tính' => 'gender',

@@ -15,4 +15,11 @@ class Constants
     public const PATH_THUMBNAIL_STUDENT = 'images/students/thumbnail';
 
     public const PATH_FILE_IMPORT_COURSE = 'file_imports/courses/';
+
+    public const START_ROW_EXCEL = 2;
+
+    public static function getNumberRowNotRecord()
+    {
+        return self::START_ROW_EXCEL - 1;
+    }
 }

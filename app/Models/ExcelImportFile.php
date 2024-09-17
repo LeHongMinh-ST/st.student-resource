@@ -43,7 +43,7 @@ class ExcelImportFile extends Model
 
     public function excelImportFileRecords(): HasMany
     {
-        return $this->hasMany(ExcelImportFileRecord::class);
+        return $this->hasMany(ExcelImportFileRecord::class, 'excel_import_files_id');
     }
 
     public function excelImportFileJobs(): HasMany
@@ -54,7 +54,7 @@ class ExcelImportFile extends Model
 
     public function excelImportFileErrors(): HasMany
     {
-        return $this->hasMany(ExcelImportFileError::class);
+        return $this->hasMany(ExcelImportFileError::class, 'excel_import_files_id');
     }
 
     // ------------------------ CASTS -------------------------//
@@ -62,6 +62,10 @@ class ExcelImportFile extends Model
 
     // ---------------------- ACCESSORS AND MUTATORS --------------------//
 
+    public function getRecordErrorCountAttribute(): int
+    {
+        return $this->excelImportFileErrors()->count();
+    }
 
     //----------------------- SCOPES ----------------------------------//
 

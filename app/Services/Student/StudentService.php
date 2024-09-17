@@ -16,6 +16,7 @@ use App\Jobs\CreateStudentByFileCsvJob;
 use App\Models\ExcelImportFile;
 use App\Models\Student;
 use App\Services\Student\StudentInfo\StudentInfoService;
+use App\Supports\Constants;
 use App\Supports\ExcelFileHelper;
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -147,7 +148,7 @@ class StudentService
             $excelImportFile = ExcelImportFile::create([
                 'name' => $courseStudentDTO->getFile()->getClientOriginalName(),
                 'type' => ExcelImportType::Course,
-                'total_record' => $data['total_row_data'],
+                'total_record' => $data['total_row_data'] - Constants::getNumberRowNotRecord(),
                 'process_record' => 0,
                 'faculty_id' => auth()->user()->faculty_id,
                 'user_id' => auth()->id(),

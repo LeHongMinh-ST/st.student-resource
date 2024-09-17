@@ -29,7 +29,7 @@ class ExcelImportFileRecord extends Model
 
     public function excelImportFile(): BelongsTo
     {
-        return $this->belongsTo(ExcelImportFile::class);
+        return $this->belongsTo(ExcelImportFile::class, 'excel_import_files_id', 'id');
     }
 
     // ------------------------ CASTS -------------------------//
