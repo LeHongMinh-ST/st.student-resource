@@ -23,6 +23,7 @@ class ExcelImportFileResource extends JsonResource
             'type' => $this->type ?? '',
             'total_record' => $this->total_record ?? 0,
             'process_record' => $this->process_record ?? 0,
+            'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'user' => new UserResource($this->whenLoaded('user')),

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\ExcelImportType;
+use App\Enums\StatusFileImport;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -65,6 +66,25 @@ class ExcelImportFile extends Model
     public function getRecordErrorCountAttribute(): int
     {
         return $this->excelImportFileErrors()->count();
+    }
+
+    public function getStatusAttribute(): StatusFileImport
+    {
+        $fileErrorsCount = $this->excelImportFileErrors()->count();
+        $processRecordCount = $fileErrorsCount + $this->process_record;
+        if ($processRecordCount === $this->total_record) {
+            return StatusFileImport::Completed;
+        }
+
+        if (0 === $processRecordCount) {
+            return StatusFileImport::Pending;
+        }
+
+        if ($processRecordCount > 0 && $processRecordCount < $this->total_record) {
+            return StatusFileImport::Processing;
+        }
+
+        return StatusFileImport::Completed;
     }
 
     //----------------------- SCOPES ----------------------------------//
