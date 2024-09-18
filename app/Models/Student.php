@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\Status;
 use App\Enums\StudentRole;
 use App\Enums\StudentStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Storage;
@@ -63,7 +65,14 @@ class Student extends Authenticatable implements JWTSubject
     {
         return $this->belongsToMany(GeneralClass::class, 'class_students', 'student_id', 'class_id')
             ->withPivot(['status', 'start_date', 'end_date'])
-            ->withTimestamps();
+            ->withTimestamps()->using(ClassStudent::class);
+    }
+
+
+    public function currentClass(): HasOneThrough
+    {
+        return $this->hasOneThrough(GeneralClass::class, ClassStudent::class, 'student_id', 'id', 'id', 'class_id')
+            ->where('class_students.status', Status::Enable);
     }
 
     public function reflects(): HasMany

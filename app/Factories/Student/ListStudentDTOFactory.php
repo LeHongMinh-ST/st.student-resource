@@ -18,6 +18,9 @@ class ListStudentDTOFactory
         // Set command properties based on the request parameters, if they exist
         $command = MakeDataHelper::makeListData($request, $command);
 
+        if ($request->has('admission_year_id')) {
+            $command->setAdmissionYearId((int) $request->get('admission_year_id'));
+        }
 
         return $command;
     }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Student;
 
+use App\Http\Resources\AdmissionYear\AdmissionYearResource;
 use App\Http\Resources\Faculty\FacultyForLoadResource;
+use App\Http\Resources\GeneralClass\GeneralClassForStudentResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,13 +25,15 @@ class StudentResource extends JsonResource
             'first_name' => $this->first_name,
             'email' => $this->email,
             'code' => $this->code,
-            'school_year' => $this->school_year,
-            'admission_year' => $this->admission_year,
+            'admission_year' => new AdmissionYearResource($this->whenLoaded('admissionYear')),
             'faculty' => new FacultyForLoadResource($this->faculty),
             'status' => $this->status,
             'role' => $this->role,
             'info' => new StudentInfoResource($this->whenLoaded('info')),
-            'families' => StudentFamilyResource::collection($this->whenLoaded('families')),
+            'family' => StudentFamilyResource::collection($this->whenLoaded('families')),
+            'currentClass' => new GeneralClassForStudentResource($this->whenLoaded('currentClass')),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }
