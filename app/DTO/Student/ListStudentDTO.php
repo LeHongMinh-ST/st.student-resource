@@ -11,13 +11,14 @@ class ListStudentDTO extends BaseListDTO implements BaseDTO
 {
     private ?string $q;
     private ?string $status;
+    private ?int $admissionYearId;
 
     public function __construct()
     {
         parent::__construct();
         $this->q = null;
         $this->status = null;
-        $this->teacherId = null;
+        $this->orderBy = 'first_name';
     }
 
     public function getQ(): ?string
@@ -39,6 +40,17 @@ class ListStudentDTO extends BaseListDTO implements BaseDTO
     {
         $this->status = $status;
     }
+
+    public function getAdmissionYearId(): ?int
+    {
+        return $this->admissionYearId;
+    }
+
+    public function setAdmissionYearId(?int $admissionYearId): void
+    {
+        $this->admissionYearId = $admissionYearId;
+    }
+
 
     public function toArray(): array
     {

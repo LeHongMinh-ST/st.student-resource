@@ -33,7 +33,10 @@ class StudentService
     public function getList(ListStudentDTO $listStudentDTO): Collection|LengthAwarePaginator|array
     {
         $query = Student::query()
+            ->when($listStudentDTO->getAdmissionYearId(), fn ($q) => $q->where('admission_year_id', $listStudentDTO->getAdmissionYearId()))
             ->when($listStudentDTO->getQ(), fn ($q) => $q->where('name', 'like', $listStudentDTO->getQ()))
+            ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
+            ->with(['info', 'currentClass'])
             ->orderBy($listStudentDTO->getOrderBy(), $listStudentDTO->getOrder()->value);
 
         return $listStudentDTO->getPage() ? $query->paginate($listStudentDTO->getLimit()) : $query->get();

@@ -121,7 +121,8 @@ class CreateStudentByFileCsvJob implements ShouldQueue
                 ]);
 
                 // Update total process record
-                $excelImportFileModel->where('id', $this->excelImportFileId)->increment('process_record');
+                $excelImportFileModel->where('id', $this->excelImportFileId)
+                    ->increment('process_record');
 
             } catch (Exception $exception) {
                 $hasError = true;
