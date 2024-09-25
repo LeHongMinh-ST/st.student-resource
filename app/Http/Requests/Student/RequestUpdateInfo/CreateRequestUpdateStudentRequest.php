@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Student\RequestUpdateInfo;
 
+use App\Enums\AuthApiSection;
 use App\Enums\FamilyRelationship;
 use App\Enums\Gender;
 use App\Enums\SocialPolicyObject;
@@ -19,7 +20,7 @@ class CreateRequestUpdateStudentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return auth(AuthApiSection::Student->value)->check();
     }
 
     /**
