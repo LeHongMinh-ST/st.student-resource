@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Services\StudentInfoRequest\States;
 
+use App\DTO\Student\CreateApproveStudentUpdateDTO;
 use App\Exceptions\UpdateResourceFailedException;
 use App\Models\StudentInfoUpdate;
-use App\Services\StudentInfoRequest\StudentInfoUpdateService;
+use App\Services\StudentInfoRequest\ApproveStudentUpdateService;
+use Illuminate\Contracts\Container\BindingResolutionException;
 
 /**
  * The Context defines the interface of interest to clients. It also maintains a
@@ -61,15 +63,18 @@ class StudentInfoUpdateContext
         return $this->studentInfoUpdate;
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     public function createApprovalUser(int $userId, string $userType): void
     {
         $studentInfoUpdate = $this->getStudentInfoUpdate();
-        app()->make(StudentInfoUpdateService::class)->create([
-            'approveable_type' => $userType,
-            'approveable_id' => $userId,
-            'status' => $studentInfoUpdate->status,
-            'note' => $this->rejectNote,
-            'student_info_update_id' => $studentInfoUpdate->id,
-        ]);
+        app()->make(ApproveStudentUpdateService::class)->create(new CreateApproveStudentUpdateDTO(
+            approveableType: $userType,
+            approveableId: $userId,
+            status: $studentInfoUpdate->status,
+            note: $this->rejectNote,
+            studentInfoUpdateId: $studentInfoUpdate->id,
+        ));
     }
 }

@@ -28,6 +28,7 @@ class ListAdmissionYearRequest extends ListRequest
         return [
             'admission_year' => 'nullable',
             'school_year' => 'nullable',
+            ...parent::rules(),
         ];
     }
 

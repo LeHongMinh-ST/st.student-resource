@@ -44,7 +44,7 @@ class UserController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param  ListUserRequest  $request  The HTTP request object containing the role ID.
+     * @param  ListUserRequest $request
      * @return UserCollection Returns the list of GeneralClass.
      */
     #[ResponseFromApiResource(UserCollection::class, User::class, Response::HTTP_OK, with: [

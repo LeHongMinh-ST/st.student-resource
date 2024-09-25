@@ -38,14 +38,15 @@ class AdmissionYearController extends Controller
     }
 
     /**
-     * List of admission year
+     * List of admission-year
      *
-     * This endpoint lets you views list a Admission Year
+     * This endpoint lets you views list AdmissionYear
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param  ListAdmissionYearRequest  $request  The HTTP request object containing the role ID.
-     * @return AdmissionYearCollection Returns the list of AdmissionYear.
+     * @param  ListAdmissionYearRequest $request
+     *
+     * @return AdmissionYearCollection
      */
     #[ResponseFromApiResource(AdmissionYearCollection::class, AdmissionYear::class, Response::HTTP_OK, paginate: Constants::PAGE_LIMIT)]
     public function index(ListAdmissionYearRequest $request): AdmissionYearCollection

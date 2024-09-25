@@ -12,6 +12,8 @@ class AdmissionYear extends Model
 {
     use HasFactory;
 
+    protected $table = 'admission_years';
+
     protected $fillable = ['admission_year', 'school_year'];
 
     // ------------------------ RELATIONS -------------------------//
