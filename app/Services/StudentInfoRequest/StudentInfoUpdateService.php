@@ -6,6 +6,7 @@ namespace App\Services\StudentInfoRequest;
 
 use App\DTO\Student\CreateRequestUpdateFamilyStudentDTO;
 use App\DTO\Student\CreateRequestUpdateStudentDTO;
+use App\DTO\Student\ListRequestUpdateStudentDTO;
 use App\DTO\Student\UpdateRequestUpdateStudentDTO;
 use App\Enums\StudentInfoUpdateStatus;
 use App\Exceptions\ConflictRecordException;
@@ -21,6 +22,19 @@ use Illuminate\Support\Facades\Log;
 
 class StudentInfoUpdateService
 {
+    public function getList(ListRequestUpdateStudentDTO $listRequestUpdateStudentDTO)
+    {
+        $query = StudentInfoUpdate::query()
+            ->when($listRequestUpdateStudentDTO->getStatus(), fn ($q) => $q->where('status', $listRequestUpdateStudentDTO->getStatus()))
+            ->when($listRequestUpdateStudentDTO->getStudentId(), fn ($q) => $q->where('student_id', $listRequestUpdateStudentDTO->getStudentId()))
+            ->when($listRequestUpdateStudentDTO->getClassId(), fn ($q) => $q->whereHas('student', fn ($q) => $q->whereHas('currentClass', fn ($q) => $q->where('id', $listRequestUpdateStudentDTO->getClassId()))))
+            ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
+            ->with(['families'])
+            ->orderBy($listRequestUpdateStudentDTO->getOrderBy(), $listRequestUpdateStudentDTO->getOrder()->value);
+
+        return $listRequestUpdateStudentDTO->getPage() ? $query->paginate($listRequestUpdateStudentDTO->getLimit()) : $query->get();
+    }
+
     /**
      * @throws CreateResourceFailedException
      * @throws ConflictRecordException
