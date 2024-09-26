@@ -21,7 +21,7 @@ Route::middleware(['auth:' . AuthApiSection::Student->value])->group(function ()
 
     Route::prefix('request')->group(function (): void {
         Route::get('/', [RequestUpdateController::class, 'index']);
-        Route::get('/class', [RequestUpdateController::class, 'getListRequestForClass']);
+        Route::get('/my-request', [RequestUpdateController::class, 'myRequest']);
         Route::post('/', [RequestUpdateController::class, 'create']);
         Route::patch('/{studentInfoUpdate}', [RequestUpdateController::class, 'update']);
         Route::get('/{studentInfoUpdate}', [RequestUpdateController::class, 'show']);

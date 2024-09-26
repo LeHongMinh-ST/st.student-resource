@@ -4,19 +4,24 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Student;
 
+use App\Enums\AuthApiSection;
 use App\Exceptions\ConflictRecordException;
 use App\Exceptions\CreateResourceFailedException;
 use App\Exceptions\DeleteResourceFailedException;
 use App\Exceptions\UpdateResourceFailedException;
 use App\Factories\RequestUpdateStudent\ChangeStatusRequestUpdateStudentDTOFactory;
 use App\Factories\RequestUpdateStudent\CreateRequestUpdateStudentDTOFactory;
+use App\Factories\RequestUpdateStudent\ListRequestUpdateStudentDTOFactory;
 use App\Factories\RequestUpdateStudent\UpdateRequestUpdateStudentDTOFactory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Student\RequestUpdateInfo\ChangeStatusRequestUpdateStudentRequest;
 use App\Http\Requests\Student\RequestUpdateInfo\CreateRequestUpdateStudentRequest;
 use App\Http\Requests\Student\RequestUpdateInfo\DeleteRequestUpdateStudentRequest;
+use App\Http\Requests\Student\RequestUpdateInfo\ListMyRequestUpdateStudentRequest;
+use App\Http\Requests\Student\RequestUpdateInfo\ListRequestUpdateStudentRequest;
 use App\Http\Requests\Student\RequestUpdateInfo\ShowRequestUpdateStudentRequest;
 use App\Http\Requests\Student\RequestUpdateInfo\UpdateRequestUpdateStudentRequest;
+use App\Http\Resources\Student\StudentInfoUpdateCollection;
 use App\Http\Resources\Student\StudentInfoUpdateResource;
 use App\Models\StudentInfoUpdate;
 use App\Services\StudentInfoRequest\ApproveStudentUpdateService;
@@ -42,14 +47,51 @@ class RequestUpdateController extends Controller
     ) {
     }
 
-    public function index(): void
+    /**
+     * List of request update for President
+     *
+     * This endpoint lets you views list a Request update
+     *
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @param  ListRequestUpdateStudentRequest $request
+     * @return StudentInfoUpdateCollection Returns the list of GeneralClass.
+     */
+    public function index(ListRequestUpdateStudentRequest $request): StudentInfoUpdateCollection
     {
+        $auth = auth('student')->user();
+        $auth->load('currentClass');
+        $dto = ListRequestUpdateStudentDTOFactory::make(
+            request: $request,
+            classId: $auth->currentClass->id,
+        );
 
+        $studentUpdate = $this->studentInfoUpdateService->getList($dto);
+
+        return new StudentInfoUpdateCollection($studentUpdate);
     }
 
-    public function getListRequestForClass(): void
-    {
 
+    /**
+     * List of request update for current student
+     *
+     * This endpoint lets you views list a Request update
+     *
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @param  ListMyRequestUpdateStudentRequest $request
+     * @return StudentInfoUpdateCollection Returns the list of GeneralClass.
+     */
+    public function myRequest(ListMyRequestUpdateStudentRequest $request): StudentInfoUpdateCollection
+    {
+        $dto = ListRequestUpdateStudentDTOFactory::make(
+            request: $request,
+            studentId: auth(AuthApiSection::Student->value)->id(),
+        );
+
+        $studentUpdate = $this->studentInfoUpdateService->getList($dto);
+
+        return new StudentInfoUpdateCollection($studentUpdate);
     }
 
     /**
