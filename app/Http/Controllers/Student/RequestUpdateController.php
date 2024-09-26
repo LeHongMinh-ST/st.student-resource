@@ -26,6 +26,7 @@ use App\Http\Resources\Student\StudentInfoUpdateResource;
 use App\Models\StudentInfoUpdate;
 use App\Services\StudentInfoRequest\ApproveStudentUpdateService;
 use App\Services\StudentInfoRequest\StudentInfoUpdateService;
+use App\Supports\Constants;
 use Illuminate\Http\JsonResponse;
 use Knuckles\Scribe\Attributes\ResponseFromApiResource;
 use Symfony\Component\HttpFoundation\Response;
@@ -57,6 +58,9 @@ class RequestUpdateController extends Controller
      * @param  ListRequestUpdateStudentRequest $request
      * @return StudentInfoUpdateCollection Returns the list of GeneralClass.
      */
+    #[ResponseFromApiResource(StudentInfoUpdateCollection::class, StudentInfoUpdate::class, Response::HTTP_OK, with: [
+        'families',
+    ], paginate: Constants::PAGE_LIMIT)]
     public function index(ListRequestUpdateStudentRequest $request): StudentInfoUpdateCollection
     {
         $auth = auth('student')->user();
@@ -82,6 +86,9 @@ class RequestUpdateController extends Controller
      * @param  ListMyRequestUpdateStudentRequest $request
      * @return StudentInfoUpdateCollection Returns the list of GeneralClass.
      */
+    #[ResponseFromApiResource(StudentInfoUpdateCollection::class, StudentInfoUpdate::class, Response::HTTP_OK, with: [
+        'families',
+    ], paginate: Constants::PAGE_LIMIT)]
     public function myRequest(ListMyRequestUpdateStudentRequest $request): StudentInfoUpdateCollection
     {
         $dto = ListRequestUpdateStudentDTOFactory::make(
