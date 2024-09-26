@@ -119,7 +119,7 @@ class CreateStudentDTO implements BaseDTO
 
     public function setPassword(string $password): void
     {
-        $this->password = $password;
+        $this->password = password_hash($password, PASSWORD_BCRYPT);
     }
 
     public function getStatus(): StudentStatus
