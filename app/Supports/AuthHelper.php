@@ -17,6 +17,10 @@ class AuthHelper
      */
     public static function isRoleStudent(StudentRole ...$roles): bool
     {
+        if (!auth(AuthApiSection::Student->value)->check()) {
+            return false;
+        }
+
         // Get the authentication details for the Student section
         $auth = auth(AuthApiSection::Student->value);
 
@@ -26,4 +30,15 @@ class AuthHelper
         // Check if the user's role is in the list of provided roles
         return in_array($role, $roles);
     }
+
+    public static function isStudentOwner(int|string $id): bool
+    {
+        return auth(AuthApiSection::Student->value)->id() === (int) $id;
+    }
+
+    public static function isAdminOwner(int|string $id): bool
+    {
+        return auth(AuthApiSection::Admin->value)->id() === (int) $id;
+    }
+
 }

@@ -13,8 +13,19 @@ Route::prefix('auth')->group(function (): void {
     Route::post('refresh', [AuthController::class, 'refresh']);
 });
 Route::middleware(['auth:' . AuthApiSection::Student->value])->group(function (): void {
+
+    Route::prefix('auth')->group(function (): void {
+        Route::get('profile', [AuthController::class, 'profile']);
+        Route::put('/reset-password', [AuthController::class, 'resetPassword']);
+    });
+
     Route::prefix('request')->group(function (): void {
+        Route::get('/', [RequestUpdateController::class, 'index']);
+        Route::get('/class', [RequestUpdateController::class, 'getListRequestForClass']);
         Route::post('/', [RequestUpdateController::class, 'create']);
-        Route::patch('/{id}/status', [RequestUpdateController::class, 'updateStatus']);
+        Route::patch('/{studentInfoUpdate}', [RequestUpdateController::class, 'update']);
+        Route::get('/{studentInfoUpdate}', [RequestUpdateController::class, 'show']);
+        Route::patch('/{studentInfoUpdate}/status', [RequestUpdateController::class, 'updateStatus']);
+        Route::delete('/{studentInfoUpdate}', [RequestUpdateController::class, 'destroy']);
     });
 });

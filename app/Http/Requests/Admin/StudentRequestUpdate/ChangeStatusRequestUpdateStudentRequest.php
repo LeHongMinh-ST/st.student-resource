@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Admin\Student;
+namespace App\Http\Requests\Admin\StudentRequestUpdate;
 
 use App\Enums\StudentInfoUpdateStatus;
-use App\Enums\StudentRole;
-use App\Supports\AuthHelper;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class ChangeStatusRequestUpdateStudentRequest extends FormRequest
@@ -18,7 +17,7 @@ class ChangeStatusRequestUpdateStudentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return AuthHelper::isRoleStudent(StudentRole::President, StudentRole::VicePresident);
+        return Gate::allows('admin.student-request.update-status');
     }
 
     /**
