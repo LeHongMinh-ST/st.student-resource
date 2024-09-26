@@ -64,4 +64,11 @@ return [
             UserRole::Admin,
         ],
     ],
+    'student-request' => [
+        'update-status' => [
+            UserRole::Admin,
+            UserRole::Office,
+            UserRole::Teacher,
+        ]
+    ]
 ];

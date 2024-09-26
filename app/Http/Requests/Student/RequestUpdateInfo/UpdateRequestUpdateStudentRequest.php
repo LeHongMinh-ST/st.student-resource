@@ -1,0 +1,57 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Requests\Student\RequestUpdateInfo;
+
+use App\Enums\AuthApiSection;
+use App\Enums\FamilyRelationship;
+use App\Enums\Gender;
+use App\Enums\SocialPolicyObject;
+use App\Enums\TrainingType;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
+class UpdateRequestUpdateStudentRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        $studentInfoUpdate = $this->route('studentInfoUpdate');
+
+        return auth(AuthApiSection::Student->value)->check() && $studentInfoUpdate->id === auth(AuthApiSection::Student->value)->id();
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'gender' => ['nullable', Rule::enum(Gender::class)],
+            'person_email' => ['nullable', 'email', 'max:255'],
+            'permanent_residence' => ['nullable', 'string', 'max:255'],
+            'dob' => ['nullable', 'date', 'date_format:d-m-Y'],
+            'pob' => ['nullable', 'string', 'max:255'],
+            'countryside' => ['nullable', 'string', 'max:255'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'training_type' => ['nullable', Rule::enum(TrainingType::class)],
+            'phone' => ['nullable', 'string', 'max:20'],
+            'nationality' => ['nullable', 'string', 'max:255'],
+            'citizen_identification' => ['nullable', 'string', 'max:255'],
+            'ethnic' => ['nullable', 'string', 'max:255'],
+            'religion' => ['nullable', 'string', 'max:255'],
+            'social_policy_object' => ['nullable', 'string', Rule::enum(SocialPolicyObject::class)],
+            'note' => ['nullable', 'string', 'max:1000'],
+            'families' => ['array', 'nullable'],
+            'families.*.relationship' => ['nullable', Rule::enum(FamilyRelationship::class)],
+            'families.*.full_name' => ['nullable', 'string'],
+            'families.*.job' => ['nullable', 'string'],
+            'families.*.phone' => ['nullable', 'string'],
+        ];
+    }
+}

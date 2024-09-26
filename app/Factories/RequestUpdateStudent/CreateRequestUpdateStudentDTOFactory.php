@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Factories\Student;
+namespace App\Factories\RequestUpdateStudent;
 
 use App\DTO\Student\CreateRequestUpdateStudentDTO;
 use App\Enums\AuthApiSection;

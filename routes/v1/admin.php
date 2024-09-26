@@ -53,6 +53,8 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
     });
 
     Route::prefix('student-requests')->group(function (): void {
-        Route::patch('/{id}', [StudentUpdateRequestController::class, 'update']);
+        Route::get('/', [StudentUpdateRequestController::class, 'index']);
+        Route::get('/{id}', [StudentUpdateRequestController::class, 'show']);
+        Route::patch('/{id}', [StudentUpdateRequestController::class, 'updateStatus']);
     });
 });

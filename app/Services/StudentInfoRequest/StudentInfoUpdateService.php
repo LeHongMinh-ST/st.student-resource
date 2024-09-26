@@ -6,7 +6,12 @@ namespace App\Services\StudentInfoRequest;
 
 use App\DTO\Student\CreateRequestUpdateFamilyStudentDTO;
 use App\DTO\Student\CreateRequestUpdateStudentDTO;
+use App\DTO\Student\UpdateRequestUpdateStudentDTO;
+use App\Enums\StudentInfoUpdateStatus;
+use App\Exceptions\ConflictRecordException;
 use App\Exceptions\CreateResourceFailedException;
+use App\Exceptions\DeleteResourceFailedException;
+use App\Exceptions\UpdateResourceFailedException;
 use App\Models\FamilyUpdate;
 use App\Models\StudentInfoUpdate;
 use Exception;
@@ -18,11 +23,16 @@ class StudentInfoUpdateService
 {
     /**
      * @throws CreateResourceFailedException
+     * @throws ConflictRecordException
      */
     public function create(CreateRequestUpdateStudentDTO $createRequestUpdateStudentDTO): StudentInfoUpdate
     {
         DB::beginTransaction();
         try {
+            if ($this->isExistRequestUpdatePending()) {
+                throw new ConflictRecordException();
+            }
+
             $studentInfoUpdate = StudentInfoUpdate::create($createRequestUpdateStudentDTO->toArray());
 
             $families = $this->getFamilies($studentInfoUpdate->id, ...$createRequestUpdateStudentDTO->getFamily());
@@ -40,6 +50,57 @@ class StudentInfoUpdateService
 
             throw new CreateResourceFailedException();
         }
+    }
+
+    /**
+     * @throws UpdateResourceFailedException
+     */
+    public function update(UpdateRequestUpdateStudentDTO $updateRequestUpdateStudentDTO): StudentInfoUpdate
+    {
+        DB::beginTransaction();
+        try {
+
+            $studentInfoUpdate = StudentInfoUpdate::where(['id' => $updateRequestUpdateStudentDTO->getId()])
+                ->update($updateRequestUpdateStudentDTO->toArray());
+
+            $families = $this->getFamilies($studentInfoUpdate->id, ...$updateRequestUpdateStudentDTO->getFamily());
+
+            FamilyUpdate::where('student_info_id', $updateRequestUpdateStudentDTO->getId())->delete();
+
+            FamilyUpdate::insert($families);
+
+            DB::commit();
+
+            return $studentInfoUpdate;
+        } catch (Exception $exception) {
+            DB::rollBack();
+            Log::error('Error updating request update family service', [
+                'method' => __METHOD__,
+                'message' => $exception->getMessage(),
+            ]);
+
+            throw new UpdateResourceFailedException();
+        }
+    }
+
+    /**
+     * @throws DeleteResourceFailedException
+     */
+    public function delete(StudentInfoUpdate $studentInfoUpdate): void
+    {
+        if (StudentInfoUpdateStatus::Pending !== $studentInfoUpdate->status) {
+            throw new DeleteResourceFailedException();
+        }
+
+        StudentInfoUpdate::query()->where('id', $studentInfoUpdate->id)->delete();
+    }
+
+    public function isExistRequestUpdatePending(): bool
+    {
+        return StudentInfoUpdate::query()
+            ->where('student_id', auth('student')->id())
+            ->where('status', StudentInfoUpdateStatus::Pending)
+            ->exists();
     }
 
     /**

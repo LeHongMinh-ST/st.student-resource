@@ -39,6 +39,13 @@ class StudentInfoUpdate extends Model
         'status',
     ];
 
+    public static function boot(): void
+    {
+        self::deleting(function (StudentInfoUpdate $studentInfoUpdate): void {
+            $studentInfoUpdate->families()->delete();
+        });
+    }
+
     // ------------------------ RELATIONS -------------------------//
     public function student(): BelongsTo
     {
@@ -55,6 +62,15 @@ class StudentInfoUpdate extends Model
         return $this->hasMany(FamilyUpdate::class);
     }
 
+    // ---------------------- ACCESSORS AND MUTATORS --------------------//
+
+    //----------------------- SCOPES ----------------------------------//
+
+    public function getRouteKeyName(): string
+    {
+        return 'studentInfoUpdate';
+    }
+
 
     // ------------------------ CASTS -------------------------//
     protected function casts(): array
@@ -65,8 +81,4 @@ class StudentInfoUpdate extends Model
             'status' => StudentInfoUpdateStatus::class,
         ];
     }
-
-    // ---------------------- ACCESSORS AND MUTATORS --------------------//
-
-    //----------------------- SCOPES ----------------------------------//
 }

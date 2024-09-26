@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Factories\Student;
+namespace App\Factories\RequestUpdateStudent;
 
 use App\DTO\Student\ChangeStatusRequestUpdateStudentDTO;
 use App\Enums\StudentInfoUpdateStatus;
-use App\Http\Requests\Admin\Student\ChangeStatusRequestUpdateStudentRequest as AdminChangeStatusRequestUpdateStudentRequest;
+use App\Http\Requests\Admin\StudentRequestUpdate\ChangeStatusRequestUpdateStudentRequest as AdminChangeStatusRequestUpdateStudentRequest;
 use App\Http\Requests\Student\RequestUpdateInfo\ChangeStatusRequestUpdateStudentRequest;
 use InvalidArgumentException;
 
