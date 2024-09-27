@@ -7,6 +7,7 @@ namespace App\Services\Post;
 use App\DTO\Post\CreatePostDTO;
 use App\DTO\Post\ListPostDTO;
 use App\DTO\Post\UpdatePostDTO;
+use App\Enums\AuthApiSection;
 use App\Exceptions\CreateResourceFailedException;
 use App\Exceptions\DeleteResourceFailedException;
 use App\Exceptions\UpdateResourceFailedException;
@@ -27,6 +28,7 @@ class PostService
                 fn ($q) => $q
                     ->where('title', 'like', '%' . $listPostDTO->getQ() . '%')
             )
+            ->where('faculty_id', auth(AuthApiSection::Admin->value)->user()->faculty_id)
             ->orderBy($listPostDTO->getOrderBy(), $listPostDTO->getOrder()->value);
 
         return $listPostDTO->getPage() ? $query->paginate($listPostDTO->getLimit()) : $query->get();

@@ -14,6 +14,7 @@ class UpdatePostDTO
     private int $userId;
     private PostStatus $status;
 
+
     public function getId(): int
     {
         return $this->id;
