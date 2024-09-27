@@ -6,13 +6,14 @@ namespace App\Factories\RequestUpdateStudent;
 
 use App\DTO\Student\ListRequestUpdateStudentDTO;
 use App\Enums\StudentInfoUpdateStatus;
+use App\Http\Requests\Admin\StudentRequestUpdate\ListRequestUpdateStudentRequest as AdminListRequestUpdateStudentRequest;
 use App\Http\Requests\Student\RequestUpdateInfo\ListMyRequestUpdateStudentRequest;
 use App\Http\Requests\Student\RequestUpdateInfo\ListRequestUpdateStudentRequest;
 use App\Supports\MakeDataHelper;
 
 class ListRequestUpdateStudentDTOFactory
 {
-    public static function make(ListRequestUpdateStudentRequest|ListMyRequestUpdateStudentRequest $request, ?int $studentId = null, ?int $classId = null): ListRequestUpdateStudentDTO
+    public static function make(ListRequestUpdateStudentRequest|ListMyRequestUpdateStudentRequest|AdminListRequestUpdateStudentRequest $request, ?int $studentId = null, ?int $classId = null): ListRequestUpdateStudentDTO
     {
         // Create a new ListStudentDTO object
         $command = new ListRequestUpdateStudentDTO();

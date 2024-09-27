@@ -6,6 +6,7 @@ use App\Enums\AuthApiSection;
 use App\Http\Controllers\Admin\AdmissionYearController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\GeneralClassController;
+use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\StudentUpdateRequestController;
 use App\Http\Controllers\Admin\UserController;
@@ -51,6 +52,8 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::post('/{student}', [StudentController::class, 'update']);
         Route::delete('/{student}', [StudentController::class, 'destroy']);
     });
+
+    Route::resource('posts', PostController::class);
 
     Route::prefix('student-requests')->group(function (): void {
         Route::get('/', [StudentUpdateRequestController::class, 'index']);

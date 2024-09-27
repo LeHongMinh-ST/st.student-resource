@@ -6,13 +6,20 @@ namespace App\Http\Controllers\Admin;
 
 use App\Exceptions\UpdateResourceFailedException;
 use App\Factories\RequestUpdateStudent\ChangeStatusRequestUpdateStudentDTOFactory;
+use App\Factories\RequestUpdateStudent\ListRequestUpdateStudentDTOFactory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StudentRequestUpdate\ChangeStatusRequestUpdateStudentRequest;
+use App\Http\Requests\Admin\StudentRequestUpdate\ListRequestUpdateStudentRequest;
 use App\Http\Requests\Admin\StudentRequestUpdate\ShowRequestUpdateStudentRequest;
+use App\Http\Resources\Student\StudentInfoUpdateCollection;
 use App\Http\Resources\Student\StudentInfoUpdateResource;
 use App\Models\StudentInfoUpdate;
 use App\Services\StudentInfoRequest\ApproveStudentUpdateService;
+use App\Services\StudentInfoRequest\StudentInfoUpdateService;
+use App\Supports\Constants;
 use Illuminate\Http\JsonResponse;
+use Knuckles\Scribe\Attributes\ResponseFromApiResource;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @group Admin API
@@ -26,13 +33,33 @@ use Illuminate\Http\JsonResponse;
 class StudentUpdateRequestController extends Controller
 {
     public function __construct(
-        private readonly ApproveStudentUpdateService $approveStudentUpdateService
+        private readonly ApproveStudentUpdateService $approveStudentUpdateService,
+        private readonly StudentInfoUpdateService $studentInfoUpdateService
     ) {
     }
 
-    public function index(): void
+    /**
+     * List of request update for President
+     *
+     * This endpoint lets you views list a Request update
+     *
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @param  ListRequestUpdateStudentRequest $request
+     * @return StudentInfoUpdateCollection Returns the list of GeneralClass.
+     */
+    #[ResponseFromApiResource(StudentInfoUpdateCollection::class, StudentInfoUpdate::class, Response::HTTP_OK, with: [
+        'families',
+    ], paginate: Constants::PAGE_LIMIT)]
+    public function index(ListRequestUpdateStudentRequest $request): StudentInfoUpdateCollection
     {
+        $dto = ListRequestUpdateStudentDTOFactory::make(
+            request: $request,
+        );
 
+        $studentUpdate = $this->studentInfoUpdateService->getList($dto);
+
+        return new StudentInfoUpdateCollection($studentUpdate);
     }
 
     /**
