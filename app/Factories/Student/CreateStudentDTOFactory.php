@@ -11,6 +11,7 @@ use App\Http\Requests\Admin\Student\CreateStudentRequest;
 use App\Supports\AvatarHelper;
 use App\Supports\Constants;
 use App\Supports\ImageHelper;
+use App\Supports\PasswordHelper;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 
@@ -34,6 +35,7 @@ class CreateStudentDTOFactory
         $studentDTO->setGender(Gender::from($request->get('gender')));
         $studentDTO->setStudentRole(StudentRole::from($request->get('role')));
         $studentDTO->setSchoolYear($request->get('school_year'));
+        $studentDTO->setPassword($request->get('password') ?? PasswordHelper::makePassword());
 
         // Handle thumbnail image upload or generate an avatar if no image is uploaded
         if ($request->hasFile('thumbnail') && $request->file('thumbnail') instanceof UploadedFile) {
@@ -42,9 +44,9 @@ class CreateStudentDTOFactory
                 Constants::PATH_THUMBNAIL_STUDENT,
             );
         } else {
-            $thumbnailFileName = uniqid() . $request->get('user_name') . Str::random(3);
+            $thumbnailFileName = uniqid() . $request->get('code') . Str::random(3);
             $path = AvatarHelper::createAvatar(
-                $request->get('user_name'),
+                $request->get('code'),
                 Constants::PATH_THUMBNAIL_STUDENT,
                 $thumbnailFileName
             );
