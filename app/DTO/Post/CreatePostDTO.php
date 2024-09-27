@@ -12,6 +12,7 @@ class CreatePostDTO
     private string $content;
     private int $userId;
     private PostStatus $status;
+    private int $facultyId;
 
     public function getTitle(): string
     {
@@ -53,13 +54,26 @@ class CreatePostDTO
         $this->status = $status;
     }
 
+    public function getFacultyId(): int
+    {
+        return $this->facultyId;
+    }
+
+    public function setFacultyId(int $facultyId): void
+    {
+        $this->facultyId = $facultyId;
+    }
+
+
+
     public function toArray(): array
     {
         return [
             'title' => $this->title,
             'content' => $this->content,
             'user_id' => $this->userId,
-            'status' => $this->status
+            'status' => $this->status,
+            'faculty_id' => $this->facultyId,
         ];
     }
 }

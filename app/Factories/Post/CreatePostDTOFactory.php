@@ -17,6 +17,7 @@ class CreatePostDTOFactory
         $command->setContent($request->get('content'));
         $command->setStatus($request->get('status'));
         $command->setUserId(auth(AuthApiSection::Admin->value)->id());
+        $command->setFacultyId(auth(AuthApiSection::Admin->value)->user()->faculty_id);
         return $command;
     }
 }

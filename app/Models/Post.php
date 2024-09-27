@@ -20,12 +20,18 @@ class Post extends Model
         'content',
         'status',
         'user_id',
+        'faculty_id',
     ];
 
     // ------------------------ RELATIONS -------------------------//
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function faculty(): BelongsTo
+    {
+        return $this->belongsTo(Faculty::class);
     }
 
     // ------------------------ CASTS -------------------------//
