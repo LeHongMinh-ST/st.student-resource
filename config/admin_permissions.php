@@ -65,6 +65,11 @@ return [
         ],
     ],
     'student-request' => [
+        'index' => [
+            UserRole::Admin,
+            UserRole::Office,
+            UserRole::Teacher,
+        ],
         'update-status' => [
             UserRole::Admin,
             UserRole::Office,

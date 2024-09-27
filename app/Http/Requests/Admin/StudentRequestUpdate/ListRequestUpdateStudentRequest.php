@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Admin\StudentRequestUpdate;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\ListRequest;
+use App\Models\StudentInfoUpdate;
 use Illuminate\Support\Facades\Gate;
 
-class ShowRequestUpdateStudentRequest extends FormRequest
+class ListRequestUpdateStudentRequest extends ListRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,5 +28,10 @@ class ShowRequestUpdateStudentRequest extends FormRequest
         return [
 
         ];
+    }
+
+    protected function getOrderByRuleModel(): string
+    {
+        return StudentInfoUpdate::class;
     }
 }
