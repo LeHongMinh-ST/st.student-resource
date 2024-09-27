@@ -53,7 +53,14 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::delete('/{student}', [StudentController::class, 'destroy']);
     });
 
-    Route::resource('posts', PostController::class);
+    Route::prefix('posts')->group(function (): void {
+        Route::get('/', [PostController::class, 'index']);
+        Route::get('/list-publish', [PostController::class, 'getListPostPublish']);
+        Route::post('/', [PostController::class, 'store']);
+        Route::patch('/{post}', [PostController::class, 'update']);
+        Route::get('/{post}', [PostController::class, 'show']);
+        Route::delete('/{post}', [PostController::class, 'destroy']);
+    });
 
     Route::prefix('student-requests')->group(function (): void {
         Route::get('/', [StudentUpdateRequestController::class, 'index']);

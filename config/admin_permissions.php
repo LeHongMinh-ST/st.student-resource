@@ -75,5 +75,33 @@ return [
             UserRole::Office,
             UserRole::Teacher,
         ]
+    ],
+    'post' => [
+        'index' => [
+            UserRole::Admin,
+            UserRole::Office,
+        ],
+        'create' => [
+            UserRole::Admin,
+            UserRole::Office,
+        ],
+        'update' => [
+            UserRole::Admin,
+            UserRole::Office,
+        ],
+        'delete' => [
+            UserRole::Admin,
+            UserRole::Office,
+        ],
+        'show' => [
+            UserRole::Admin,
+            UserRole::Office,
+            UserRole::Teacher,
+        ],
+        'list-publish' => [
+            UserRole::Admin,
+            UserRole::Office,
+            UserRole::Teacher,
+        ]
     ]
 ];
