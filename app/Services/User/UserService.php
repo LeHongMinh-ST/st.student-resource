@@ -8,11 +8,13 @@ use App\DTO\User\CreateUserDTO;
 use App\DTO\User\ListUserDTO;
 use App\DTO\User\UpdateUserDTO;
 use App\Models\User;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 class UserService
 {
-    public function getList(ListUserDTO $listUserDTO): \Illuminate\Database\Eloquent\Collection|\Illuminate\Contracts\Pagination\LengthAwarePaginator|array
+    public function getList(ListUserDTO $listUserDTO): Collection|LengthAwarePaginator|array
     {
         $auth = auth('api')->user();
 

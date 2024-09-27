@@ -9,28 +9,16 @@ use App\Enums\UserRole;
 class CreateUserDTO
 {
     private string $userName;
-
     private string $firstName;
-
     private string $lastName;
-
     private ?string $phone;
-
     private string $email;
-
     private string $password;
-
     private int $facultyId;
-
     private ?string $code;
-
     private ?string $thumbnail;
-
     private ?int $departmentId;
-
-    private ?bool $isSuperAdmin;
-
-    private ?UserRole $role;
+    private UserRole $role;
 
     public function __construct()
     {
@@ -38,7 +26,7 @@ class CreateUserDTO
         $this->code = null;
         $this->thumbnail = null;
         $this->departmentId = null;
-        $this->isSuperAdmin = false;
+        $this->role = UserRole::Admin;
     }
 
     // Getter and Setter for userName
@@ -152,24 +140,14 @@ class CreateUserDTO
     }
 
     // Getter and Setter for role
-    public function getRole(): ?UserRole
+    public function getRole(): UserRole
     {
         return $this->role;
     }
 
-    public function setRole(?UserRole $role): void
+    public function setRole(UserRole $role): void
     {
         $this->role = $role;
-    }
-
-    public function getIsSuperAdmin(): ?bool
-    {
-        return $this->isSuperAdmin;
-    }
-
-    public function setIsSuperAdmin(?bool $isSuperAdmin): void
-    {
-        $this->isSuperAdmin = $isSuperAdmin;
     }
 
     // Method to convert the object to an array
@@ -186,8 +164,7 @@ class CreateUserDTO
             'code' => $this->code,
             'thumbnail' => $this->thumbnail,
             'department_id' => $this->departmentId,
-            'role' => $this->role?->value,
-            'is_super_admin' => $this->isSuperAdmin,
+            'role' => $this->role,
         ];
     }
 }

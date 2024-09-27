@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Factories\User;
 
-use App\DTO\User\UserCreateDTO;
+use App\DTO\User\CreateUserDTO;
 use App\Enums\UserRole;
 use App\Models\Faculty;
 use App\Supports\AvatarHelper;
@@ -14,10 +14,10 @@ use Illuminate\Support\Str;
 
 class CreateUserFacultyDTOFactory
 {
-    public static function make(Faculty $faculty, ?string $email): UserCreateDTO
+    public static function make(Faculty $faculty, ?string $email): CreateUserDTO
     {
         // Create a new UserCreateDTO object
-        $dto = new UserCreateDTO();
+        $dto = new CreateUserDTO();
 
         // Generate a password for the user, using a default password for production environments or a randomly generated one otherwise
         $password = PasswordHelper::makePassword();
