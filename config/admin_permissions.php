@@ -14,7 +14,7 @@ return [
         'getListImportFile' => [
             UserRole::Admin,
             UserRole::Office,
-        ]
+        ],
     ],
     'user' => [
         'index' => [
@@ -74,7 +74,7 @@ return [
             UserRole::Admin,
             UserRole::Office,
             UserRole::Teacher,
-        ]
+        ],
     ],
     'post' => [
         'index' => [
@@ -102,6 +102,22 @@ return [
             UserRole::Admin,
             UserRole::Office,
             UserRole::Teacher,
-        ]
-    ]
+        ],
+    ],
+    'department' => [
+        'index' => [
+            UserRole::Admin,
+            UserRole::Office,
+            UserRole::Teacher,
+        ],
+        'create' => [
+            UserRole::Admin,
+        ],
+        'update' => [
+            UserRole::Admin,
+        ],
+        'destroy' => [
+            UserRole::Admin,
+        ],
+    ],
 ];
