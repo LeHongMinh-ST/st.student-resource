@@ -48,6 +48,7 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::get('/', [StudentController::class, 'index']);
         Route::post('/', [StudentController::class, 'store']);
         Route::post('/import-course', [StudentController::class, 'importCourse']);
+        Route::get('/import-course/download-template', [StudentController::class, 'downloadTemplateImportCourse']);
         Route::get('/{student}', [StudentController::class, 'show']);
         Route::post('/{student}', [StudentController::class, 'update']);
         Route::delete('/{student}', [StudentController::class, 'destroy']);
