@@ -28,9 +28,4 @@ class AdmissionYear extends Model
             ->where('faculty_id', auth('api')->user()->faculty_id)
             ->count();
     }
-
-    public function getRouteKeyName(): string
-    {
-        return 'admissionYear';
-    }
 }

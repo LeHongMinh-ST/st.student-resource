@@ -66,11 +66,6 @@ class StudentInfoUpdate extends Model
 
     //----------------------- SCOPES ----------------------------------//
 
-    public function getRouteKeyName(): string
-    {
-        return 'studentInfoUpdate';
-    }
-
 
     // ------------------------ CASTS -------------------------//
     protected function casts(): array

@@ -43,10 +43,6 @@ class AdmissionYearController extends Controller
      * This endpoint lets you views list AdmissionYear
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
-     *
-     * @param  ListAdmissionYearRequest $request
-     *
-     * @return AdmissionYearCollection
      */
     #[ResponseFromApiResource(AdmissionYearCollection::class, AdmissionYear::class, Response::HTTP_OK, paginate: Constants::PAGE_LIMIT)]
     public function index(ListAdmissionYearRequest $request): AdmissionYearCollection
@@ -64,9 +60,6 @@ class AdmissionYearController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param  AdmissionYear  $admissionYear
-     * @param  ListStudentImportRequest  $request
-     *
      * @return ExcelImportFileCollection Returns the list of ExcelFileImport.
      */
     #[ResponseFromApiResource(
@@ -82,6 +75,7 @@ class AdmissionYearController extends Controller
         $paramsDTO->setAdmissionYearId($admissionYear->id);
 
         $excelFiles = $this->excelImportFileService->getListStudentFileImports($paramsDTO);
+
         return new ExcelImportFileCollection($excelFiles);
     }
 }
