@@ -24,7 +24,7 @@ class ExcelImportFile extends Model
         'process_record',
         'faculty_id',
         'user_id',
-        'admission_year_id'
+        'admission_year_id',
     ];
 
     protected $casts = [
@@ -52,14 +52,12 @@ class ExcelImportFile extends Model
         return $this->hasMany(ExcelImportFileJob::class);
     }
 
-
     public function excelImportFileErrors(): HasMany
     {
         return $this->hasMany(ExcelImportFileError::class, 'excel_import_files_id');
     }
 
     // ------------------------ CASTS -------------------------//
-
 
     // ---------------------- ACCESSORS AND MUTATORS --------------------//
 

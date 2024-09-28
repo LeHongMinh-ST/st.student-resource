@@ -160,7 +160,8 @@ class StudentService
 
             foreach ($data['file_names'] as $fileName) {
                 // Create a new job to import student data
-                CreateStudentByFileCsvJob::dispatchSync($fileName, $excelImportFile->id, auth()->user()->faculty, $courseStudentDTO->getAdmissionYearId());
+                CreateStudentByFileCsvJob::dispatch($fileName, $excelImportFile->id, auth()->user()->faculty, $courseStudentDTO->getAdmissionYearId())
+                    ->onQueue('import');
             }
 
             return $excelImportFile;
