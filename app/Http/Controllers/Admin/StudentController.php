@@ -24,6 +24,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Knuckles\Scribe\Attributes\ResponseFromApiResource;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -161,9 +162,9 @@ class StudentController extends Controller
     }
 
     /**
-     * Delete class
+     * Import student course
      *
-     * This endpoint allows student to delete a user.
+     * This endpoint allows student to import a student.
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
@@ -171,7 +172,7 @@ class StudentController extends Controller
      *
      * @throws CreateResourceFailedException
      *
-     * @response 204 Indicates that the response will be a 204 No Content status.
+     * @response 204
      */
     public function importCourse(ImportCourseStudentRequest $request): JsonResponse
     {
@@ -183,5 +184,25 @@ class StudentController extends Controller
 
         // Return the newly created student as a resource
         return $this->noContent();
+    }
+
+    /**
+     * Download class
+     *
+     * This endpoint allows student to download file student.
+     *
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @response 200
+     *
+     * @throws AuthorizationException
+     */
+    public function downloadTemplateImportCourse(): BinaryFileResponse
+    {
+        $this->authorize('admin.student.create');
+
+        $file = public_path() . '/template/template_course.xlsx';
+
+        return response()->download($file, 'template-course.xlsx');
     }
 }
