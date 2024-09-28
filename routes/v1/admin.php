@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Enums\AuthApiSection;
 use App\Http\Controllers\Admin\AdmissionYearController;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\GeneralClassController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\StudentController;
@@ -30,6 +31,8 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::patch('/{generalClass}', [GeneralClassController::class, 'update']);
         Route::delete('/{generalClass}', [GeneralClassController::class, 'destroy']);
     });
+
+    Route::Resource('departments', DepartmentController::class);
 
     Route::prefix('users')->group(function (): void {
         Route::get('/', [UserController::class, 'index']);

@@ -30,9 +30,8 @@ class CreateStudentByFileDTOFactory
 
         // set last name and first name
         $fullName = explode(' ', $data['full_name']);
-        $command->setLastName(array_pop($fullName));
-        $command->setFirstName(implode(' ', $fullName));
-
+        $command->setFirstName(array_pop($fullName));
+        $command->setLastName(implode(' ', $fullName));
         $command->setGender(Gender::mapValue(Arr::get($data, 'gender') ?? ''));
         $command->setStudentRole(StudentRole::Basic);
         $command->setAdmissionYearId($data['admission_year_id']);

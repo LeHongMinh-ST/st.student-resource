@@ -22,7 +22,7 @@ class ExcelFileHelper
      *               'file_names' => array
      *               }
      */
-    public static function chunkFileToCsv(UploadedFile $fileExcel, ExcelImportType $typeFile, int $chunkSize = 10, int $rowStart = 2): array
+    public static function chunkFileToCsv(UploadedFile $fileExcel, ExcelImportType $typeFile, int $chunkSize = 100, int $rowStart = 2): array
     {
         // Create a new Reader of the type defined in $inputFileType
         $reader = IOFactory::createReader(ucfirst($fileExcel->extension()));

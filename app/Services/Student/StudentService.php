@@ -145,7 +145,7 @@ class StudentService
     public function importCourse(ImportCourseStudentDTO $courseStudentDTO)
     {
         try {
-            $data = ExcelFileHelper::chunkFileToCsv($courseStudentDTO->getFile(), ExcelImportType::Course, 3);
+            $data = ExcelFileHelper::chunkFileToCsv($courseStudentDTO->getFile(), ExcelImportType::Course);
 
             // Create record in excel_import_files table
             $excelImportFile = ExcelImportFile::create([
