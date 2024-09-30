@@ -5,21 +5,23 @@ declare(strict_types=1);
 namespace App\DTO\Student;
 
 use App\DTO\BaseDTO;
-use App\Enums\Gender;
 use App\Enums\StudentRole;
 use App\Enums\StudentStatus;
 use App\Supports\PasswordHelper;
 use App\Supports\StudentHelper;
+use InvalidArgumentException;
 
 class CreateStudentCourseByFileDTO implements BaseDTO
 {
+    private CreateStudentInfoByFileImportDTO $studentInfoDTO;
+
+    private array $family;
+
     private string $lastName;
 
     private string $firstName;
 
     private string $code;
-
-    private string $thumbnail;
 
     private ?int $facultyId;
 
@@ -31,38 +33,49 @@ class CreateStudentCourseByFileDTO implements BaseDTO
 
     private int $admissionYearId;
 
-    private Gender $gender;
-
-    private ?string $phoneNumber;
-
-    private ?string $dob;
-
     public function __construct()
     {
         $user = auth()->user();
         $this->setFacultyId($user->faculty_id ?? null);
         $this->setPassword(PasswordHelper::makePassword());
         $this->setStatus(StudentStatus::CurrentlyStudying);
+        $this->setFamily([]);
     }
 
-    public function getDob(): ?string
+    public function getFamily(): array
     {
-        return $this->dob;
+        return $this->family;
     }
 
-    public function setDob(?string $dob): void
+    public function setFamily(array $family): void
     {
-        $this->dob = $dob;
+        foreach ($family as $member) {
+            if (! $member instanceof CreateFamilyStudentDTO) {
+                throw new InvalidArgumentException('Member must be an instance of UpdateRequestUpdateFamilyStudentDTO');
+            }
+        }
+
+        $this->family = $family;
     }
 
-    public function getPhoneNumber(): ?string
+    public function getStudentInfoDTO(): CreateStudentInfoByFileImportDTO
     {
-        return $this->phoneNumber;
+        return $this->studentInfoDTO;
     }
 
-    public function setPhoneNumber(?string $phoneNumber): void
+    public function setStudentInfoDTO(CreateStudentInfoByFileImportDTO $studentInfoDTO): void
     {
-        $this->phoneNumber = $phoneNumber;
+        $this->studentInfoDTO = $studentInfoDTO;
+    }
+
+    public function getFamilyStudentDTO(): UpdateRequestUpdateFamilyStudentDTO
+    {
+        return $this->familyStudentDTO;
+    }
+
+    public function setFamilyStudentDTO(UpdateRequestUpdateFamilyStudentDTO $familyStudentDTO): void
+    {
+        $this->familyStudentDTO = $familyStudentDTO;
     }
 
     public function getFullName(): string
@@ -109,16 +122,6 @@ class CreateStudentCourseByFileDTO implements BaseDTO
     public function setEmail(string $email): void
     {
         $this->email = $email;
-    }
-
-    public function getThumbnail(): string
-    {
-        return $this->thumbnail;
-    }
-
-    public function setThumbnail(string $thumbnail): void
-    {
-        $this->thumbnail = $thumbnail;
     }
 
     public function getFacultyId(): ?int
@@ -171,16 +174,6 @@ class CreateStudentCourseByFileDTO implements BaseDTO
         $this->admissionYearId = $admissionYearId;
     }
 
-    public function getGender(): Gender
-    {
-        return $this->gender;
-    }
-
-    public function setGender(Gender $gender): void
-    {
-        $this->gender = $gender;
-    }
-
     public function toArray(): array
     {
         return [
@@ -188,13 +181,11 @@ class CreateStudentCourseByFileDTO implements BaseDTO
             'first_name' => $this->firstName,
             'code' => $this->code,
             'email' => $this->email,
-            'thumbnail' => $this->thumbnail,
             'faculty_id' => $this->facultyId,
             'password' => $this->password,
             'status' => $this->status->value,
             'student_role' => $this->studentRole->value,
             'admission_year_id' => $this->admissionYearId,
-            'gender' => $this->gender->value,
         ];
     }
 }

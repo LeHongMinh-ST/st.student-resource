@@ -27,13 +27,18 @@ class StudentInfoService
 
     public function createByStudentFileCourse(Student $student, CreateStudentCourseByFileDTO $createStudentFileDTO): StudentInfo
     {
-        return StudentInfo::create([
+        $studentInfo = StudentInfo::create(array_merge($createStudentFileDTO->getStudentInfoDTO()->toArray(), [
             'student_id' => $student->id,
-            'thumbnail' => $createStudentFileDTO->getThumbnail(),
-            'gender' => $createStudentFileDTO->getGender(),
-            'phone' => $createStudentFileDTO->getPhoneNumber(),
-            'dob' => $createStudentFileDTO->getDob(),
-        ]);
+        ]));
+
+        if (count($createStudentFileDTO->getFamily()) > 0) {
+            // map studentInfoId in data family
+            foreach ($createStudentFileDTO->getFamily() as $familyDTO) {
+                $student->families()->create($familyDTO->toArray());
+            }
+        }
+
+        return $studentInfo;
     }
 
     public function update(UpdateStudentInfoDTO $updateStudentInfoDTO): StudentInfo
