@@ -34,7 +34,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DepartmentController extends Controller
 {
-    public function __construct(private readonly DepartmentService $departmentService) {}
+    public function __construct(private readonly DepartmentService $departmentService)
+    {
+    }
 
     /**
      * List of department

@@ -8,4 +8,8 @@ use App\Http\Controllers\Controller;
 
 class GeneralClassController extends Controller
 {
+    public function show(): void
+    {
+
+    }
 }
