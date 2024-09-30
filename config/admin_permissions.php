@@ -54,6 +54,11 @@ return [
             UserRole::Office,
             UserRole::Teacher,
         ],
+        'show' => [
+            UserRole::Admin,
+            UserRole::Office,
+            UserRole::Teacher,
+        ],
         'create' => [
             UserRole::Admin,
         ],

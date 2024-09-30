@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Supports;
 
+use App\Enums\AuthApiSection;
+use App\Enums\UserRole;
+use App\Models\Student;
+
 class StudentHelper
 {
     /**
@@ -18,5 +22,22 @@ class StudentHelper
     public static function makeEmailStudent(string $code): string
     {
         return $code . config('vnua.mail_student');
+    }
+
+    public static function checkUserStudent(int|string $id): bool
+    {
+        $student = Student::query()->findOrFail($id);
+
+        $auth = auth(AuthApiSection::Admin->value)->user();
+
+        if (!$auth) {
+            return false;
+        }
+
+        if (UserRole::Teacher === $auth->role) {
+            return $student->currentClass->id === $auth->id;
+        }
+
+        return $auth->faculty_id === $student->faculty_id;
     }
 }

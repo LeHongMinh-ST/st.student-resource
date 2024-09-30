@@ -18,7 +18,8 @@ class DepartmentService
     {
         $query = Department::query()
             ->when(
-                $listDepartmentDTO->getQ(), fn ($q) => $q->where('code', 'like', '%' . $listDepartmentDTO->getQ() . '%')->orWhere('name', 'like', '%' . $listDepartmentDTO->getQ() . '%')
+                $listDepartmentDTO->getQ(),
+                fn ($q) => $q->where('code', 'like', '%' . $listDepartmentDTO->getQ() . '%')->orWhere('name', 'like', '%' . $listDepartmentDTO->getQ() . '%')
             )
             ->when($listDepartmentDTO->getStatus(), fn ($q) => $q->where('status', $listDepartmentDTO->getStatus()))
             ->when($listDepartmentDTO->getFacultyId(), fn ($q) => $q->where('faculty_id', $listDepartmentDTO->getFacultyId()))

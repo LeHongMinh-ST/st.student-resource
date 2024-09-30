@@ -6,4 +6,6 @@ namespace App\Http\Resources\Department;
 
 use App\Http\Resources\BaseListResourceCollection;
 
-class DepartmentCollection extends BaseListResourceCollection {}
+class DepartmentCollection extends BaseListResourceCollection
+{
+}

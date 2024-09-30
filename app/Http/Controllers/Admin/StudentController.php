@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Student\CreateStudentRequest;
 use App\Http\Requests\Admin\Student\ImportCourseStudentRequest;
 use App\Http\Requests\Admin\Student\ListStudentRequest;
+use App\Http\Requests\Admin\Student\ShowStudentRequest;
 use App\Http\Requests\Admin\Student\UpdateStudentRequest;
 use App\Http\Resources\Student\StudentCollection;
 use App\Http\Resources\Student\StudentResource;
@@ -95,7 +96,7 @@ class StudentController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param  Request  $request  The HTTP request object containing student data.
+     * @param  ShowStudentRequest  $request  The HTTP request object containing student data.
      * @return StudentResource Returns the newly UserResource as a resource.
      *
      * @throws AuthorizationException
@@ -103,9 +104,8 @@ class StudentController extends Controller
     #[ResponseFromApiResource(StudentResource::class, Student::class, Response::HTTP_OK, with: [
         'info', 'faculty', 'families',
     ])]
-    public function show(Student $student, Request $request): StudentResource
+    public function show(Student $student, ShowStudentRequest $request): StudentResource
     {
-        $this->authorize('admin.student.index');
         $student->load(['info', 'faculty', 'families']);
 
         // Return a JSON response with the generated token and the admin API section
