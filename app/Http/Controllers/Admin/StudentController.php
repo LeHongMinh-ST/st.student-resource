@@ -54,7 +54,9 @@ class StudentController extends Controller
      * @param  ListStudentRequest  $request  The HTTP request object containing the role ID.
      * @return StudentCollection Returns the list of Student.
      */
-    #[ResponseFromApiResource(StudentCollection::class, Student::class, Response::HTTP_OK, with: [], paginate: Constants::PAGE_LIMIT)]
+    #[ResponseFromApiResource(StudentCollection::class, Student::class, Response::HTTP_OK, with: [
+        'info', 'faculty', 'families',
+    ], paginate: Constants::PAGE_LIMIT)]
     public function index(ListStudentRequest $request): StudentCollection
     {
         // Create a ListStudentDTOFactory object using the provided request
