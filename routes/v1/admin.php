@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\GeneralClassController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\ReflectController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\StudentUpdateRequestController;
 use App\Http\Controllers\Admin\UserController;
@@ -70,5 +71,11 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::get('/', [StudentUpdateRequestController::class, 'index']);
         Route::get('/{id}', [StudentUpdateRequestController::class, 'show']);
         Route::patch('/{id}', [StudentUpdateRequestController::class, 'updateStatus']);
+    });
+
+    Route::prefix('reflects')->group(function (): void {
+        Route::get('/', [ReflectController::class, 'index']);
+        Route::get('/{reflect}', [ReflectController::class, 'show']);
+        Route::patch('/{reflect}/status', [ReflectController::class, 'update-status']);
     });
 });
