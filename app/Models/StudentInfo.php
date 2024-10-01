@@ -9,6 +9,7 @@ use App\Enums\TrainingType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 class StudentInfo extends Model
 {
@@ -42,6 +43,13 @@ class StudentInfo extends Model
         return $this->belongsTo(Student::class);
     }
 
+    // ---------------------- ACCESSORS AND MUTATORS --------------------//
+
+    public function getThumbnailUrlAttribute(): string
+    {
+        return Storage::url($this->thumbnail);
+    }
+
     // ------------------------ CASTS -------------------------//
     protected function casts(): array
     {
@@ -51,8 +59,6 @@ class StudentInfo extends Model
             'dob' => 'date',
         ];
     }
-
-    // ---------------------- ACCESSORS AND MUTATORS --------------------//
 
     //----------------------- SCOPES ----------------------------------//
 }

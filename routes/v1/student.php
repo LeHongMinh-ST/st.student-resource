@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Enums\AuthApiSection;
 use App\Http\Controllers\Student\AuthController;
+use App\Http\Controllers\Student\ReflectController;
 use App\Http\Controllers\Student\RequestUpdateController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,5 +28,13 @@ Route::middleware(['auth:' . AuthApiSection::Student->value])->group(function ()
         Route::get('/{studentInfoUpdate}', [RequestUpdateController::class, 'show']);
         Route::patch('/{studentInfoUpdate}/status', [RequestUpdateController::class, 'updateStatus']);
         Route::delete('/{studentInfoUpdate}', [RequestUpdateController::class, 'destroy']);
+    });
+
+    Route::prefix('reflects')->group(function (): void {
+        Route::get('/', [ReflectController::class, 'index']);
+        Route::post('/', [ReflectController::class, 'store']);
+        Route::get('/{reflect}', [ReflectController::class, 'show']);
+        Route::patch('/{reflect}', [ReflectController::class, 'update']);
+        Route::delete('/{reflect}', [ReflectController::class, 'destroy']);
     });
 });

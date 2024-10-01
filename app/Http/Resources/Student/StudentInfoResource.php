@@ -31,7 +31,7 @@ class StudentInfoResource extends JsonResource
             'citizen_identification' => $this->citizen_identification,
             'ethnic' => $this->ethnic,
             'religion' => $this->religion,
-            'thumbnail' => $this->thumbnail,
+            'thumbnail' => $this->thumbnailUrl,
             'social_policy_object' => $this->social_policy_object,
         ];
     }
