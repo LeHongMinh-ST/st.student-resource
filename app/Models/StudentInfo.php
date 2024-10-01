@@ -47,7 +47,7 @@ class StudentInfo extends Model
 
     public function getThumbnailUrlAttribute(): string
     {
-        return Storage::url($this->thumbnail);
+        return config('app.url') . Storage::url($this->thumbnail);
     }
 
     // ------------------------ CASTS -------------------------//
