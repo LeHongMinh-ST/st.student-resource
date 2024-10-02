@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Events\ImportStudentCourseEvent;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,5 +18,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     //    event(new ImportStudentCourseEvent('test'));
+    Illuminate\Support\Facades\Log::info('minh');
+    event(new ImportStudentCourseEvent(
+        message: 'success',
+        userId: 1
+    ));
     return view('welcome');
 });
