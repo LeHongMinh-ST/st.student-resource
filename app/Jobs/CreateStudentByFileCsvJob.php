@@ -87,6 +87,10 @@ class CreateStudentByFileCsvJob implements ShouldQueue
 
                 // map key column with value
                 foreach ($row as $index => $value) {
+                    // continue with key not in key config file
+                    if (null === $rowHeader[$index]) {
+                        continue;
+                    }
                     $studentData[$rowHeader[$index]] = $value;
                 }
 
