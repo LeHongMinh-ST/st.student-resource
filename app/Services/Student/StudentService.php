@@ -39,7 +39,7 @@ class StudentService
                 fn ($q) => $q
                     ->where(DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', '%' . $listStudentDTO->getQ() . '%')
                     ->orWhere('email', 'like', '%' . $listStudentDTO->getQ() . '%')
-                    ->orWhere('user_name', 'like', '%' . $listStudentDTO->getQ() . '%')
+                    ->orWhere('code', 'like', '%' . $listStudentDTO->getQ() . '%')
             )
             ->when($listStudentDTO->getStatus(), fn ($q) => $q->where('status', $listStudentDTO->getStatus()))
             ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
