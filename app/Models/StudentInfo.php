@@ -9,6 +9,7 @@ use App\Enums\TrainingType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 
 class StudentInfo extends Model
@@ -48,6 +49,11 @@ class StudentInfo extends Model
     public function getThumbnailUrlAttribute(): string
     {
         return config('app.url') . Storage::url($this->thumbnail);
+    }
+
+    public function families(): HasMany
+    {
+        return $this->hasMany(Family::class);
     }
 
     // ------------------------ CASTS -------------------------//

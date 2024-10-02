@@ -32,7 +32,7 @@ class Family extends Model
     // ------------------------ RELATIONS -------------------------//
     public function student(): BelongsTo
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class, 'student_id');
     }
 
     // ---------------------- ACCESSORS AND MUTATORS --------------------//
