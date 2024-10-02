@@ -44,7 +44,7 @@ class StudentService
             )
             ->when($listStudentDTO->getStatus(), fn ($q) => $q->where('status', $listStudentDTO->getStatus()))
             ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
-            ->with(['info', 'currentClass'])
+            ->with(['info', 'currentClass', 'families'])
             ->orderBy($listStudentDTO->getOrderBy(), $listStudentDTO->getOrder()->value);
 
         return $listStudentDTO->getPage() ? $query->paginate($listStudentDTO->getLimit()) : $query->get();
@@ -163,7 +163,7 @@ class StudentService
                 'process_record' => 0,
                 'faculty_id' => auth()->user()->faculty_id,
                 'user_id' => auth()->id(),
-                'admission_year_id' => $courseStudentDTO->getAdmissionYearId()
+                'admission_year_id' => $courseStudentDTO->getAdmissionYearId(),
             ]);
 
             foreach ($data['file_names'] as $fileName) {

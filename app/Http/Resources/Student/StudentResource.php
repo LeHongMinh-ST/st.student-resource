@@ -30,7 +30,7 @@ class StudentResource extends JsonResource
             'status' => $this->status,
             'role' => $this->role,
             'info' => new StudentInfoResource($this->whenLoaded('info')),
-            'family' => StudentFamilyResource::collection($this->whenLoaded('families')),
+            'families' => StudentFamilyResource::collection($this->whenLoaded('families')),
             'currentClass' => new GeneralClassForStudentResource($this->whenLoaded('currentClass')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
