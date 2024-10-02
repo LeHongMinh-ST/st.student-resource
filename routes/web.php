@@ -15,4 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', fn () => view('welcome'));
+Route::get('/', function () {
+    //    event(new ImportStudentCourseEvent('test'));
+    return view('welcome');
+});
