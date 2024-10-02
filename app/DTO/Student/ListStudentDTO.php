@@ -6,11 +6,12 @@ namespace App\DTO\Student;
 
 use App\DTO\BaseDTO;
 use App\DTO\BaseListDTO;
+use App\Enums\StudentStatus;
 
 class ListStudentDTO extends BaseListDTO implements BaseDTO
 {
     private ?string $q;
-    private ?string $status;
+    private ?StudentStatus $status;
     private ?int $admissionYearId;
 
     public function __construct()
@@ -31,12 +32,12 @@ class ListStudentDTO extends BaseListDTO implements BaseDTO
         $this->q = $q;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?StudentStatus
     {
         return $this->status;
     }
 
-    public function setStatus(?string $status): void
+    public function setStatus(?StudentStatus $status): void
     {
         $this->status = $status;
     }
