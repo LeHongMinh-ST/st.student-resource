@@ -34,7 +34,14 @@ class StudentService
     {
         $query = Student::query()
             ->when($listStudentDTO->getAdmissionYearId(), fn ($q) => $q->where('admission_year_id', $listStudentDTO->getAdmissionYearId()))
-            ->when($listStudentDTO->getQ(), fn ($q) => $q->where('name', 'like', $listStudentDTO->getQ()))
+            ->when(
+                $listStudentDTO->getQ(),
+                fn ($q) => $q
+                    ->where(DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', '%' . $listStudentDTO->getQ() . '%')
+                    ->orWhere('email', 'like', '%' . $listStudentDTO->getQ() . '%')
+                    ->orWhere('user_name', 'like', '%' . $listStudentDTO->getQ() . '%')
+            )
+            ->when($listStudentDTO->getStatus(), fn ($q) => $q->where('status', $listStudentDTO->getStatus()))
             ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
             ->with(['info', 'currentClass'])
             ->orderBy($listStudentDTO->getOrderBy(), $listStudentDTO->getOrder()->value);
