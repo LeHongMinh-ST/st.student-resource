@@ -14,7 +14,7 @@ class ImportCourseStudentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.student.create');
+        return Gate::allows('admin.student.import');
     }
 
     /**

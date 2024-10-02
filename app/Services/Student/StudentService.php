@@ -9,6 +9,7 @@ use App\DTO\Student\CreateStudentDTO;
 use App\DTO\Student\ImportCourseStudentDTO;
 use App\DTO\Student\ListStudentDTO;
 use App\DTO\Student\UpdateStudentDTO;
+use App\Enums\AuthApiSection;
 use App\Enums\ExcelImportType;
 use App\Exceptions\CreateResourceFailedException;
 use App\Exceptions\UpdateResourceFailedException;
@@ -167,7 +168,13 @@ class StudentService
 
             foreach ($data['file_names'] as $fileName) {
                 // Create a new job to import student data
-                CreateStudentByFileCsvJob::dispatch($fileName, $excelImportFile->id, auth()->user()->faculty, $courseStudentDTO->getAdmissionYearId())
+                CreateStudentByFileCsvJob::dispatch(
+                    fileName: $fileName,
+                    excelImportFileId: $excelImportFile->id,
+                    faculty: auth()->user()->faculty,
+                    admissionYearId: $courseStudentDTO->getAdmissionYearId(),
+                    userId: auth(AuthApiSection::Admin->value)->id(),
+                )
                     ->onQueue('import');
             }
 

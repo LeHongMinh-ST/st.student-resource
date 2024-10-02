@@ -68,6 +68,14 @@ return [
         'destroy' => [
             UserRole::Admin,
         ],
+        'import' => [
+            UserRole::Admin,
+            UserRole::Office,
+        ],
+        'download-error-import' => [
+            UserRole::Admin,
+            UserRole::Office,
+        ]
     ],
     'student-request' => [
         'index' => [

@@ -18,6 +18,7 @@ use App\Http\Requests\Admin\Student\ShowStudentRequest;
 use App\Http\Requests\Admin\Student\UpdateStudentRequest;
 use App\Http\Resources\Student\StudentCollection;
 use App\Http\Resources\Student\StudentResource;
+use App\Models\ExcelImportFile;
 use App\Models\Student;
 use App\Services\Student\StudentService;
 use App\Supports\Constants;
@@ -199,10 +200,28 @@ class StudentController extends Controller
      */
     public function downloadTemplateImportCourse(): BinaryFileResponse
     {
-        $this->authorize('admin.student.create');
+        $this->authorize('admin.student.import');
 
         $file = public_path() . '/template/template_course.xlsx';
 
         return response()->download($file, 'template-course.xlsx');
+    }
+
+    /**
+     * Download error import course
+     *
+     * This endpoint allows student to download file student.
+     *
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @param ExcelImportFile $excelImportFileError
+     *
+     * @response 200
+     *
+     * @throws AuthorizationException
+     */
+    public function downloadErrorImportCourse(ExcelImportFile $excelImportFileError): void
+    {
+        $this->authorize('admin.student.import');
     }
 }

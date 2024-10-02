@@ -12,7 +12,9 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "laravolt/avatar": "^5.1",
+        "maatwebsite/excel": "*",
         "phpoffice/phpspreadsheet": "^2.2",
+        "pusher/pusher-php-server": "^7.2",
         "tymon/jwt-auth": "^2.1"
     },
     "require-dev": {

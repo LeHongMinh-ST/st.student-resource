@@ -6,6 +6,7 @@ namespace App\Jobs;
 
 use App\DTO\GeneralClass\CreateGeneralClassDTO;
 use App\Enums\Status;
+use App\Events\ImportStudentCourseEvent;
 use App\Factories\Student\CreateStudentByFileDTOFactory;
 use App\Models\ExcelImportFile;
 use App\Models\ExcelImportFileError;
@@ -35,10 +36,11 @@ class CreateStudentByFileCsvJob implements ShouldQueue
      * Create a new job instance.
      */
     public function __construct(
-        private readonly string $fileName,
-        private readonly int    $excelImportFileId,
+        private readonly string  $fileName,
+        private readonly int     $excelImportFileId,
         private readonly Faculty $faculty,
-        private readonly int $admissionYearId,
+        private readonly int     $admissionYearId,
+        private readonly int     $userId,
     ) {
     }
 
@@ -65,7 +67,7 @@ class CreateStudentByFileCsvJob implements ShouldQueue
         $rowStart = str_replace('.csv', '', Arr::last(explode('_', $this->fileName))) * 1;
 
         // Check if the file exists
-        if (! file_exists($filePath)) {
+        if (!file_exists($filePath)) {
             throw new Exception('File not found file path: ' . $filePath);
         }
 
@@ -142,9 +144,14 @@ class CreateStudentByFileCsvJob implements ShouldQueue
             $rowStart++;
         }
 
-        if (! $hasError) {
+        if (!$hasError) {
             // remove file from name file
             unlink($filePath);
         }
+
+        event(new ImportStudentCourseEvent(
+            message: 'success',
+            userId: $this->userId
+        ));
     }
 }
