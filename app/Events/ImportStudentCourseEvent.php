@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -22,9 +21,9 @@ class ImportStudentCourseEvent implements ShouldBroadcast
     ) {
     }
 
-    public function broadcastOn(): PrivateChannel
+    public function broadcastOn()
     {
-        return new PrivateChannel('import-student-course-channel.' . auth()->id());
+        return ['import-student-course-channel.' . $this->userId];
     }
 
     public function broadcastAs()
