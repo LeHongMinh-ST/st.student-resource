@@ -24,7 +24,7 @@ class UserService
             ->when(
                 $listUserDTO->getQ(),
                 fn ($q) => $q
-                    ->where(DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', '%' . $listUserDTO->getQ() . '%')
+                    ->where(DB::raw("CONCAT(last_name, ' ', first_name)"), 'like', '%' . $listUserDTO->getQ() . '%')
                     ->orWhere('email', 'like', '%' . $listUserDTO->getQ() . '%')
                     ->orWhere('user_name', 'like', '%' . $listUserDTO->getQ() . '%')
             )
