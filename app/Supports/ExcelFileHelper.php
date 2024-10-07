@@ -106,4 +106,17 @@ class ExcelFileHelper
 
         return Arr::get($keys, trim($keyMap));
     }
+
+    public static function convertKeyCourseVietnameseToUnicodeGraduate(string $keyMap): ?string
+    {
+        $keys = [
+            'STT' => 'index',
+            'Mã SV' => 'code',
+            'Email' => 'email',
+            'Điểm TB' => 'gpa',
+            'Xếp loại' => 'rank',
+        ];
+
+        return Arr::get($keys, trim($keyMap));
+    }
 }

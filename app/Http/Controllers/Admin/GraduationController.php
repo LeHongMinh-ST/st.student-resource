@@ -17,37 +17,37 @@ use App\Http\Controllers\Controller;
  */
 class GraduationController extends Controller
 {
-    public function index()
+    public function index(): void
     {
 
     }
 
-    public function store()
+    public function store(): void
     {
 
     }
 
-    public function show()
+    public function show(): void
     {
 
     }
 
-    public function update()
+    public function update(): void
     {
 
     }
 
-    public function importStudent()
+    public function importStudent(): void
     {
 
     }
 
-    public function downloadTemplateImport()
+    public function downloadTemplateImport(): void
     {
 
     }
 
-    public function destroy()
+    public function destroy(): void
     {
 
     }

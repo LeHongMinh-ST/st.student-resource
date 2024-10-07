@@ -7,4 +7,6 @@ namespace App\Enums;
 enum ExcelImportType: string
 {
     case Course = 'course';
+
+    case Graduate = 'graduate';
 }
