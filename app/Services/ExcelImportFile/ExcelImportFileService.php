@@ -18,7 +18,7 @@ class ExcelImportFileService
         $query = ExcelImportFile::query()
             ->where('faculty_id', $auth?->faculty_id ?? null)
             ->where('type', ExcelImportType::Course)
-            ->when($listStudentImportDTO->getAdmissionYearId(), fn ($query) => $query->where('admission_year_id', $listStudentImportDTO->getAdmissionYearId()))
+            ->when($listStudentImportDTO->getAdmissionYearId(), fn ($query) => $query->where('type_id', $listStudentImportDTO->getAdmissionYearId()))
             ->with(['user', 'excelImportFileErrors'])
             ->orderBy($listStudentImportDTO->getOrderBy(), $listStudentImportDTO->getOrder()->value);
 
