@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\DTO\GeneralClass\CreateGeneralClassDTO;
-use App\Enums\Status;
-use App\Events\ImportStudentCourseEvent;
-use App\Factories\Student\CreateStudentByFileDTOFactory;
+use App\Enums\StudentStatus;
+use App\Events\ImportStudentGraduateEvent;
 use App\Models\ExcelImportFile;
 use App\Models\ExcelImportFileError;
 use App\Models\ExcelImportFileJob;
 use App\Models\Faculty;
-use App\Services\GeneralClass\GeneralClassService;
+use App\Models\GraduationCeremonyStudent;
+use App\Models\Student;
 use App\Services\Student\StudentService;
 use App\Traits\HandlesCsvImportJob;
 use Exception;
@@ -22,15 +21,15 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 
-class CreateStudentByFileCsvJob implements ShouldQueue
+class CreateStudentGraduateByFileCsvJob implements ShouldQueue
 {
     use Dispatchable;
     use HandlesCsvImportJob;
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
-
 
     /**
      * Create a new job instance.
@@ -39,9 +38,10 @@ class CreateStudentByFileCsvJob implements ShouldQueue
         private readonly string  $fileName,
         private readonly int     $excelImportFileId,
         private readonly Faculty $faculty,
-        private readonly int     $admissionYearId,
         private readonly int     $userId,
+        private readonly int     $graduationCeremonyId,
     ) {
+
     }
 
     /**
@@ -52,7 +52,6 @@ class CreateStudentByFileCsvJob implements ShouldQueue
         ExcelImportFile      $excelImportFileModel,
         ExcelImportFileError $excelImportFileErrorModel,
         ExcelImportFileJob   $excelImportFileJobModel,
-        GeneralClassService  $generalClassService,
         StudentService       $studentService
     ): void {
         // Store job into the database if a Job ID exists.
@@ -70,54 +69,33 @@ class CreateStudentByFileCsvJob implements ShouldQueue
 
         // Remove row header from worksheet
         array_shift($worksheet);
-
         foreach ($worksheet as $row) {
             try {
-                $studentData = [
-                    'faculty_id' => $this->faculty->id,
-                    'admission_year_id' => $this->admissionYearId,
+                $student = $studentService->getStudentByCode($row['code']);
+
+                // Prepare data for GraduationCeremonyStudent table.
+                $studentGraduateData = [
+                    'graduation_ceremony_id' => $this->graduationCeremonyId,
+                    'student_id' => $student->id,
                 ];
 
-                // map key column with value
+                $studentGraduate = GraduationCeremonyStudent::query()->updateOrCreate($studentGraduateData);
+
                 foreach ($row as $index => $value) {
-                    // continue with key not in key config file
                     if (null === $rowHeader[$index]) {
                         continue;
                     }
-                    $studentData[$rowHeader[$index]] = $value;
+                    $studentGraduateData[$rowHeader[$index]] = $value;
                 }
 
-                // Check exist class if not exist create new class
-                $commandClass = new CreateGeneralClassDTO([
-                    'name' => $this->faculty->name,
-                    'code' => $studentData['class_code'],
-                    'faculty_id' => $this->faculty->id,
-                ]);
+                $studentGraduate->fill($studentGraduateData);
+                $studentGraduate->save();
 
-                // get class or create new class
-                $generalClass = $generalClassService->getGeneralClassByCode($commandClass->getCode());
-                if (null === $generalClass) {
-                    $generalClass = $generalClassService->create($commandClass);
-                }
+                // Update student status.
+                $student->status = StudentStatus::Graduated;
+                $student->save();
 
-                // create student with info
-                $commandStudentWithInfo = CreateStudentByFileDTOFactory::make($studentData);
-                $student = $studentService->createWithInfoStudentByFile($commandStudentWithInfo);
-
-                // create data excel import file record
-                $student->excelImportFileRecord()->create([
-                    'excel_import_files_id' => $this->excelImportFileId,
-                ]);
-
-                // Sync student with class
-                $generalClass->students()->syncWithoutDetaching([
-                    $student->id => [
-                        'status' => Status::Enable->value,
-                        'start_date' => now(),
-                    ],
-                ]);
-
-                // Update total process record
+                // Log successful process.
                 $excelImportFileModel->where('id', $this->excelImportFileId)
                     ->increment('process_record');
 
@@ -133,7 +111,7 @@ class CreateStudentByFileCsvJob implements ShouldQueue
             $this->deleteFile($filePath);
         }
 
-        event(new ImportStudentCourseEvent(
+        event(new ImportStudentGraduateEvent(
             message: 'success',
             userId: $this->userId
         ));

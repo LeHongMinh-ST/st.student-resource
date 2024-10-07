@@ -8,6 +8,7 @@ use App\Enums\RankGraduate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class GraduationCeremonyStudent extends Model
 {
@@ -34,6 +35,10 @@ class GraduationCeremonyStudent extends Model
         return $this->belongsTo(Student::class);
     }
 
+    public function excelImportFileRecord(): MorphOne
+    {
+        return $this->morphOne(ExcelImportFileRecord::class, 'tableable', 'table_type', 'table_id');
+    }
 
     // ------------------------ CASTS -------------------------//
     public function casts(): array

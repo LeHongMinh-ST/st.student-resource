@@ -20,6 +20,8 @@ use App\Services\Student\StudentInfo\StudentInfoService;
 use App\Supports\Constants;
 use App\Supports\ExcelFileHelper;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -161,8 +163,8 @@ class StudentService
                 'type' => ExcelImportType::Course,
                 'total_record' => $data['total_row_data'] - Constants::getNumberRowNotRecord(),
                 'process_record' => 0,
-                'faculty_id' => auth()->user()->faculty_id,
-                'user_id' => auth()->id(),
+                'faculty_id' => auth(AuthApiSection::Admin->value)->user()?->faculty_id,
+                'user_id' => auth(AuthApiSection::Admin->value)->id(),
                 'type_id' => $courseStudentDTO->getAdmissionYearId(),
             ]);
 
@@ -186,5 +188,10 @@ class StudentService
             ]);
             throw new CreateResourceFailedException();
         }
+    }
+
+    public function getStudentByCode(string $code): Model|Builder
+    {
+        return Student::query()->where(['code' => $code])->firstOrFail();
     }
 }
