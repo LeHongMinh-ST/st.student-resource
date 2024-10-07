@@ -1,0 +1,44 @@
+name: Laravel CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install sshpass
+        run: sudo apt-get install -y sshpass
+
+      - name: Create SSH config directory
+        run: mkdir -p ~/.ssh
+
+      - name: Configure SSH for bastion host
+        run: |
+          echo "Host bastion
+            HostName ${{ secrets.BASTION_HOST }}
+            User ${{ secrets.BASTION_USER }}
+            Port ${{ secrets.BASTION_PORT }}
+            PasswordAuthentication yes
+            HostKeyAlgorithms +ssh-rsa
+            PubkeyAcceptedKeyTypes +ssh-rsa
+          " > ~/.ssh/config
+
+      - name: Deploy to target server through bastion host
+        run: |
+          echo "cd /var/www/st.student-rescource
+                git pull origin main
+                composer install --no-interaction --prefer-dist --optimize-autoloader
+                php artisan migrate --force
+                php artisan config:cache
+                php artisan route:cache
+          " > deploy_script.sh
+
+          # SSH into bastion host, then from bastion host SSH into target server
+          sshpass -p "${{ secrets.BASTION_PASSWORD }}" ssh -o StrictHostKeyChecking=no bastion "sshpass -p '${{ secrets.TARGET_PASSWORD }}' ssh -o StrictHostKeyChecking=no ${{ secrets.TARGET_USER }}@${{ secrets.TARGET_HOST }} 'bash -s'" < deploy_script.sh
