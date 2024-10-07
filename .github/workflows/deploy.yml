@@ -25,7 +25,6 @@ jobs:
             php artisan migrate --force
             php artisan config:cache
             php artisan route:cache
-            sudo systemctl restart httpd
           " > deploy_script.sh
 
-          sshpass -p "${{ secrets.BASTION_PASSWORD }}" ssh -tt -o StrictHostKeyChecking=no -p 6883 -o ProxyCommand="sshpass -p '${{ secrets.BASTION_PASSWORD }}' ssh -tt -W %h:%p -p 6883 -o StrictHostKeyChecking=no ${{ secrets.BASTION_USER }}@${{ secrets.BASTION_HOST }}" ${{ secrets.TARGET_USER }}@${{ secrets.TARGET_HOST }} 'bash -s' < deploy_script.sh
+          sshpass -p "${{ secrets.BASTION_PASSWORD }}" ssh -tt -o StrictHostKeyChecking=no -p 6883 -o ProxyCommand="sshpass -p '${{ secrets.BASTION_PASSWORD }}' ssh -tt -W target_host:target_port -p 6883 -o StrictHostKeyChecking=no ${{ secrets.BASTION_USER }}@${{ secrets.BASTION_HOST }}" ${{ secrets.TARGET_USER }}@${{ secrets.TARGET_HOST }} 'bash -s' < deploy_script.sh
