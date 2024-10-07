@@ -163,7 +163,7 @@ class StudentService
                 'process_record' => 0,
                 'faculty_id' => auth()->user()->faculty_id,
                 'user_id' => auth()->id(),
-                'admission_year_id' => $courseStudentDTO->getAdmissionYearId(),
+                'type_id' => $courseStudentDTO->getAdmissionYearId(),
             ]);
 
             foreach ($data['file_names'] as $fileName) {
