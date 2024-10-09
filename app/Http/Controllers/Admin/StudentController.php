@@ -52,7 +52,7 @@ class StudentController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param  ListStudentRequest  $request  The HTTP request object containing the role ID.
+     * @param ListStudentRequest $request The HTTP request object containing the role ID.
      * @return StudentCollection Returns the list of Student.
      */
     #[ResponseFromApiResource(StudentCollection::class, Student::class, Response::HTTP_OK, with: [
@@ -72,7 +72,7 @@ class StudentController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param  CreateStudentRequest  $request  The HTTP request object containing student data.
+     * @param CreateStudentRequest $request The HTTP request object containing student data.
      * @return StudentResource Returns the newly StudentResource as a resource.
      *
      * @throws CreateResourceFailedException
@@ -99,7 +99,8 @@ class StudentController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param  ShowStudentRequest  $request  The HTTP request object containing student data.
+     * @param Student $student
+     * @param ShowStudentRequest $request The HTTP request object containing student data.
      * @return StudentResource Returns the newly UserResource as a resource.
      *
      * @throws AuthorizationException
@@ -120,7 +121,8 @@ class StudentController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param  UpdateStudentRequest  $request  The HTTP request object containing student data.
+     * @param Student $student
+     * @param UpdateStudentRequest $request The HTTP request object containing student data.
      * @return StudentResource Returns the newly UserResource as a resource.
      *
      * @throws UpdateResourceFailedException
@@ -141,13 +143,13 @@ class StudentController extends Controller
     }
 
     /**
-     * Delete class
+     * Delete student
      *
-     * This endpoint allows student to delete a user.
+     * This endpoint allows student to delete a student.
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param  Student  $student  The user entity to be deleted.
+     * @param Student $student The student entity to be deleted.
      * @return JsonResponse Returns a response with no content upon successful deletion.
      *
      * @response 204 Indicates that the response will be a 204 No Content status.
