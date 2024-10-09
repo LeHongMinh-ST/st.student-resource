@@ -11,7 +11,9 @@ use App\Http\Controllers\Admin\GraduationController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ReflectController;
 use App\Http\Controllers\Admin\StudentController;
+use App\Http\Controllers\Admin\StudentQuitController;
 use App\Http\Controllers\Admin\StudentUpdateRequestController;
+use App\Http\Controllers\Admin\StudentWarningController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -90,5 +92,27 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::get('/{graduationCeremony}', [GraduationController::class, 'show']);
         Route::patch('/{graduationCeremony}', [GraduationController::class, 'update']);
         Route::delete('/{graduationCeremony}', [GraduationController::class, 'destroy']);
+    });
+
+    Route::prefix('warning')->group(function (): void {
+        Route::get('/', [StudentWarningController::class, 'index']);
+        Route::post('/', [StudentWarningController::class, 'store']);
+        Route::post('/import-student', [StudentWarningController::class, 'importStudent']);
+        Route::post('/import-student/{excelImportFileError}/download', [StudentWarningController::class, 'importStudent']);
+        Route::get('/import-student/download-template', [StudentWarningController::class, 'downloadTemplateImport']);
+        Route::get('/{studentWarning}', [StudentWarningController::class, 'show']);
+        Route::patch('/{studentWarning}', [StudentWarningController::class, 'update']);
+        Route::delete('/{studentWarning}', [StudentWarningController::class, 'destroy']);
+    });
+
+    Route::prefix('quit')->group(function (): void {
+        Route::get('/', [StudentQuitController::class, 'index']);
+        Route::post('/', [StudentQuitController::class, 'store']);
+        Route::post('/import-student', [StudentQuitController::class, 'importStudent']);
+        Route::post('/import-student/{excelImportFileError}/download', [StudentQuitController::class, 'importStudent']);
+        Route::get('/import-student/download-template', [StudentQuitController::class, 'downloadTemplateImport']);
+        Route::get('/{studentQuit}', [StudentQuitController::class, 'show']);
+        Route::patch('/{studentQuit}', [StudentQuitController::class, 'update']);
+        Route::delete('/{studentQuit}', [StudentQuitController::class, 'destroy']);
     });
 });
