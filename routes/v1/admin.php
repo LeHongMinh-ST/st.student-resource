@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdmissionYearController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\GeneralClassController;
+use App\Http\Controllers\Admin\GraduationController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ReflectController;
 use App\Http\Controllers\Admin\StudentController;
@@ -78,5 +79,16 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::get('/', [ReflectController::class, 'index']);
         Route::get('/{reflect}', [ReflectController::class, 'show']);
         Route::patch('/{reflect}/status', [ReflectController::class, 'update-status']);
+    });
+
+    Route::prefix('graduates')->group(function (): void {
+        Route::get('/', [GraduationController::class, 'index']);
+        Route::post('/', [GraduationController::class, 'store']);
+        Route::post('/import-student', [GraduationController::class, 'importStudent']);
+        Route::post('/import-student/{excelImportFileError}/download', [GraduationController::class, 'importStudent']);
+        Route::get('/import-student/download-template', [GraduationController::class, 'downloadTemplateImport']);
+        Route::get('/{graduationCeremony}', [GraduationController::class, 'show']);
+        Route::patch('/{graduationCeremony}', [GraduationController::class, 'update']);
+        Route::delete('/{graduationCeremony}', [GraduationController::class, 'destroy']);
     });
 });
