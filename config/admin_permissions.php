@@ -150,6 +150,47 @@ return [
         ],
         'import' => [
             UserRole::Admin,
+            UserRole::Office,
+        ]
+    ],
+    'warning' => [
+        'index' => [
+            UserRole::Admin,
+            UserRole::Office,
+            UserRole::Teacher,
+        ],
+        'create' => [
+            UserRole::Admin,
+        ],
+        'update' => [
+            UserRole::Admin,
+        ],
+        'destroy' => [
+            UserRole::Admin,
+        ],
+        'import' => [
+            UserRole::Admin,
+            UserRole::Office,
+        ]
+    ],
+    'quit' => [
+        'index' => [
+            UserRole::Admin,
+            UserRole::Office,
+            UserRole::Teacher,
+        ],
+        'create' => [
+            UserRole::Admin,
+        ],
+        'update' => [
+            UserRole::Admin,
+        ],
+        'destroy' => [
+            UserRole::Admin,
+        ],
+        'import' => [
+            UserRole::Admin,
+            UserRole::Office,
         ]
     ]
 ];
