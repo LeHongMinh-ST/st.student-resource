@@ -173,11 +173,10 @@ class StudentService
                 CreateStudentByFileCsvJob::dispatch(
                     fileName: $fileName,
                     excelImportFileId: $excelImportFile->id,
-                    faculty: auth()->user()->faculty,
+                    faculty: auth(AuthApiSection::Admin->value)->user()->faculty,
                     admissionYearId: $courseStudentDTO->getAdmissionYearId(),
                     userId: auth(AuthApiSection::Admin->value)->id(),
-                )
-                    ->onQueue('import');
+                )->onQueue('import');
             }
 
             return $excelImportFile;

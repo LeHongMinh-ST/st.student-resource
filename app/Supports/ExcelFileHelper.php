@@ -119,4 +119,25 @@ class ExcelFileHelper
 
         return Arr::get($keys, trim($keyMap));
     }
+
+    public static function convertKeyCourseVietnameseToUnicodeQuit(string $keyMap): ?string
+    {
+        $keys = [
+            'STT' => 'index',
+            'Mã SV' => 'code',
+            'Lý do' => 'quit_note',
+        ];
+
+        return Arr::get($keys, trim($keyMap));
+    }
+
+    public static function convertKeyCourseVietnameseToUnicodeWarning(string $keyMap): ?string
+    {
+        $keys = [
+            'STT' => 'index',
+            'Mã SV' => 'code',
+        ];
+
+        return Arr::get($keys, trim($keyMap));
+    }
 }

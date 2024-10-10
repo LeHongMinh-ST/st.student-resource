@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Admin\StudentWarning;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class ImportStudentWarningRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class ImportStudentWarningRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Gate::allows('admin.waring.import');
     }
 
     /**
@@ -24,7 +25,12 @@ class ImportStudentWarningRequest extends FormRequest
     public function rules(): array
     {
         return [
-
+            'file' => [
+                'required',
+                'file',
+                'mimes:xlsx,xls',
+            ],
+            'warning_id' => 'required|integer|exists:warnings,id',
         ];
     }
 }

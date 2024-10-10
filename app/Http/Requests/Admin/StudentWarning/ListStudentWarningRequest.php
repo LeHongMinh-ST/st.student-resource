@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Admin\StudentWarning;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\ListRequest;
+use App\Models\Warning;
 
-class ListStudentWarningRequest extends FormRequest
+class ListStudentWarningRequest extends ListRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +25,13 @@ class ListStudentWarningRequest extends FormRequest
     public function rules(): array
     {
         return [
-
+            'semester_id' => 'required|integer|exists:semesters,id',
+            ...parent::rules(),
         ];
+    }
+
+    protected function getOrderByRuleModel(): string
+    {
+        return Warning::class;
     }
 }

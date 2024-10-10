@@ -4,6 +4,16 @@ declare(strict_types=1);
 
 namespace App\Factories\Quit;
 
+use App\DTO\Quit\CreateStudentQuitDTO;
+use App\Http\Requests\Admin\StudentWarning\StoreStudentWarningRequest;
+
 class CreateStudentQuitDTOFactory
 {
+    public static function make(StoreStudentWarningRequest $request): CreateStudentQuitDTO
+    {
+        $command = new CreateStudentQuitDTO();
+        $command->setName($request->get('name'));
+        $command->setSemesterId($request->get('semester_id'));
+        return $command;
+    }
 }
