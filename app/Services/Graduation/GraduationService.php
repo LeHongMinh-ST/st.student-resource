@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace App\Services\Graduation;
 
+use App\DTO\Graduation\CreateGraduationDTO;
 use App\DTO\Graduation\ImportStudentGraduateDTO;
 use App\DTO\Graduation\ListGraduationDTO;
+use App\DTO\Graduation\UpdateGraduationDTO;
 use App\Enums\AuthApiSection;
 use App\Enums\ExcelImportType;
 use App\Exceptions\CreateResourceFailedException;
+use App\Exceptions\DeleteResourceFailedException;
+use App\Exceptions\UpdateResourceFailedException;
 use App\Jobs\CreateStudentGraduateByFileCsvJob;
 use App\Models\ExcelImportFile;
+use App\Models\GraduationCeremony;
 use App\Models\GraduationCeremonyStudent;
 use App\Supports\Constants;
 use App\Supports\ExcelFileHelper;
@@ -23,24 +28,69 @@ class GraduationService
 {
     public function getList(ListGraduationDTO $graduationDTO): Collection|LengthAwarePaginator|array
     {
-        $query =  GraduationCeremonyStudent::query();
+        $query = GraduationCeremonyStudent::query()
+            ->when($graduationDTO->getSchoolYear(), fn ($query) => $query->where('school_year', $graduationDTO->getSchoolYear()))
+            ->when($graduationDTO->getCertification(), fn ($query) => $query->where('certification', $graduationDTO->getCertification()))
+            ->where('faculty_id', '=', auth()->user()->faculty_id ?? null);
 
         return $graduationDTO->getPage() ? $query->paginate($graduationDTO->getLimit()) : $query->get();
     }
 
-    public function create(): void
+    /**
+     * @throws CreateResourceFailedException
+     */
+    public function create(CreateGraduationDTO $graduationDTO): GraduationCeremony
     {
+        try {
+            return GraduationCeremony::create($graduationDTO->toArray());
+        } catch (Exception $exception) {
+            Log::error('Error create graduation ceremony action', [
+                'method' => __METHOD__,
+                'message' => $exception->getMessage(),
+            ]);
 
+            throw  new CreateResourceFailedException();
+        }
     }
 
-    public function update(): void
+    /**
+     * @throws UpdateResourceFailedException
+     */
+    public function update(UpdateGraduationDTO $graduationDTO): GraduationCeremony
     {
+        try {
+            $graduation = GraduationCeremony::where('id', $graduationDTO->getId())->first();
 
+            $graduation->fill($graduationDTO->toArray());
+
+            $graduation->save();
+
+            return $graduation;
+        } catch (Exception $exception) {
+            Log::error('Error update graduation ceremony action', [
+                'method' => __METHOD__,
+                'message' => $exception->getMessage(),
+            ]);
+
+            throw  new UpdateResourceFailedException();
+        }
     }
 
-    public function delete(): void
+    /**
+     * @throws DeleteResourceFailedException
+     */
+    public function delete(GraduationCeremony $graduation): bool
     {
+        try {
+            return $graduation->delete();
+        } catch (Exception $exception) {
+            Log::error('Error delete graduation ceremony action', [
+                'method' => __METHOD__,
+                'message' => $exception->getMessage(),
+            ]);
 
+            throw  new DeleteResourceFailedException();
+        }
     }
 
     /**
@@ -80,7 +130,5 @@ class GraduationService
             ]);
             throw new CreateResourceFailedException();
         }
-
-
     }
 }

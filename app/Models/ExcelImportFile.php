@@ -31,6 +31,27 @@ class ExcelImportFile extends Model
         'type' => ExcelImportType::class,
     ];
 
+    public function students()
+    {
+        return $this->morphedByMany(Student::class, 'excelImportFileable');
+    }
+
+    public function warnings()
+    {
+        return $this->morphedByMany(Warning::class, 'excelImportFileable');
+    }
+
+    public function quits()
+    {
+        return $this->morphedByMany(Quit::class, 'excelImportFileable');
+    }
+
+    public function graduationCeremonies()
+    {
+        return $this->morphedByMany(GraduationCeremony::class, 'excelImportFileable');
+
+    }
+
     // ------------------------ RELATIONS -------------------------//
     public function faculty(): BelongsTo
     {

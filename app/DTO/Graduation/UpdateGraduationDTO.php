@@ -6,7 +6,7 @@ namespace App\DTO\Graduation;
 
 class UpdateGraduationDTO
 {
-    private string $id;
+    private int|string $id;
     private string $name;
     private string $schoolYear;
     private string $certification;
@@ -17,7 +17,7 @@ class UpdateGraduationDTO
         return $this->id;
     }
 
-    public function setId(string $id): void
+    public function setId(int|string $id): void
     {
         $this->id = $id;
     }
