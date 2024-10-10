@@ -8,4 +8,5 @@ enum ClassType: string
 {
     case Basic = 'basic';
     case Major = 'major';
+    case Subject = 'subject';
 }

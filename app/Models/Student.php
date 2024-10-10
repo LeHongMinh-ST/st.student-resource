@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ClassType;
 use App\Enums\Status;
 use App\Enums\StudentRole;
 use App\Enums\StudentStatus;
@@ -72,6 +73,7 @@ class Student extends Authenticatable implements JWTSubject
     public function currentClass(): HasOneThrough
     {
         return $this->hasOneThrough(GeneralClass::class, ClassStudent::class, 'student_id', 'id', 'id', 'class_id')
+            ->whereIn('classes.type', [ClassType::Basic, ClassType::Major])
             ->where('class_students.status', Status::Enable);
     }
 
