@@ -103,7 +103,6 @@ class StudentController extends Controller
      * @param ShowStudentRequest $request The HTTP request object containing student data.
      * @return StudentResource Returns the newly UserResource as a resource.
      *
-     * @throws AuthorizationException
      */
     #[ResponseFromApiResource(StudentResource::class, Student::class, Response::HTTP_OK, with: [
         'info', 'faculty', 'families',

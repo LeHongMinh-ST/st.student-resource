@@ -5,21 +5,27 @@ declare(strict_types=1);
 namespace App\Services\Graduation;
 
 use App\DTO\Graduation\ImportStudentGraduateDTO;
+use App\DTO\Graduation\ListGraduationDTO;
 use App\Enums\AuthApiSection;
 use App\Enums\ExcelImportType;
 use App\Exceptions\CreateResourceFailedException;
 use App\Jobs\CreateStudentGraduateByFileCsvJob;
 use App\Models\ExcelImportFile;
+use App\Models\GraduationCeremonyStudent;
 use App\Supports\Constants;
 use App\Supports\ExcelFileHelper;
 use Exception;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
 class GraduationService
 {
-    public function getList(): void
+    public function getList(ListGraduationDTO $graduationDTO): Collection|LengthAwarePaginator|array
     {
+        $query =  GraduationCeremonyStudent::query();
 
+        return $graduationDTO->getPage() ? $query->paginate($graduationDTO->getLimit()) : $query->get();
     }
 
     public function create(): void

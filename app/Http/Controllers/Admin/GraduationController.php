@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Exceptions\CreateResourceFailedException;
 use App\Factories\Graduation\ImportStudentGraduateDTOFactory;
+use App\Factories\Graduation\ListGraduationDTOFactory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Graduation\DeleteGraduationRequest;
 use App\Http\Requests\Admin\Graduation\ImportStudentGraduateRequest;
@@ -38,6 +39,9 @@ class GraduationController extends Controller
 
     public function index(ListGraduationRequest $request): void
     {
+        $command = ListGraduationDTOFactory::make($request);
+        $this->graduationService->getList($command);
+
 
     }
 
