@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Admin\StudentQuit;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class StoreStudentQuitRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class StoreStudentQuitRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Gate::allows('admin.quit.create');
     }
 
     /**
@@ -24,7 +25,8 @@ class StoreStudentQuitRequest extends FormRequest
     public function rules(): array
     {
         return [
-
+            'name' => ['required', 'string', 'max:255'],
+            'semester_id' => ['required', 'integer', 'exists:semesters,id'],
         ];
     }
 }

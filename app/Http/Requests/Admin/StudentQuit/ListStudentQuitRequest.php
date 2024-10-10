@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Admin\StudentQuit;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\ListRequest;
+use App\Models\Quit;
+use Illuminate\Support\Facades\Gate;
 
-class ListStudentQuitRequest extends FormRequest
+class ListStudentQuitRequest extends ListRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return Gate::allows('admin.quit.index');
     }
 
     /**
@@ -24,7 +26,13 @@ class ListStudentQuitRequest extends FormRequest
     public function rules(): array
     {
         return [
-
+            'semester_id' => 'required|integer|exists:semesters,id',
+            ...parent::rules(),
         ];
+    }
+
+    protected function getOrderByRuleModel(): string
+    {
+        return Quit::class;
     }
 }

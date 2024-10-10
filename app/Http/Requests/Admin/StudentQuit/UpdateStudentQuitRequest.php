@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Admin\StudentQuit;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class UpdateStudentQuitRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class UpdateStudentQuitRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Gate::allows('admin.quit.update');
     }
 
     /**
@@ -24,7 +25,8 @@ class UpdateStudentQuitRequest extends FormRequest
     public function rules(): array
     {
         return [
-
+            'name' => ['required', 'string', 'max:255'],
+            'semester_id' => ['required', 'integer', 'exists:semesters,id'],
         ];
     }
 }

@@ -31,7 +31,9 @@ class GraduationService
         $query = GraduationCeremonyStudent::query()
             ->when($graduationDTO->getSchoolYear(), fn ($query) => $query->where('school_year', $graduationDTO->getSchoolYear()))
             ->when($graduationDTO->getCertification(), fn ($query) => $query->where('certification', $graduationDTO->getCertification()))
-            ->where('faculty_id', '=', auth()->user()->faculty_id ?? null);
+            ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
+            ->orderBy($graduationDTO->getOrderBy(), $graduationDTO->getOrder()->value);
+
 
         return $graduationDTO->getPage() ? $query->paginate($graduationDTO->getLimit()) : $query->get();
     }
@@ -42,7 +44,10 @@ class GraduationService
     public function create(CreateGraduationDTO $graduationDTO): GraduationCeremony
     {
         try {
-            return GraduationCeremony::create($graduationDTO->toArray());
+            return GraduationCeremony::create([
+                $graduationDTO->toArray(),
+                'faculty_id' => auth(AuthApiSection::Admin->value)->user()->faculty_id
+            ]);
         } catch (Exception $exception) {
             Log::error('Error create graduation ceremony action', [
                 'method' => __METHOD__,
@@ -116,7 +121,7 @@ class GraduationService
                 CreateStudentGraduateByFileCsvJob::dispatch(
                     fileName: $fileName,
                     excelImportFileId: $excelImportFile->id,
-                    faculty: auth()->user()->faculty,
+                    faculty: auth(AuthApiSection::Admin->value)->user()->faculty,
                     userId: auth(AuthApiSection::Admin->value)->id(),
                     graduationCeremonyId: $importStudentGraduateDTO->getGraduationCeremoniesId(),
                 )->onQueue('import');

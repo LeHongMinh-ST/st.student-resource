@@ -9,4 +9,8 @@ enum ExcelImportType: string
     case Course = 'course';
 
     case Graduate = 'graduate';
+
+    case Warning = 'warning';
+
+    case Quit = 'quit';
 }

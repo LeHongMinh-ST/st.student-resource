@@ -25,7 +25,7 @@ class UpdateGraduationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
+            'name' => 'required|max:255',
             'school_year' => 'required',
             'certification' => 'required',
             'certification_date' => 'required',
