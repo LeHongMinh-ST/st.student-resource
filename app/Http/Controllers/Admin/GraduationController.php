@@ -146,7 +146,7 @@ class GraduationController extends Controller
     }
 
     /**
-     * Download class
+     * Download template import
      *
      * This endpoint allows student to download file student.
      *
