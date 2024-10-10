@@ -52,6 +52,9 @@ class StudentService
         return $listStudentDTO->getPage() ? $query->paginate($listStudentDTO->getLimit()) : $query->get();
     }
 
+    /**
+     * @throws CreateResourceFailedException
+     */
     public function createWithInfoStudent(CreateStudentDTO $command): Student
     {
         DB::beginTransaction();
@@ -79,6 +82,9 @@ class StudentService
         }
     }
 
+    /**
+     * @throws CreateResourceFailedException
+     */
     public function createWithInfoStudentByFile(CreateStudentCourseByFileDTO $command): Student
     {
         DB::beginTransaction();
@@ -113,6 +119,9 @@ class StudentService
         }
     }
 
+    /**
+     * @throws UpdateResourceFailedException
+     */
     public function updateWithInfoStudent(UpdateStudentDTO $command): Student
     {
         DB::beginTransaction();
