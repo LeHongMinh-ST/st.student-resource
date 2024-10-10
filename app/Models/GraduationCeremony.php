@@ -23,6 +23,15 @@ class GraduationCeremony extends Model
         'faculty_id',
     ];
 
+    //----------------------- SCOPES ----------------------------------//
+
+    public static function boot(): void
+    {
+        self::deleting(function ($model): void {
+            $model->students()->detach();
+        });
+    }
+
     // ------------------------ RELATIONS -------------------------//
     public function faculty(): BelongsTo
     {
@@ -36,11 +45,17 @@ class GraduationCeremony extends Model
             ->using(GraduationCeremonyStudent::class);
     }
 
+    public function excelImportFiles()
+    {
+        return $this->morphToMany(ExcelImportFile::class, 'excelImportFileable');
+    }
+
     // ------------------------ CASTS -------------------------//
 
 
     // ---------------------- ACCESSORS AND MUTATORS --------------------//
-
-
-    //----------------------- SCOPES ----------------------------------//
+    public function getStudentCountAttribute(): int
+    {
+        return $this->students()->count();
+    }
 }

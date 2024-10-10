@@ -50,6 +50,5 @@ class GraduationCeremonyStudent extends Model
 
     // ---------------------- ACCESSORS AND MUTATORS --------------------//
 
-
     //----------------------- SCOPES ----------------------------------//
 }
