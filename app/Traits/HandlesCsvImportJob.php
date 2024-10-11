@@ -17,11 +17,11 @@ trait HandlesCsvImportJob
     /**
      * Store job in ExcelImportFileJob if a Job ID exists.
      *
-     * @param string|null $jobId
+     * @param string|int $jobId
      * @param int $excelImportFileId
      * @param ExcelImportFileJob $excelImportFileJobModel
      */
-    protected function storeJob(?string $jobId, int $excelImportFileId, ExcelImportFileJob $excelImportFileJobModel): void
+    protected function storeJob(string|int $jobId, int $excelImportFileId, ExcelImportFileJob $excelImportFileJobModel): void
     {
         if ($jobId) {
             $excelImportFileJobModel::create([

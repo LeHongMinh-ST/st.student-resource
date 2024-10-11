@@ -24,8 +24,8 @@ class ExcelImportFileService
         $query = ExcelImportFile::query()
             ->where('faculty_id', $auth?->faculty_id ?? null)
             ->where('type', ExcelImportType::Course)
-            ->when(UserRole::Admin !== $auth?->role, fn($query) => $query->where('user_id', $auth?->id ?? null))
-            ->when($listStudentImportDTO->getAdmissionYearId(), fn($query) => $query->where('type_id', $listStudentImportDTO->getAdmissionYearId()))
+            ->when(UserRole::Admin !== $auth?->role, fn ($query) => $query->where('user_id', $auth?->id ?? null))
+            ->when($listStudentImportDTO->getAdmissionYearId(), fn ($query) => $query->where('type_id', $listStudentImportDTO->getAdmissionYearId()))
             ->with(['user', 'excelImportFileErrors'])
             ->orderBy($listStudentImportDTO->getOrderBy(), $listStudentImportDTO->getOrder()->value);
 
@@ -34,8 +34,7 @@ class ExcelImportFileService
 
     public function getErrorRecord($id): Collection|array
     {
-        return ExcelImportFileError::query()->where('excel_import_file_id', $id)->get();
-
+        return ExcelImportFileError::query()->where('excel_import_files_id', $id)->get();
     }
 
     public function exportErrorRecord($id, $filename = 'error_record.xlsx'): StreamedResponse
@@ -46,18 +45,16 @@ class ExcelImportFileService
         $errorRecord = $this->getErrorRecord($id);
 
         $sheet->setCellValue('A1', 'STT');
-        $sheet->setCellValue('B1', 'Bản ghi số');
-        $sheet->setCellValue('C1', 'Lỗi');
+        $sheet->setCellValue('B1', 'Lỗi');
 
         $row = 2; //Start row data = 2
         foreach ($errorRecord as $error) {
-            $sheet->setCellValue('A' . $row, $row - 1);
-            $sheet->setCellValue('B' . $row, $error->row);
-            $sheet->setCellValue('C' . $row, $error->error);
+            $sheet->setCellValue('A' . $row, $error->row - 1);
+            $sheet->setCellValue('B' . $row, $error->error);
             $row++;
         }
 
-        $response = new StreamedResponse(function () use ($spreadsheet) {
+        $response = new StreamedResponse(function () use ($spreadsheet): void {
             $writer = new Xlsx($spreadsheet);
             $writer->save('php://output');
         });

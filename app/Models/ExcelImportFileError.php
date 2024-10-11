@@ -18,6 +18,7 @@ class ExcelImportFileError extends Model
         'excel_import_files_id',
         'error',
         'row',
+        'data'
     ];
 
     // ------------------------ RELATIONS -------------------------//

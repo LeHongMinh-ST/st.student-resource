@@ -20,8 +20,8 @@ use App\Http\Requests\Admin\StudentWarning\StoreStudentWarningRequest;
 use App\Http\Requests\Admin\StudentWarning\UpdateStudentWarningRequest;
 use App\Http\Resources\StudentWarning\StudentWarningCollection;
 use App\Http\Resources\StudentWarning\StudentWarningResource;
-use App\Models\Warning;
 use App\Models\StudentWarning;
+use App\Models\Warning;
 use App\Services\Student\StudentWarningService;
 use App\Supports\Constants;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -43,8 +43,7 @@ class StudentWarningController extends Controller
 {
     public function __construct(
         private readonly StudentWarningService $studentWarningService
-    )
-    {
+    ) {
     }
 
     /**
