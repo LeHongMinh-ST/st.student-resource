@@ -1,4 +1,4 @@
-name: Laravel CI/CD
+name: Deploy Laravel Application
 
 on:
   push:
@@ -13,32 +13,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install sshpass
-        run: sudo apt-get install -y sshpass
-
-      - name: Create SSH config directory
-        run: mkdir -p ~/.ssh
-
-      - name: Configure SSH for bastion host
+      - name: Set up SSH
         run: |
-          echo "Host bastion
-            HostName ${{ secrets.BASTION_HOST }}
-            User ${{ secrets.BASTION_USER }}
-            Port ${{ secrets.BASTION_PORT }}
-            PasswordAuthentication yes
-            HostKeyAlgorithms +ssh-rsa
-            PubkeyAcceptedKeyTypes +ssh-rsa
-          " > ~/.ssh/config
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p $SSH_PORT $SSH_HOST >> ~/.ssh/known_hosts
 
-      - name: Deploy to target server through bastion host
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+
+      - name: Deploy to Server
         run: |
-          echo "cd /var/www/st.student-rescource
-                git pull origin main
-                composer install --no-interaction --prefer-dist --optimize-autoloader
-                php artisan migrate --force
-                php artisan config:cache
-                php artisan route:cache
-          " > deploy_script.sh
-
-          # SSH into bastion host, then from bastion host SSH into target server
-          sshpass -p "${{ secrets.BASTION_PASSWORD }}" ssh -o StrictHostKeyChecking=no bastion "sshpass -p '${{ secrets.TARGET_PASSWORD }}' ssh -o StrictHostKeyChecking=no ${{ secrets.TARGET_USER }}@${{ secrets.TARGET_HOST }} 'bash -s'" < deploy_script.sh
+          ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "
+          cd $LARAVEL_APP_PATH &&
+          git pull origin main &&
+          composer install --no-interaction --prefer-dist --optimize-autoloader &&
+          php artisan migrate --force &&
+          php artisan config:cache &&
+          php artisan route:cache &&
+          php artisan view:cache"
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          LARAVEL_APP_PATH: ${{ secrets.LARAVEL_APP_PATH }}
