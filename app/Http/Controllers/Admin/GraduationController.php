@@ -22,6 +22,7 @@ use App\Http\Resources\Graduation\GraduationCeremonyCollection;
 use App\Http\Resources\Graduation\GraduationCeremonyResource;
 use App\Models\ExcelImportFile;
 use App\Models\GraduationCeremony;
+use App\Services\ExcelImportFile\ExcelImportFileService;
 use App\Services\Graduation\GraduationService;
 use App\Supports\Constants;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -29,6 +30,7 @@ use Illuminate\Http\JsonResponse;
 use Knuckles\Scribe\Attributes\ResponseFromApiResource;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * @group Admin API
@@ -42,7 +44,8 @@ use Symfony\Component\HttpFoundation\Response;
 class GraduationController extends Controller
 {
     public function __construct(
-        private readonly GraduationService $graduationService
+        private readonly GraduationService $graduationService,
+        private readonly ExcelImportFileService $excelImportFileService,
     ) {
     }
 
@@ -195,13 +198,16 @@ class GraduationController extends Controller
      *
      * @param ExcelImportFile $excelImportFileError
      *
+     * @return StreamedResponse
+     * @throws AuthorizationException
      * @response 200
      *
-     * @throws AuthorizationException
      */
-    public function downloadErrorImportCourse(ExcelImportFile $excelImportFileError): void
+    public function downloadErrorImportCourse(ExcelImportFile $excelImportFileError): StreamedResponse
     {
         $this->authorize('admin.graduation.import');
+
+        return $this->excelImportFileService->exportErrorRecord($excelImportFileError->id);
     }
 
 }

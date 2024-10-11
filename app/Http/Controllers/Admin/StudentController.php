@@ -20,6 +20,7 @@ use App\Http\Resources\Student\StudentCollection;
 use App\Http\Resources\Student\StudentResource;
 use App\Models\ExcelImportFile;
 use App\Models\Student;
+use App\Services\ExcelImportFile\ExcelImportFileService;
 use App\Services\Student\StudentService;
 use App\Supports\Constants;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -28,6 +29,7 @@ use Illuminate\Http\Request;
 use Knuckles\Scribe\Attributes\ResponseFromApiResource;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * @group Admin API
@@ -41,8 +43,11 @@ use Symfony\Component\HttpFoundation\Response;
 class StudentController extends Controller
 {
     public function __construct(
-        private readonly StudentService $studentService
-    ) {
+        private readonly StudentService         $studentService,
+        private readonly ExcelImportFileService $excelImportFileService,
+
+    )
+    {
     }
 
     /**
@@ -219,12 +224,15 @@ class StudentController extends Controller
      *
      * @param ExcelImportFile $excelImportFileError
      *
+     * @return StreamedResponse
+     * @throws AuthorizationException
      * @response 200
      *
-     * @throws AuthorizationException
      */
-    public function downloadErrorImportCourse(ExcelImportFile $excelImportFileError): void
+    public function downloadErrorImportCourse(ExcelImportFile $excelImportFileError): StreamedResponse
     {
         $this->authorize('admin.student.import');
+
+        return $this->excelImportFileService->exportErrorRecord($excelImportFileError->id);
     }
 }
