@@ -19,6 +19,9 @@ class AdmissionYearService
                     $q->where('faculty_id', auth('api')->user()->faculty_id);
                 }
             })
+            ->withCount(['students' => function ($query): void {
+                $query->where('faculty_id', auth('api')->user()->faculty_id);
+            }])
             ->orderBy($admissionYearDTO->getOrderBy(), $admissionYearDTO->getOrder()->value);
         return $admissionYearDTO->getPage() ? $query->paginate($admissionYearDTO->getLimit()) : $query->get();
     }

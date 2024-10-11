@@ -53,9 +53,7 @@ class StudentUpdateRequestController extends Controller
     ], paginate: Constants::PAGE_LIMIT)]
     public function index(ListRequestUpdateStudentRequest $request): StudentInfoUpdateCollection
     {
-        $dto = ListRequestUpdateStudentDTOFactory::make(
-            request: $request,
-        );
+        $dto = ListRequestUpdateStudentDTOFactory::make($request);
 
         $studentUpdate = $this->studentInfoUpdateService->getList($dto);
 

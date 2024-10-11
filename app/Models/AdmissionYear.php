@@ -22,10 +22,10 @@ class AdmissionYear extends Model
         return $this->hasMany(Student::class);
     }
 
-    public function getStudentCountAttribute(): int
-    {
-        return $this->students()
-            ->where('faculty_id', auth('api')->user()->faculty_id)
-            ->count();
-    }
+    //    public function getStudentCountAttribute(): int
+    //    {
+    //        return $this->students()
+    //            ->where('faculty_id', auth('api')->user()->faculty_id)
+    //            ->count();
+    //    }
 }

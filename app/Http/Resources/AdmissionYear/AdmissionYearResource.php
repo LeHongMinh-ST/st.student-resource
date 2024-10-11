@@ -6,7 +6,6 @@ namespace App\Http\Resources\AdmissionYear;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Carbon;
 
 class AdmissionYearResource extends JsonResource
 {
@@ -21,9 +20,9 @@ class AdmissionYearResource extends JsonResource
             'id' => $this->id ?? 0,
             'admission_year' => $this->admission_year ?? '',
             'school_year' => $this->school_year ?? 0,
-            'student_count' => $this->studentCount ?? 0,
-            'created_at' => $this->created_at ?? Carbon::now(),
-            'updated_at' => $this->updated_at ?? Carbon::now(),
+            'student_count' => $this?->students_count ?? 0,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

@@ -18,6 +18,8 @@ class StudentInfoUpdate extends Model
 
     public $timestamps = true;
 
+    protected $table = 'student_info_updates';
+
     protected $fillable = [
         'person_email',
         'gender',
@@ -38,13 +40,6 @@ class StudentInfoUpdate extends Model
         'student_id',
         'status',
     ];
-
-    public static function boot(): void
-    {
-        self::deleting(function (StudentInfoUpdate $studentInfoUpdate): void {
-            $studentInfoUpdate->families()->delete();
-        });
-    }
 
     // ------------------------ RELATIONS -------------------------//
     public function student(): BelongsTo
