@@ -55,7 +55,7 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::get('/', [StudentController::class, 'index']);
         Route::post('/', [StudentController::class, 'store']);
         Route::post('/import-course', [StudentController::class, 'importCourse']);
-        Route::post('/import-course/{excelImportFileError}/download-error', [StudentController::class, 'downloadErrorImportCourse']);
+        Route::get('/import-course/{excelImportFileError}/download-error', [StudentController::class, 'downloadErrorImportCourse']);
         Route::get('/import-course/download-template', [StudentController::class, 'downloadTemplateImportCourse']);
         Route::get('/{student}', [StudentController::class, 'show']);
         Route::post('/{student}', [StudentController::class, 'update']);
@@ -87,7 +87,7 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::get('/', [GraduationController::class, 'index']);
         Route::post('/', [GraduationController::class, 'store']);
         Route::post('/import-student', [GraduationController::class, 'importStudent']);
-        Route::post('/import-student/{excelImportFileError}/download', [GraduationController::class, 'downloadErrorImportCourse']);
+        Route::get('/import-student/{excelImportFileError}/download-error', [GraduationController::class, 'downloadErrorImportCourse']);
         Route::get('/import-student/download-template', [GraduationController::class, 'downloadTemplateImport']);
         Route::get('/{graduationCeremony}', [GraduationController::class, 'show']);
         Route::patch('/{graduationCeremony}', [GraduationController::class, 'update']);
@@ -98,7 +98,7 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::get('/', [StudentWarningController::class, 'index']);
         Route::post('/', [StudentWarningController::class, 'store']);
         Route::post('/import-student', [StudentWarningController::class, 'importStudent']);
-        Route::post('/import-student/{excelImportFileError}/download', [StudentWarningController::class, 'importStudent']);
+        Route::get('/import-student/{excelImportFileError}/download-error', [StudentWarningController::class, 'importStudent']);
         Route::get('/import-student/download-template', [StudentWarningController::class, 'downloadTemplateImport']);
         Route::get('/{studentWarning}', [StudentWarningController::class, 'show']);
         Route::patch('/{studentWarning}', [StudentWarningController::class, 'update']);

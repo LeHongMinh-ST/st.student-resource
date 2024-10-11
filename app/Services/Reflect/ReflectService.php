@@ -6,7 +6,7 @@ namespace App\Services\Reflect;
 
 class ReflectService
 {
-    public function getList()
+    public function getList(): void
     {
 
     }

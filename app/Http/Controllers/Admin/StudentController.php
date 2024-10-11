@@ -45,9 +45,7 @@ class StudentController extends Controller
     public function __construct(
         private readonly StudentService         $studentService,
         private readonly ExcelImportFileService $excelImportFileService,
-
-    )
-    {
+    ) {
     }
 
     /**

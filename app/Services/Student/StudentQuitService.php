@@ -106,6 +106,7 @@ class StudentQuitService
                 'faculty_id' => auth(AuthApiSection::Admin->value)->user()?->faculty_id,
                 'user_id' => auth(AuthApiSection::Admin->value)->id(),
                 'type_id' => $dto->getQuitId(),
+                'total_job' => count($data['file_names'])
             ]);
             foreach ($data['file_names'] as $fileName) {
                 CreateStudentQuitByFileCsvJob::dispatch(

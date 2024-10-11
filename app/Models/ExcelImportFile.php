@@ -25,6 +25,7 @@ class ExcelImportFile extends Model
         'faculty_id',
         'user_id',
         'type_id',
+        'total_job'
     ];
 
     protected $casts = [
@@ -89,22 +90,21 @@ class ExcelImportFile extends Model
 
     public function getStatusAttribute(): StatusFileImport
     {
-        $fileErrorsCount = $this->excelImportFileErrors()->count();
-        $processRecordCount = $fileErrorsCount + $this->process_record;
-        if ($processRecordCount === $this->total_record) {
+        if ($this->excelImportFileJobs()->count() === $this->total_job) {
             return StatusFileImport::Completed;
         }
 
-        if (0 === $processRecordCount) {
+        if (0 === $this->excelImportFileJobs()->count()) {
             return StatusFileImport::Pending;
         }
 
-        if ($processRecordCount > 0 && $processRecordCount < $this->total_record) {
+        if ($this->excelImportFileJobs()->count() < $this->total_job) {
             return StatusFileImport::Processing;
         }
 
         return StatusFileImport::Completed;
     }
+
 
     //----------------------- SCOPES ----------------------------------//
 

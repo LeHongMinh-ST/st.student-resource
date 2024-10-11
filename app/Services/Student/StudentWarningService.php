@@ -106,6 +106,7 @@ class StudentWarningService
                 'faculty_id' => auth(AuthApiSection::Admin->value)->user()?->faculty_id,
                 'user_id' => auth(AuthApiSection::Admin->value)->id(),
                 'type_id' => $dto->getWarningId(),
+                'total_job' => count($data['file_names'])
             ]);
             foreach ($data['file_names'] as $fileName) {
                 CreateStudentWarningByFileCsvJob::dispatch(

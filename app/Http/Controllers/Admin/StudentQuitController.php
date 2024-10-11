@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Admin;
 
-use App\DTO\Quit\ListStudentQuitDTO;
 use App\Exceptions\CreateResourceFailedException;
 use App\Exceptions\DeleteResourceFailedException;
 use App\Exceptions\UpdateResourceFailedException;
@@ -44,8 +43,7 @@ class StudentQuitController extends Controller
 {
     public function __construct(
         private readonly StudentQuitService $studentQuitService
-    )
-    {
+    ) {
     }
 
     /**
