@@ -24,7 +24,7 @@ class GraduationCeremonyResource extends JsonResource
             'certification' => $this->certification,
             'certification_date' => $this->certification_date,
             'students' => StudentResource::collection($this->whenLoaded('students')),
-            'student_count' => $this->student_count,
+            'student_count' => $this->students_count ?? 0,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

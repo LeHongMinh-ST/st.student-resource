@@ -38,19 +38,22 @@ class AdmissionYearController extends Controller
     }
 
     /**
-     * List of admission-year
+     * List of Admission Year
      *
      * This endpoint lets you views list AdmissionYear
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @param ListAdmissionYearRequest $request
+     *
+     * @return AdmissionYearCollection Returns the list of admission year.
      */
     #[ResponseFromApiResource(AdmissionYearCollection::class, AdmissionYear::class, Response::HTTP_OK, paginate: Constants::PAGE_LIMIT)]
     public function index(ListAdmissionYearRequest $request): AdmissionYearCollection
     {
         $admissionYearDto = ListAdmissionYearDTOFactory::make($request);
-        $admissionYears = $this->admissionYearService->getList($admissionYearDto);
 
-        return new AdmissionYearCollection($admissionYears);
+        return new AdmissionYearCollection($this->admissionYearService->getList($admissionYearDto));
     }
 
     /**

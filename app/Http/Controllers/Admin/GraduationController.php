@@ -100,7 +100,7 @@ class GraduationController extends Controller
     #[ResponseFromApiResource(GraduationCeremonyResource::class, GraduationCeremony::class, Response::HTTP_OK)]
     public function show(ShowGraduationRequest $request, GraduationCeremony $graduationCeremony): GraduationCeremonyResource
     {
-        return new GraduationCeremonyResource($graduationCeremony);
+        return new GraduationCeremonyResource($graduationCeremony->loadCount('students'));
 
     }
 

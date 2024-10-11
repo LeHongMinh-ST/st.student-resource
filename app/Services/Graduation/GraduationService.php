@@ -32,6 +32,7 @@ class GraduationService
             ->when($graduationDTO->getSchoolYear(), fn ($query) => $query->where('school_year', $graduationDTO->getSchoolYear()))
             ->when($graduationDTO->getCertification(), fn ($query) => $query->where('certification', $graduationDTO->getCertification()))
             ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
+            ->withCount('students')
             ->orderBy($graduationDTO->getOrderBy(), $graduationDTO->getOrder()->value);
 
 

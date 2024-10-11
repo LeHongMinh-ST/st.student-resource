@@ -25,13 +25,6 @@ class GraduationCeremony extends Model
 
     //----------------------- SCOPES ----------------------------------//
 
-    public static function boot(): void
-    {
-        self::deleting(function ($model): void {
-            $model->students()->detach();
-        });
-    }
-
     // ------------------------ RELATIONS -------------------------//
     public function faculty(): BelongsTo
     {
@@ -54,8 +47,4 @@ class GraduationCeremony extends Model
 
 
     // ---------------------- ACCESSORS AND MUTATORS --------------------//
-    public function getStudentCountAttribute(): int
-    {
-        return $this->students()->count();
-    }
 }
