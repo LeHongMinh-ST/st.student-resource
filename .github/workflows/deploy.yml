@@ -1,4 +1,4 @@
-name: Deploy Laravel Application
+name:  CI/CD Pipeline Laravel
 
 on:
   push:
@@ -6,7 +6,40 @@ on:
       - main
 
 jobs:
+  lint-commit-msg:
+    runs-on: [ ubuntu-latest ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install deps
+        run: npm install
+      - name: Lint commit message
+        run: npx commitlint --last --verbose
+  pint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer
+
+      - name: Install dependencies
+        run: composer install --no-progress --prefer-dist --no-scripts
+
+      - name: Run Laravel Pint
+        run: vendor/bin/pint --test
   deploy:
+    needs:
+      - lint-commit-msg
+      - pint
     runs-on: ubuntu-latest
 
     steps:
@@ -29,8 +62,8 @@ jobs:
         run: |
           ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "
           cd $LARAVEL_APP_PATH &&
-          git reset --hard origin/main &&
           git fetch origin main &&
+          git reset --hard origin/main &&
           git pull origin main &&
           composer install --no-interaction --prefer-dist --optimize-autoloader &&
           php artisan migrate --force &&
