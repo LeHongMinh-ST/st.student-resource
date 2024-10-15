@@ -16,7 +16,7 @@ return [
      |
      */
 
-    'enabled' => true,
+    'enabled' => false,
     'hide_empty_tabs' => false, // Hide tabs until they have content
     'except' => [
         'telescope*',

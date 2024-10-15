@@ -12,15 +12,11 @@ class ProfileJsonResponse
 {
     /**
      * Handle an incoming request.
-     *
-     * @param Request $request
-     * @param Closure $next
-     * @return mixed
      */
     public function handle(Request $request, Closure $next): mixed
     {
         if (
-            app()->environment(['production']) &&
+            ! app()->environment(['production']) &&
             auth()->check() &&
             app()->bound('debugbar')
         ) {
