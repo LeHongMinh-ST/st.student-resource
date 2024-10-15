@@ -148,6 +148,7 @@ class GeneralClassController extends Controller
     {
         $this->authorize('admin.class.index');
 
+        $generalClass->load('teacher');
         // Return a JSON response with the generated token and the admin API section
         return new GeneralClassResource($generalClass);
     }

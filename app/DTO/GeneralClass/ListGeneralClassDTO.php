@@ -16,6 +16,7 @@ class ListGeneralClassDTO extends BaseListDTO implements BaseDTO
     private ?int $teacherId;
 
     private ?string $code;
+    private ?int $facultyId;
 
     public function __construct()
     {
@@ -24,6 +25,17 @@ class ListGeneralClassDTO extends BaseListDTO implements BaseDTO
         $this->status = null;
         $this->teacherId = null;
         $this->code = null;
+        $this->facultyId = null;
+    }
+
+    public function getFacultyId(): ?int
+    {
+        return $this->facultyId;
+    }
+
+    public function setFacultyId(?int $facultyId): void
+    {
+        $this->facultyId = $facultyId;
     }
 
     public function getTeacherId(): ?int
