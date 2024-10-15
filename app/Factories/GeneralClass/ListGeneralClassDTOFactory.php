@@ -14,6 +14,8 @@ class ListGeneralClassDTOFactory
     {
         // Create a new ListFacultyCommand object
         $command = new ListGeneralClassDTO();
+        $command->setStatus($request->status);
+        $command->setFacultyId(auth()->user()->faculty_id);
 
         // Set command properties based on the request parameters, if they exist
         return MakeDataHelper::makeListData($request, $command);

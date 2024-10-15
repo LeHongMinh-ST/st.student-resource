@@ -39,12 +39,6 @@ class UpdateGeneralClassRequest extends FormRequest
             ],
             'status' => 'nullable',
             'teacher_id' => 'nullable|integer',
-            'major_id' => [
-                'nullable',
-                'integer',
-                Rule::requiredIf($this->type === ClassType::Major->value ||
-                    ClassType::Major === $this->generalClass?->type),
-            ],
         ];
     }
 }

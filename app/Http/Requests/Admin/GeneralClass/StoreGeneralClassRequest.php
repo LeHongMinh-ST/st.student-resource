@@ -37,11 +37,6 @@ class StoreGeneralClassRequest extends FormRequest
                 Rule::unique('classes', 'code'),
             ],
             'status' => 'nullable',
-            'major_id' => [
-                'nullable',
-                Rule::requiredIf($this->type === ClassType::Major->value),
-                'integer',
-            ],
         ];
     }
 }
