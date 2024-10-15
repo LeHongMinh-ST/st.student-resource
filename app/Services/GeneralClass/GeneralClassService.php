@@ -8,6 +8,7 @@ use App\DTO\GeneralClass\CreateGeneralClassDTO;
 use App\DTO\GeneralClass\ListGeneralClassDTO;
 use App\DTO\GeneralClass\UpdateGeneralClassDTO;
 use App\Models\GeneralClass;
+use Illuminate\Validation\ValidationException;
 
 class GeneralClassService
 {
@@ -17,6 +18,9 @@ class GeneralClassService
             ->when($listFacultyDTO->getTeacherId(), fn ($q) => $q->where('teacher_id', $listFacultyDTO->getTeacherId()))
             ->when($listFacultyDTO->getQ(), fn ($q) => $q->where('name', 'like', $listFacultyDTO->getQ()))
             ->when($listFacultyDTO->getCode(), fn ($q) => $q->where('code', $listFacultyDTO->getCode()))
+            ->when($listFacultyDTO->getFacultyId(), fn ($q) => $q->where('faculty_id', $listFacultyDTO->getFacultyId()))
+            ->when($listFacultyDTO->getStatus(), fn ($q) => $q->where('status', $listFacultyDTO->getStatus()))
+            ->with(['teacher'])
             ->orderBy($listFacultyDTO->getOrderBy(), $listFacultyDTO->getOrder()->value);
 
         return $listFacultyDTO->getPage() ? $query->paginate($listFacultyDTO->getLimit()) : $query->get();
@@ -38,6 +42,11 @@ class GeneralClassService
     public function delete(mixed $id): bool
     {
         $generalClass = $this->getGeneralClassById($id);
+        if ($generalClass->students->count()) {
+            throw ValidationException::withMessages(
+                ['message' => 'Lớp học đang được sử dụng bởi sinh viên']
+            );
+        }
 
         return $generalClass->delete();
     }
