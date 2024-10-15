@@ -29,6 +29,7 @@ class UserResource extends JsonResource
             'thumbnail' => $this->thumbnail_path,
             'department_id' => $this->department_id,
             'role' => $this->role,
+            'faculty_id' => $this->faculty_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'faculty' => new FacultyForLoadResource($this->whenLoaded('faculty')),
