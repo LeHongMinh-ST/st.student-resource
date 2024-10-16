@@ -15,16 +15,6 @@ class ListStudentDTO extends BaseListDTO implements BaseDTO
     private ?int $admissionYearId;
     private ?int $classId;
 
-    public function getClassId(): ?int
-    {
-        return $this->classId;
-    }
-
-    public function setClassId(?int $classId): void
-    {
-        $this->classId = $classId;
-    }
-
     public function __construct()
     {
         parent::__construct();
@@ -33,6 +23,16 @@ class ListStudentDTO extends BaseListDTO implements BaseDTO
         $this->classId = null;
         $this->admissionYearId = null;
         $this->orderBy = 'first_name';
+    }
+
+    public function getClassId(): ?int
+    {
+        return $this->classId;
+    }
+
+    public function setClassId(?int $classId): void
+    {
+        $this->classId = $classId;
     }
 
     public function getQ(): ?string
