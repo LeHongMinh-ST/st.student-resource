@@ -46,10 +46,28 @@ class StudentService
             )
             ->when($listStudentDTO->getStatus(), fn ($q) => $q->where('status', $listStudentDTO->getStatus()))
             ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
+            ->when($listStudentDTO->getClassId(), fn ($q) => $q->whereHas('generalClass', fn ($q) => $q->where('classes.id', $listStudentDTO->getClassId())))
             ->with(['info', 'currentClass', 'families'])
             ->orderBy($listStudentDTO->getOrderBy(), $listStudentDTO->getOrder()->value);
 
         return $listStudentDTO->getPage() ? $query->paginate($listStudentDTO->getLimit()) : $query->get();
+    }
+
+    public function getTotalStudent(ListStudentDTO $listStudentDTO): int
+    {
+        return Student::query()
+            ->when($listStudentDTO->getAdmissionYearId(), fn ($q) => $q->where('admission_year_id', $listStudentDTO->getAdmissionYearId()))
+            ->when(
+                $listStudentDTO->getQ(),
+                fn ($q) => $q
+                    ->where(DB::raw("CONCAT(last_name, ' ', first_name)"), 'like', '%' . $listStudentDTO->getQ() . '%')
+                    ->orWhere('email', 'like', '%' . $listStudentDTO->getQ() . '%')
+                    ->orWhere('code', 'like', '%' . $listStudentDTO->getQ() . '%')
+            )
+            ->when($listStudentDTO->getStatus(), fn ($q) => $q->where('status', $listStudentDTO->getStatus()))
+            ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
+            ->when($listStudentDTO->getClassId(), fn ($q) => $q->whereHas('generalClass', fn ($q) => $q->where('classes.id', $listStudentDTO->getClassId())))
+            ->count();
     }
 
     /**
