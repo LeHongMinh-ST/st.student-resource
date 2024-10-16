@@ -26,6 +26,7 @@ use App\Supports\Constants;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Knuckles\Scribe\Attributes\Response as ResponseApi;
 use Knuckles\Scribe\Attributes\ResponseFromApiResource;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,8 +46,7 @@ class StudentController extends Controller
     public function __construct(
         private readonly StudentService         $studentService,
         private readonly ExcelImportFileService $excelImportFileService,
-    ) {
-    }
+    ) {}
 
     /**
      * List of student
@@ -55,7 +55,7 @@ class StudentController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param ListStudentRequest $request The HTTP request object containing the role ID.
+     * @param  ListStudentRequest  $request  The HTTP request object containing the role ID.
      * @return StudentCollection Returns the list of Student.
      */
     #[ResponseFromApiResource(StudentCollection::class, Student::class, Response::HTTP_OK, with: [
@@ -68,6 +68,28 @@ class StudentController extends Controller
 
         // The StudentCollection may format the data as needed before sending it as a response
         return new StudentCollection($this->studentService->getList($command));
+    }
+
+    /**
+     * Get total student
+     *
+     * This endpoint lets you views list a Student
+     *
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @param  ListStudentRequest  $request  The HTTP request object containing the role ID.
+     * @return JsonResponse Returns the list of Student.
+     */
+    #[ResponseApi(content: [
+        'total' => 1,
+    ], status: 200)]
+    public function getTotalStudent(ListStudentRequest $request): JsonResponse
+    {
+        // Create a ListStudentDTOFactory object using the provided request
+        $command = ListStudentDTOFactory::make($request);
+
+        // The StudentCollection may format the data as needed before sending it as a response
+        return $this->json(['total' => $this->studentService->getTotalStudent($command)]);
     }
 
     /**
