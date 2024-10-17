@@ -26,6 +26,7 @@ use App\Supports\Constants;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Knuckles\Scribe\Attributes\Response as ResponseApi;
 use Knuckles\Scribe\Attributes\ResponseFromApiResource;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,7 +56,7 @@ class StudentController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param ListStudentRequest $request The HTTP request object containing the role ID.
+     * @param  ListStudentRequest  $request  The HTTP request object containing the role ID.
      * @return StudentCollection Returns the list of Student.
      */
     #[ResponseFromApiResource(StudentCollection::class, Student::class, Response::HTTP_OK, with: [
@@ -71,11 +72,33 @@ class StudentController extends Controller
     }
 
     /**
+     * Get total student
+     *
+     * This endpoint lets you views list a Student
+     *
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @param  ListStudentRequest  $request  The HTTP request object containing the role ID.
+     * @return JsonResponse Returns the list of Student.
+     */
+    #[ResponseApi(content: [
+        'total' => 1,
+    ], status: 200)]
+    public function getTotalStudent(ListStudentRequest $request): JsonResponse
+    {
+        // Create a ListStudentDTOFactory object using the provided request
+        $command = ListStudentDTOFactory::make($request);
+
+        // The StudentCollection may format the data as needed before sending it as a response
+        return $this->json(['total' => $this->studentService->getTotalStudent($command)]);
+    }
+
+    /**
      * Create student
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param CreateStudentRequest $request The HTTP request object containing student data.
+     * @param  CreateStudentRequest  $request  The HTTP request object containing student data.
      * @return StudentResource Returns the newly StudentResource as a resource.
      *
      * @throws CreateResourceFailedException
@@ -102,10 +125,8 @@ class StudentController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param Student $student
-     * @param ShowStudentRequest $request The HTTP request object containing student data.
+     * @param  ShowStudentRequest  $request  The HTTP request object containing student data.
      * @return StudentResource Returns the newly UserResource as a resource.
-     *
      */
     #[ResponseFromApiResource(StudentResource::class, Student::class, Response::HTTP_OK, with: [
         'info', 'faculty', 'families',
@@ -123,8 +144,7 @@ class StudentController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param Student $student
-     * @param UpdateStudentRequest $request The HTTP request object containing student data.
+     * @param  UpdateStudentRequest  $request  The HTTP request object containing student data.
      * @return StudentResource Returns the newly UserResource as a resource.
      *
      * @throws UpdateResourceFailedException
@@ -151,7 +171,7 @@ class StudentController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param Student $student The student entity to be deleted.
+     * @param  Student  $student  The student entity to be deleted.
      * @return JsonResponse Returns a response with no content upon successful deletion.
      *
      * @response 204 Indicates that the response will be a 204 No Content status.
@@ -220,12 +240,9 @@ class StudentController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param ExcelImportFile $excelImportFileError
-     *
-     * @return StreamedResponse
      * @throws AuthorizationException
-     * @response 200
      *
+     * @response 200
      */
     public function downloadErrorImportCourse(ExcelImportFile $excelImportFileError): StreamedResponse
     {

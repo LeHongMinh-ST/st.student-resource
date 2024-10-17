@@ -30,6 +30,9 @@ class ListStudentDTOFactory
         if ($request->has('q')) {
             $command->setQ($request->get('q'));
         }
+        if ($request->has('class_id')) {
+            $command->setClassId((int) $request->get('class_id'));
+        }
 
         return $command;
     }

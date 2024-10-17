@@ -53,6 +53,7 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
 
     Route::prefix('students')->group(function (): void {
         Route::get('/', [StudentController::class, 'index']);
+        Route::get('/total', [StudentController::class, 'getTotalStudent']);
         Route::post('/', [StudentController::class, 'store']);
         Route::post('/import-course', [StudentController::class, 'importCourse']);
         Route::get('/import-course/{excelImportFileError}/download-error', [StudentController::class, 'downloadErrorImportCourse']);
