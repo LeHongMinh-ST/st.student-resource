@@ -16,7 +16,7 @@ class GeneralClassService
 {
     public function getList(ListGeneralClassDTO $listFacultyDTO): \Illuminate\Database\Eloquent\Collection|\Illuminate\Contracts\Pagination\LengthAwarePaginator|array
     {
-        $auth = auth(AuthApiSection::Admin)->user();
+        $auth = auth(AuthApiSection::Admin->value)->user();
 
         $query = GeneralClass::query()
             ->when(UserRole::Teacher === $auth->role, fn ($q) => $q->where('teacher_id', $auth->id))
