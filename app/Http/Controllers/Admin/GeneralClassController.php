@@ -9,6 +9,7 @@ use App\Factories\GeneralClass\ListGeneralClassDTOFactory;
 use App\Factories\GeneralClass\UpdateGeneralClassDTOFactory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\GeneralClass\ListGeneralClassRequest;
+use App\Http\Requests\Admin\GeneralClass\ShowGeneralClassRequest;
 use App\Http\Requests\Admin\GeneralClass\StoreGeneralClassRequest;
 use App\Http\Requests\Admin\GeneralClass\UpdateGeneralClassRequest;
 use App\Http\Resources\GeneralClass\GeneralClassCollection;
@@ -136,18 +137,15 @@ class GeneralClassController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param  Request  $request  The HTTP request object containing student data.
+     * @param  ShowGeneralClassRequest  $request  The HTTP request object containing student data.
      * @return GeneralClassResource Returns the newly GeneralClassResource as a resource.
      *
-     * @throws AuthorizationException
      */
     #[ResponseFromApiResource(GeneralClassResource::class, GeneralClass::class, Response::HTTP_OK, with: [
         'faculty',
     ])]
-    public function show(GeneralClass $generalClass, Request $request): GeneralClassResource
+    public function show(GeneralClass $generalClass, ShowGeneralClassRequest $request): GeneralClassResource
     {
-        $this->authorize('admin.class.index');
-
         $generalClass->load('teacher');
         // Return a JSON response with the generated token and the admin API section
         return new GeneralClassResource($generalClass);
