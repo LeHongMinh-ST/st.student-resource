@@ -7,6 +7,8 @@ namespace App\Services\GeneralClass;
 use App\DTO\GeneralClass\CreateGeneralClassDTO;
 use App\DTO\GeneralClass\ListGeneralClassDTO;
 use App\DTO\GeneralClass\UpdateGeneralClassDTO;
+use App\Enums\AuthApiSection;
+use App\Enums\UserRole;
 use App\Models\GeneralClass;
 use Illuminate\Validation\ValidationException;
 
@@ -14,7 +16,10 @@ class GeneralClassService
 {
     public function getList(ListGeneralClassDTO $listFacultyDTO): \Illuminate\Database\Eloquent\Collection|\Illuminate\Contracts\Pagination\LengthAwarePaginator|array
     {
+        $auth = auth(AuthApiSection::Admin)->user();
+
         $query = GeneralClass::query()
+            ->when(UserRole::Teacher === $auth->role, fn ($q) => $q->where('teacher_id', $auth->id))
             ->when($listFacultyDTO->getTeacherId(), fn ($q) => $q->where('teacher_id', $listFacultyDTO->getTeacherId()))
             ->when($listFacultyDTO->getQ(), fn ($q) => $q->where('name', 'like', $listFacultyDTO->getQ()))
             ->when($listFacultyDTO->getCode(), fn ($q) => $q->where('code', $listFacultyDTO->getCode()))
