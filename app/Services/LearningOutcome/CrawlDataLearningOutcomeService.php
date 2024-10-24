@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\LearningOutcome;
 
 use App\Models\Student;
@@ -7,54 +9,11 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\DomCrawler\Crawler;
+use Throwable;
 use Weidner\Goutte\GoutteFacade;
 
 class CrawlDataLearningOutcomeService
 {
-
-    public function crawlData($studentCode): bool
-    {
-        try {
-            DB::beginTransaction();
-            $url = "https://daotao.vnua.edu.vn/Default.aspx?page=xemdiemthi&id={$studentCode}";
-            $crawler = GoutteFacade::request('GET', $url);
-            $selectors = $crawler->filter('.view-table tr');
-
-            $dataCrawler = $this->__processSelectors($selectors);
-            if (empty($dataCrawler)) {
-                throw new Exception('Empty data crawler');
-            }
-
-            $student = Student::query()->where(['code' => $studentCode])->first();
-            foreach ($dataCrawler as $process) {
-                $learningOutcomes = $student->learningOutcomes()->updateOrCreate([
-                    'semester' => $process['semester'],
-                    'year_school_start' => $process['year_school_start'],
-                    'year_school_end' => $process['year_school_end']
-                ], $process);
-
-                if (!empty($process['detail'])) {
-                    foreach ($process['detail'] as $detail) {
-                        $learningOutcomes->detail()->updateOrCreate([
-                            'order' => $detail['order']
-                        ], $detail);
-                    }
-                }
-            }
-
-            DB::commit();
-            return true;
-        } catch (\Throwable $exception) {
-            DB::rollBack();
-            Log::error('Error service crawl data learning', [
-                'method' => __METHOD__,
-                'message' => $exception->getMessage(),
-                'trace' => $exception->getTraceAsString()
-            ]);
-            return false;
-        }
-    }
-
     private function __processSelectors(Crawler $selectors): array
     {
         $dataCrawler = [];
@@ -70,9 +29,7 @@ class CrawlDataLearningOutcomeService
                     $dataCrawler[$key]['title-hk-diem'] = $domElement->text();
                     break;
                 case 'row-diem':
-                    $dataCrawler[$key]['row-diem'][] = $domElement->children()->each(function ($element) {
-                        return $element->text();
-                    });
+                    $dataCrawler[$key]['row-diem'][] = $domElement->children()->each(fn ($element) => $element->text());
                     break;
                 case 'row-diemTK':
                     $dataCrawler[$key]['row-diemTK'][] = $domElement->filter('span')->eq(1)->text();
@@ -145,5 +102,48 @@ class CrawlDataLearningOutcomeService
         $title = str_replace("Năm học", "", $title);
         $title = str_replace(" ", "", $title);
         return explode('-', $title);
+    }
+
+    public function crawlData($studentCode): bool
+    {
+        try {
+            DB::beginTransaction();
+            $url = "https://daotao.vnua.edu.vn/Default.aspx?page=xemdiemthi&id={$studentCode}";
+            $crawler = GoutteFacade::request('GET', $url);
+            $selectors = $crawler->filter('.view-table tr');
+
+            $dataCrawler = $this->__processSelectors($selectors);
+            if (empty($dataCrawler)) {
+                throw new Exception('Empty data crawler');
+            }
+
+            $student = Student::query()->where(['code' => $studentCode])->first();
+            foreach ($dataCrawler as $process) {
+                $learningOutcomes = $student->learningOutcomes()->updateOrCreate([
+                    'semester' => $process['semester'],
+                    'year_school_start' => $process['year_school_start'],
+                    'year_school_end' => $process['year_school_end']
+                ], $process);
+
+                if (!empty($process['detail'])) {
+                    foreach ($process['detail'] as $detail) {
+                        $learningOutcomes->detail()->updateOrCreate([
+                            'order' => $detail['order']
+                        ], $detail);
+                    }
+                }
+            }
+
+            DB::commit();
+            return true;
+        } catch (Throwable $exception) {
+            DB::rollBack();
+            Log::error('Error service crawl data learning', [
+                'method' => __METHOD__,
+                'message' => $exception->getMessage(),
+                'trace' => $exception->getTraceAsString()
+            ]);
+            return false;
+        }
     }
 }
