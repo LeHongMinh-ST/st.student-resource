@@ -35,7 +35,7 @@ class LearningOutcome extends Model
         return $this->belongsTo(Student::class);
     }
 
-    public function learningOutcomeDetails(): HasMany
+    public function detail(): HasMany
     {
         return $this->hasMany(LearningOutcomeDetail::class);
     }
