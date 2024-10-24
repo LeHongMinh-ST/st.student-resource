@@ -52,9 +52,6 @@ class CreateStudentQuitByFileCsvJob implements ShouldQueue
         ExcelImportFileJob   $excelImportFileJobModel,
         StudentService       $studentService
     ): void {
-        // Store job into the database if a Job ID exists.
-        $this->storeJob($this->job->getJobId(), $this->excelImportFileId, $excelImportFileJobModel);
-
 
         // Get file path and load CSV file content.
         $filePath = $this->getFilePath($this->fileName);
@@ -100,6 +97,10 @@ class CreateStudentQuitByFileCsvJob implements ShouldQueue
             }
             $rowStart++;
         }
+
+        // Store job into the database if a Job ID exists.
+        $this->storeJob($this->job->getJobId(), $this->excelImportFileId, $excelImportFileJobModel);
+
 
         // Delete the file if no errors occurred.
         if (!$hasError) {
