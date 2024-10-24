@@ -121,6 +121,8 @@ class CreateStudentByFileCsvJob implements ShouldQueue
                 $excelImportFileModel->where('id', $this->excelImportFileId)
                     ->increment('process_record');
 
+                CrawlDataLearningOutcomeJob::dispatch($student)->onQueue('default');
+
             } catch (Exception $exception) {
                 $hasError = true;
                 $this->handleException($exception, $rowStart, $excelImportFileErrorModel, $this->excelImportFileId);

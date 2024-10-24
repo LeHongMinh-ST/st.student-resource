@@ -92,6 +92,12 @@ class Student extends Authenticatable implements JWTSubject
         return $this->morphOne(ExcelImportFileRecord::class, 'tableable', 'table_type', 'table_id');
     }
 
+    public function learningOutcomes(): HasMany
+    {
+        return $this->hasMany(LearningOutcome::class)->with(['detail']);
+    }
+
+
     public function graduationCeremonies(): BelongsToMany
     {
         return $this->belongsToMany(GraduationCeremony::class, 'graduation_ceremony_students', 'student_id', 'graduation_ceremony_id')
