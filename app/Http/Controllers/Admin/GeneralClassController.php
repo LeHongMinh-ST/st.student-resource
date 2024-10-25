@@ -142,11 +142,11 @@ class GeneralClassController extends Controller
      *
      */
     #[ResponseFromApiResource(GeneralClassResource::class, GeneralClass::class, Response::HTTP_OK, with: [
-        'faculty',
+        'faculty', 'studentPresident', 'studentSecretary',
     ])]
     public function show(GeneralClass $generalClass, ShowGeneralClassRequest $request): GeneralClassResource
     {
-        $generalClass->load('teacher');
+        $generalClass->load('teacher', 'faculty', 'studentPresident', 'studentSecretary');
         // Return a JSON response with the generated token and the admin API section
         return new GeneralClassResource($generalClass);
     }
