@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\GeneralClass;
 
+use App\Enums\StudentRole;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -22,6 +23,7 @@ class GeneralClassForStudentResource extends JsonResource
             'name' => $this->name,
             'type' => $this->type,
             'status' => $this->status,
+            'role' => $this->role ?? StudentRole::Basic,
         ];
     }
 }

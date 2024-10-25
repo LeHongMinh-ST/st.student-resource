@@ -72,7 +72,8 @@ class Student extends Authenticatable implements JWTSubject
     {
         return $this->hasOneThrough(GeneralClass::class, ClassStudent::class, 'student_id', 'id', 'id', 'class_id')
             ->whereIn('classes.type', [ClassType::Basic, ClassType::Major])
-            ->where('class_students.status', Status::Enable);
+            ->where('class_students.status', Status::Enable)
+            ->select('classes.*', 'class_students.role as role');
     }
 
     public function reflects(): HasMany
