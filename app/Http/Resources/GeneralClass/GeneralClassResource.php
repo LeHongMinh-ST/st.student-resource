@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Resources\GeneralClass;
 
 use App\Http\Resources\Faculty\FacultyForLoadResource;
+use App\Http\Resources\Student\StudentResource;
 use App\Http\Resources\User\UserForLoadResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -31,6 +32,10 @@ class GeneralClassResource extends JsonResource
             'updated_at' => $this->updated_at,
             'teacher' => new UserForLoadResource($this->whenLoaded('teacher')),
             'faculty' => new FacultyForLoadResource($this->whenLoaded('faculty')),
+            'officer' => [
+                'student_president' => new StudentResource($this->whenLoaded('studentPresident')),
+                'student_secretary' => new StudentResource($this->whenLoaded('studentSecretary')),
+            ]
         ];
     }
 }

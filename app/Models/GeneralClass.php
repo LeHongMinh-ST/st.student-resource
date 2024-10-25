@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\ClassType;
 use App\Enums\Status;
+use App\Enums\StudentRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -45,6 +46,18 @@ class GeneralClass extends Model
         return $this->belongsToMany(Student::class, 'class_students', 'class_id', 'student_id')
             ->withPivot(['status', 'start_date', 'end_date', 'role'])
             ->withTimestamps();
+    }
+
+    public function studentPresident()
+    {
+        return $this->hasOneThrough(Student::class, ClassStudent::class, 'class_id', 'id', 'id', 'student_id')
+            ->where('class_students.role', StudentRole::President);
+    }
+
+    public function studentSecretary()
+    {
+        return $this->hasOneThrough(Student::class, ClassStudent::class, 'class_id', 'id', 'id', 'student_id')
+            ->where('class_students.role', StudentRole::President);
     }
 
     public function teacher(): BelongsTo
