@@ -12,8 +12,6 @@ class StudentWarning extends Model
 {
     use HasFactory;
 
-    public $timestamps = true;
-
     protected $fillable = [
         'warning_id',
         'student_id',
