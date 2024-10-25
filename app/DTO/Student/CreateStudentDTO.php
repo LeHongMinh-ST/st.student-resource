@@ -6,7 +6,6 @@ namespace App\DTO\Student;
 
 use App\DTO\BaseDTO;
 use App\Enums\Gender;
-use App\Enums\StudentRole;
 use App\Enums\StudentStatus;
 use App\Supports\PasswordHelper;
 use App\Supports\SchoolHelper;
@@ -29,8 +28,6 @@ class CreateStudentDTO implements BaseDTO
     private string $password;
 
     private StudentStatus $status;
-
-    private StudentRole $studentRole;
 
     private string $schoolYear;
 
@@ -132,16 +129,6 @@ class CreateStudentDTO implements BaseDTO
         $this->status = $status;
     }
 
-    public function getStudentRole(): StudentRole
-    {
-        return $this->studentRole;
-    }
-
-    public function setStudentRole(StudentRole $studentRole): void
-    {
-        $this->studentRole = $studentRole;
-    }
-
     public function getSchoolYear(): string
     {
         return $this->schoolYear;
@@ -185,7 +172,6 @@ class CreateStudentDTO implements BaseDTO
             'faculty_id' => $this->facultyId,
             'password' => $this->password,
             'status' => $this->status->value,
-            'role' => $this->studentRole->value,
             'school_year' => $this->schoolYear,
             'admission_year' => $this->admissionYear,
             'gender' => $this->gender->value,

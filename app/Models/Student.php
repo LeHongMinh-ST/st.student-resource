@@ -6,7 +6,6 @@ namespace App\Models;
 
 use App\Enums\ClassType;
 use App\Enums\Status;
-use App\Enums\StudentRole;
 use App\Enums\StudentStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -33,7 +32,6 @@ class Student extends Authenticatable implements JWTSubject
         'password',
         'faculty_id',
         'status',
-        'role',
         'admission_year_id',
     ];
 
@@ -65,7 +63,7 @@ class Student extends Authenticatable implements JWTSubject
     public function generalClass(): BelongsToMany
     {
         return $this->belongsToMany(GeneralClass::class, 'class_students', 'student_id', 'class_id')
-            ->withPivot(['status', 'start_date', 'end_date'])
+            ->withPivot(['status', 'start_date', 'end_date', 'role'])
             ->withTimestamps()->using(ClassStudent::class);
     }
 
@@ -140,7 +138,6 @@ class Student extends Authenticatable implements JWTSubject
     {
         return [
             'status' => StudentStatus::class,
-            'role' => StudentRole::class,
             'password' => 'hashed',
         ];
     }

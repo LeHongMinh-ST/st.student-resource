@@ -6,7 +6,6 @@ namespace App\Factories\Student;
 
 use App\DTO\Student\CreateStudentDTO;
 use App\Enums\Gender;
-use App\Enums\StudentRole;
 use App\Http\Requests\Admin\Student\CreateStudentRequest;
 use App\Supports\AvatarHelper;
 use App\Supports\Constants;
@@ -33,7 +32,6 @@ class CreateStudentDTOFactory
         $studentDTO->setLastName($request->get('last_name'));
         $studentDTO->setFirstName($request->get('first_name')); // Corrected "last_name" to "first_name"
         $studentDTO->setGender(Gender::from($request->get('gender')));
-        $studentDTO->setStudentRole(StudentRole::from($request->get('role')));
         $studentDTO->setSchoolYear($request->get('school_year'));
         $studentDTO->setPassword($request->get('password') ?? PasswordHelper::makePassword());
 
