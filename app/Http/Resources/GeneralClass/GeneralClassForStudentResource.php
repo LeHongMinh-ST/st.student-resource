@@ -23,7 +23,7 @@ class GeneralClassForStudentResource extends JsonResource
             'name' => $this->name,
             'type' => $this->type,
             'status' => $this->status,
-            'role' => $this->role ?? StudentRole::Basic,
+            'student_role' => $this->role ?? StudentRole::Basic,
         ];
     }
 }
