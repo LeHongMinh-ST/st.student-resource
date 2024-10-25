@@ -129,11 +129,11 @@ class StudentController extends Controller
      * @return StudentResource Returns the newly UserResource as a resource.
      */
     #[ResponseFromApiResource(StudentResource::class, Student::class, Response::HTTP_OK, with: [
-        'info', 'faculty', 'families',
+        'info', 'faculty', 'families', 'currentClass'
     ])]
     public function show(Student $student, ShowStudentRequest $request): StudentResource
     {
-        $student->load(['info', 'faculty', 'families']);
+        $student->load(['info', 'faculty', 'families', 'currentClass']);
 
         // Return a JSON response with the generated token and the admin API section
         return new StudentResource($student);
