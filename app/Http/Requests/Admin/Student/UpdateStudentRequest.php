@@ -6,7 +6,6 @@ namespace App\Http\Requests\Admin\Student;
 
 use App\Enums\Gender;
 use App\Enums\SocialPolicyObject;
-use App\Enums\StudentRole;
 use App\Enums\TrainingType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
@@ -35,7 +34,6 @@ class UpdateStudentRequest extends FormRequest
             'last_name' => ['nullable', 'string', 'max:255', 'min:2'],
             'first_name' => ['nullable', 'max:255', 'min:1'],
             'code' => ['nullable', Rule::unique('students', 'code')->ignore($studentId), 'string'],
-            'role' => ['nullable', Rule::enum(StudentRole::class)],
             'gender' => ['nullable', Rule::enum(Gender::class)],
             'thumbnail' => ['nullable', 'file', 'mimes:jpeg,jpg,png', 'max:1024'],
             'person_email' => ['nullable', 'email', 'max:255'],

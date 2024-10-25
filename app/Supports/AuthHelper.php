@@ -24,8 +24,9 @@ class AuthHelper
         // Get the authentication details for the Student section
         $auth = auth(AuthApiSection::Student->value);
 
-        // Retrieve the role of the authenticated user
-        $role = $auth->user()->role;
+        $student = $auth->user();
+
+        $role = $student->currentClass->role;
 
         // Check if the user's role is in the list of provided roles
         return in_array($role, $roles);

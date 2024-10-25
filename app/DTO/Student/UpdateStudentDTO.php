@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\DTO\Student;
 
 use App\DTO\BaseDTO;
-use App\Enums\StudentRole;
 use App\Enums\StudentStatus;
 use App\Supports\StudentHelper;
 
@@ -24,9 +23,6 @@ class UpdateStudentDTO implements BaseDTO
     private ?int $facultyId;
 
     private ?StudentStatus $status;
-
-    private ?StudentRole $studentRole;
-
     private UpdateStudentInfoDTO $infoDTO;
 
     public function __construct()
@@ -34,7 +30,6 @@ class UpdateStudentDTO implements BaseDTO
         $this->infoDTO = new UpdateStudentInfoDTO();
         $this->facultyId = null;
         $this->status = null;
-        $this->studentRole = null;
     }
 
     public function getId(): int
@@ -113,16 +108,6 @@ class UpdateStudentDTO implements BaseDTO
         $this->status = $status;
     }
 
-    public function getStudentRole(): StudentRole
-    {
-        return $this->studentRole;
-    }
-
-    public function setStudentRole(StudentRole $studentRole): void
-    {
-        $this->studentRole = $studentRole;
-    }
-
     public function getSchoolYear(): string
     {
         return $this->schoolYear;
@@ -147,7 +132,6 @@ class UpdateStudentDTO implements BaseDTO
             'email' => $this->email,
             'faculty_id' => $this->facultyId,
             'status' => $this->status?->value,
-            'role' => $this->studentRole?->value,
         ], fn ($value) => null !== $value);
     }
 

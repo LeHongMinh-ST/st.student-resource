@@ -29,7 +29,6 @@ class StudentResource extends JsonResource
             'admission_year' => new AdmissionYearResource($this->whenLoaded('admissionYear')),
             'faculty' => new FacultyForLoadResource($this->faculty),
             'status' => $this->status,
-            'role' => $this->role,
             'info' => new StudentInfoResource($this->whenLoaded('info')),
             'families' => StudentFamilyResource::collection($this->whenLoaded('families')),
             'currentClass' => new GeneralClassForStudentResource($this->whenLoaded('currentClass')),

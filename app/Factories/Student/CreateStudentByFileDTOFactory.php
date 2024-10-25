@@ -9,7 +9,6 @@ use App\DTO\Student\CreateStudentCourseByFileDTO;
 use App\DTO\Student\CreateStudentInfoByFileImportDTO;
 use App\Enums\FamilyRelationship;
 use App\Enums\Gender;
-use App\Enums\StudentRole;
 use App\Enums\TrainingType;
 use App\Supports\AvatarHelper;
 use App\Supports\Constants;
@@ -35,7 +34,6 @@ class CreateStudentByFileDTOFactory
         $fullName = explode(' ', $data['full_name']);
         $command->setFirstName(array_pop($fullName));
         $command->setLastName(implode(' ', $fullName));
-        $command->setStudentRole(StudentRole::Basic);
         $command->setAdmissionYearId($data['admission_year_id']);
 
         // Handle thumbnail image upload or generate an avatar if no image is uploaded

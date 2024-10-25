@@ -7,7 +7,6 @@ namespace App\Factories\Student;
 use App\DTO\Student\UpdateStudentDTO;
 use App\DTO\Student\UpdateStudentInfoDTO;
 use App\Enums\Gender;
-use App\Enums\StudentRole;
 use App\Enums\TrainingType;
 use App\Http\Requests\Admin\Student\UpdateStudentRequest;
 use App\Models\Student;
@@ -34,8 +33,6 @@ class UpdateStudentDTOFactory
         $studentDTO->setCode($request->get('code'));
         $studentDTO->setLastName($request->get('last_name'));
         $studentDTO->setFirstName($request->get('first_name')); // Corrected "last_name" to "first_name"
-        $studentDTO->setStudentRole($request->has('role') ? StudentRole::from($request->get('role')) : null);
-
         // Handle thumbnail image upload or generate an avatar if no image is uploaded
         $path = null;
         if ($request->hasFile('thumbnail') && $request->file('thumbnail') instanceof UploadedFile) {
