@@ -12,8 +12,6 @@ class StudentQuit extends Model
 {
     use HasFactory;
 
-    public $timestamps = true;
-
     protected $fillable = [
         'note_quit',
         'quit_id',
