@@ -16,12 +16,12 @@ class ClassStudent extends Pivot
 
     protected $fillable = ['class_id', 'student_id', 'end_date', 'start_date', 'status', 'role'];
 
+    protected $casts = [
+        'role' => StudentRole::class,
+    ];
+
     public function generalClass(): void
     {
         $this->belongsTo(GeneralClass::class, 'class_id', 'id');
     }
-
-    protected $casts = [
-        'role' => StudentRole::class,
-    ];
 }
