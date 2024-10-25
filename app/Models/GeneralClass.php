@@ -43,7 +43,7 @@ class GeneralClass extends Model
     public function students(): BelongsToMany
     {
         return $this->belongsToMany(Student::class, 'class_students', 'class_id', 'student_id')
-            ->withPivot(['status', 'start_date', 'end_date'])
+            ->withPivot(['status', 'start_date', 'end_date', 'role'])
             ->withTimestamps();
     }
 
