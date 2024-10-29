@@ -33,6 +33,9 @@ class ListStudentDTOFactory
         if ($request->has('class_id')) {
             $command->setClassId((int) $request->get('class_id'));
         }
+        if ($request->has('graduation_id')) {
+            $command->setGraduationId((int) $request->get('graduation_id'));
+        }
 
         return $command;
     }

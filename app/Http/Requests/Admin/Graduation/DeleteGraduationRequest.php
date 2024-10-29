@@ -14,7 +14,7 @@ class DeleteGraduationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.graduation.delete');
+        return Gate::allows('admin.graduation.destroy');
     }
 
     /**

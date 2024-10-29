@@ -2,19 +2,20 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Admin\Graduation;
+namespace App\Http\Requests\Admin\SchoolYear;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\ListRequest;
+use App\Models\AdmissionYear;
 use Illuminate\Support\Facades\Gate;
 
-class UpdateGraduationRequest extends FormRequest
+class ListSchoolYearRequest extends ListRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.graduation.create');
+        return Gate::allows('admin.admission.index');
     }
 
     /**
@@ -25,13 +26,14 @@ class UpdateGraduationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:255',
-            'school_year_id' => [
-                'nullable',
-                'exists:school_years,id',
-            ],
-            'certification' => 'required',
-            'certification_date' => 'required',
+            'admission_year' => 'nullable',
+            'school_year' => 'nullable',
+            ...parent::rules(),
         ];
+    }
+
+    protected function getOrderByRuleModel(): string
+    {
+        return AdmissionYear::class;
     }
 }

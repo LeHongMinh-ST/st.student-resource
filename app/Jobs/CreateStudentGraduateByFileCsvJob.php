@@ -12,7 +12,6 @@ use App\Models\ExcelImportFileJob;
 use App\Models\Faculty;
 use App\Models\GraduationCeremonyStudent;
 use App\Models\Student;
-use App\Services\Student\StudentService;
 use App\Traits\HandlesCsvImportJob;
 use Exception;
 use Illuminate\Bus\Queueable;
@@ -41,18 +40,18 @@ class CreateStudentGraduateByFileCsvJob implements ShouldQueue
         private readonly int     $userId,
         private readonly int     $graduationCeremonyId,
     ) {
-
     }
 
     /**
      * Execute the job.
+     *
      * @throws Exception
      */
     public function handle(
         ExcelImportFile      $excelImportFileModel,
         ExcelImportFileError $excelImportFileErrorModel,
         ExcelImportFileJob   $excelImportFileJobModel,
-        StudentService       $studentService
+        GraduationCeremonyStudent $graduationCeremonyStudent
     ): void {
         // Get file path and load CSV file content.
         $filePath = $this->getFilePath($this->fileName);
@@ -65,27 +64,32 @@ class CreateStudentGraduateByFileCsvJob implements ShouldQueue
 
         // Remove row header from worksheet
         array_shift($worksheet);
-        foreach ($worksheet as $row) {
-            try {
-                $student = $studentService->getStudentByCode($row['code']);
 
-                // Prepare data for GraduationCeremonyStudent table.
-                $studentGraduateData = [
+        // Map row data with row header
+        $listRowMapKey = collect($worksheet)->map(fn ($item) => array_combine($rowHeader, $item))->toArray();
+        $listStudent = Student::with(['graduationCeremonies'])->whereIn('code', Arr::pluck($listRowMapKey, 'code'))->get();
+
+        foreach ($listRowMapKey as $rowMapKey) {
+            try {
+                $student = $listStudent->where('code', $rowMapKey['code'])->first();
+                if (null === $student) {
+                    throw new Exception('Student not found');
+                }
+                if ($student->graduationCeremonies->count()) {
+                    throw new Exception('Student has graduated');
+                }
+
+                $graduationCeremonyStudentData = [
                     'graduation_ceremony_id' => $this->graduationCeremonyId,
                     'student_id' => $student->id,
                 ];
+                // Prepare data for GraduationCeremonyStudent table.
+                $rowMapKey = array_merge($rowMapKey, $graduationCeremonyStudentData);
 
-                $studentGraduate = GraduationCeremonyStudent::query()->updateOrCreate($studentGraduateData);
-
-                foreach ($row as $index => $value) {
-                    if (null === $rowHeader[$index]) {
-                        continue;
-                    }
-                    $studentGraduateData[$rowHeader[$index]] = $value;
-                }
-
-                $studentGraduate->fill($studentGraduateData);
-                $studentGraduate->save();
+                $graduationCeremonyStudent->updateOrCreate(
+                    $graduationCeremonyStudentData,
+                    Arr::only($rowMapKey, $graduationCeremonyStudent->getFillable())
+                );
 
                 // Update student status.
                 $student->status = StudentStatus::Graduated;
@@ -104,9 +108,8 @@ class CreateStudentGraduateByFileCsvJob implements ShouldQueue
         // Store job into the database if a Job ID exists.
         $this->storeJob($this->job->getJobId(), $this->excelImportFileId, $excelImportFileJobModel);
 
-
         // Delete the file if no errors occurred.
-        if (!$hasError) {
+        if (! $hasError) {
             $this->deleteFile($filePath);
         }
 

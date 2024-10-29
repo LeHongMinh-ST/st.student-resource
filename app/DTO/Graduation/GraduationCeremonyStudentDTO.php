@@ -4,12 +4,23 @@ declare(strict_types=1);
 
 namespace App\DTO\Graduation;
 
-class CreateGraduationDTO
+class GraduationCeremonyStudentDTO
 {
+    private int|string $id;
     private string $name;
-    private int $schoolYearId;
+    private string $schoolYear;
     private string $certification;
     private string $certificationDate;
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function setId(int|string $id): void
+    {
+        $this->id = $id;
+    }
 
     public function getName(): string
     {
@@ -21,14 +32,14 @@ class CreateGraduationDTO
         $this->name = $name;
     }
 
-    public function getSchoolYearId(): int
+    public function getSchoolYear(): string
     {
-        return $this->schoolYearId;
+        return $this->schoolYear;
     }
 
-    public function setSchoolYearId(int $schoolYearId): void
+    public function setSchoolYear(string $schoolYear): void
     {
-        $this->schoolYearId = $schoolYearId;
+        $this->schoolYear = $schoolYear;
     }
 
     public function getCertification(): string
@@ -55,7 +66,7 @@ class CreateGraduationDTO
     {
         return [
             'name' => $this->name,
-            'school_year_id' => $this->schoolYearId,
+            'school_year' => $this->schoolYear,
             'certification' => $this->certification,
             'certification_date' => $this->certificationDate,
         ];
