@@ -6,10 +6,12 @@ use App\Enums\AuthApiSection;
 use App\Http\Controllers\Admin\AdmissionYearController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DepartmentController;
+use App\Http\Controllers\Admin\ExcelImportFileController;
 use App\Http\Controllers\Admin\GeneralClassController;
 use App\Http\Controllers\Admin\GraduationController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ReflectController;
+use App\Http\Controllers\Admin\SchoolYearController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\StudentQuitController;
 use App\Http\Controllers\Admin\StudentUpdateRequestController;
@@ -51,6 +53,17 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::get('/{admissionYear}/student-file-imports', [AdmissionYearController::class, 'getListStudentFileImports']);
     });
 
+    Route::prefix('school-year')->group(function (): void {
+        Route::get('/', [SchoolYearController::class, 'index']);
+    });
+
+    Route::prefix('excel-import-files')->group(function (): void {
+        Route::get('/', [ExcelImportFileController::class, 'index']);
+        Route::get('/download-template', [ExcelImportFileController::class, 'downloadTemplateImportFile']);
+        Route::get('/{excelImportFileError}/download-error', [ExcelImportFileController::class, 'downloadErrorImport']);
+        Route::post('/import', [ExcelImportFileController::class, 'importStudent']);
+    });
+
     Route::prefix('students')->group(function (): void {
         Route::get('/', [StudentController::class, 'index']);
         Route::get('/total', [StudentController::class, 'getTotalStudent']);
@@ -87,9 +100,6 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
     Route::prefix('graduates')->group(function (): void {
         Route::get('/', [GraduationController::class, 'index']);
         Route::post('/', [GraduationController::class, 'store']);
-        Route::post('/import-student', [GraduationController::class, 'importStudent']);
-        Route::get('/import-student/{excelImportFileError}/download-error', [GraduationController::class, 'downloadErrorImportCourse']);
-        Route::get('/import-student/download-template', [GraduationController::class, 'downloadTemplateImport']);
         Route::get('/{graduationCeremony}', [GraduationController::class, 'show']);
         Route::patch('/{graduationCeremony}', [GraduationController::class, 'update']);
         Route::delete('/{graduationCeremony}', [GraduationController::class, 'destroy']);

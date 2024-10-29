@@ -104,7 +104,6 @@ class Student extends Authenticatable implements JWTSubject
             ->using(GraduationCeremonyStudent::class);
     }
 
-
     // ---------------------- ACCESSORS AND MUTATORS --------------------//
     public function getFullNameAttribute(): string
     {

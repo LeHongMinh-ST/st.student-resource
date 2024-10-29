@@ -44,10 +44,11 @@ class StudentService
                     ->orWhere('email', 'like', '%' . $listStudentDTO->getQ() . '%')
                     ->orWhere('code', 'like', '%' . $listStudentDTO->getQ() . '%')
             )
+            ->when($listStudentDTO->getGraduationId(), fn ($q) => $q->whereHas('graduationCeremonies', fn ($q) => $q->where('graduation_ceremony_id', $listStudentDTO->getGraduationId())))
             ->when($listStudentDTO->getStatus(), fn ($q) => $q->where('status', $listStudentDTO->getStatus()))
             ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
             ->when($listStudentDTO->getClassId(), fn ($q) => $q->whereHas('generalClass', fn ($q) => $q->where('classes.id', $listStudentDTO->getClassId())))
-            ->with(['info', 'currentClass', 'families'])
+            ->with(['info', 'currentClass', 'families', 'graduationCeremonies'])
             ->orderBy($listStudentDTO->getOrderBy(), $listStudentDTO->getOrder()->value);
 
         return $listStudentDTO->getPage() ? $query->paginate($listStudentDTO->getLimit()) : $query->get();

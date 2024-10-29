@@ -12,7 +12,7 @@ class ImportStudentGraduateDTOFactory
     public static function make(ImportStudentGraduateRequest $importStudentGraduateRequest): ImportStudentGraduateDTO
     {
         $command = new ImportStudentGraduateDTO();
-        $command->setGraduationCeremoniesId($importStudentGraduateRequest->get('graduation_ceremonies_id'));
+        $command->setGraduationCeremoniesId((int) $importStudentGraduateRequest->get('graduation_ceremony_id'));
         $command->setFile($importStudentGraduateRequest->file('file'));
         return $command;
     }
