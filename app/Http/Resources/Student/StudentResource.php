@@ -7,7 +7,6 @@ namespace App\Http\Resources\Student;
 use App\Http\Resources\AdmissionYear\AdmissionYearResource;
 use App\Http\Resources\Faculty\FacultyForLoadResource;
 use App\Http\Resources\GeneralClass\GeneralClassForStudentResource;
-use App\Models\GraduationCeremonyStudent;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -33,11 +32,16 @@ class StudentResource extends JsonResource
             'info' => new StudentInfoResource($this->whenLoaded('info')),
             'families' => StudentFamilyResource::collection($this->whenLoaded('families')),
             'currentClass' => new GeneralClassForStudentResource($this->whenLoaded('currentClass')),
-            'graduate' => $this->whenPivotLoaded(new GraduationCeremonyStudent(), function () {
-                return  [
-                    'gpa' => $this->pivot->gpa,
-                    'email' =>  $this->pivot->email,
-                    'rank' => $this->pivot->rank
+            'graduate' => $this->whenLoaded('graduationCeremonies', function () {
+                $graduate = $this->graduationCeremonies->first();
+                if (! $graduate) {
+                    return null;
+                }
+
+                return [
+                    'gpa' => $graduate->pivot->gpa,
+                    'email' => $graduate->pivot->email,
+                    'rank' => $graduate->pivot->rank,
                 ];
             }),
             'created_at' => $this->created_at,

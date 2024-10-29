@@ -6,15 +6,17 @@ namespace App\Models;
 
 use App\Enums\RankGraduate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class GraduationCeremonyStudent extends Model
+class GraduationCeremonyStudent extends Pivot
 {
     use HasFactory;
 
     public $timestamps = true;
+
+    protected $table = 'graduation_ceremony_students';
 
     protected $fillable = [
         'graduation_ceremony_id',

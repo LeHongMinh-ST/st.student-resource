@@ -75,7 +75,7 @@ return [
         'download-error-import' => [
             UserRole::Admin,
             UserRole::Office,
-        ]
+        ],
     ],
     'student-request' => [
         'index' => [
@@ -151,7 +151,7 @@ return [
         'import' => [
             UserRole::Admin,
             UserRole::Office,
-        ]
+        ],
     ],
     'warning' => [
         'index' => [
@@ -171,7 +171,7 @@ return [
         'import' => [
             UserRole::Admin,
             UserRole::Office,
-        ]
+        ],
     ],
     'quit' => [
         'index' => [
@@ -191,6 +191,17 @@ return [
         'import' => [
             UserRole::Admin,
             UserRole::Office,
-        ]
-    ]
+        ],
+    ],
+    'file' => [
+        'index' => [
+            UserRole::Admin,
+        ],
+        'download_file_import_template' => [
+            UserRole::Admin,
+        ],
+        'download_file_import_error' => [
+            UserRole::Admin,
+        ],
+    ],
 ];

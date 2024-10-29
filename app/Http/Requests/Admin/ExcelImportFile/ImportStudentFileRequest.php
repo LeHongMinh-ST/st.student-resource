@@ -2,19 +2,21 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Admin\Graduation;
+namespace App\Http\Requests\Admin\ExcelImportFile;
 
+use App\Enums\ExcelImportType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
-class ImportStudentGraduateRequest extends FormRequest
+class ImportStudentFileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.graduation.import');
+        return Gate::allows('admin.file.download_file_import_error');
     }
 
     /**
@@ -30,9 +32,13 @@ class ImportStudentGraduateRequest extends FormRequest
                 'file',
                 'mimes:xlsx,xls',
             ],
-            'graduation_ceremony_id' => [
+            'type' => [
                 'required',
-                'exists:graduation_ceremonies,id',
+                'string',
+                Rule::in(ExcelImportType::cases()),
+            ],
+            'entity_id' => [
+                'required',
                 'integer',
             ],
         ];

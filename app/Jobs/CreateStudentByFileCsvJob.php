@@ -130,8 +130,6 @@ class CreateStudentByFileCsvJob implements ShouldQueue
         // Store job into the database if a Job ID exists.
         $this->storeJob($this->job->getJobId(), $this->excelImportFileId, $excelImportFileJobModel);
 
-
-
         // Delete the file if no errors occurred.
         if (!$hasError) {
             $this->deleteFile($filePath);
