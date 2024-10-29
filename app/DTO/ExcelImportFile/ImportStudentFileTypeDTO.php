@@ -17,7 +17,10 @@ class ImportStudentFileTypeDTO
 
     private int $facultyId;
 
-    public function __construct() {}
+    public function __construct()
+    {
+    }
+
     public function getFacultyId(): int
     {
         return $this->facultyId;
