@@ -36,7 +36,8 @@ class ExcelImportFileController extends Controller
 {
     public function __construct(
         private readonly ExcelImportFileService $excelImportFileService,
-    ) {}
+    ) {
+    }
 
     /**
      * List of file import
