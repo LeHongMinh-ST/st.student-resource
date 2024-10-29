@@ -11,9 +11,14 @@ use App\Enums\StudentStatus;
 class ListStudentDTO extends BaseListDTO implements BaseDTO
 {
     private ?string $q;
+
     private ?StudentStatus $status;
+
     private ?int $admissionYearId;
+
     private ?int $classId;
+
+    private ?int $graduationId;
 
     public function __construct()
     {
@@ -22,7 +27,18 @@ class ListStudentDTO extends BaseListDTO implements BaseDTO
         $this->status = null;
         $this->classId = null;
         $this->admissionYearId = null;
+        $this->graduationId = null;
         $this->orderBy = 'first_name';
+    }
+
+    public function getGraduationId(): ?int
+    {
+        return $this->graduationId;
+    }
+
+    public function setGraduationId(?int $graduationId): void
+    {
+        $this->graduationId = $graduationId;
     }
 
     public function getClassId(): ?int
@@ -64,7 +80,6 @@ class ListStudentDTO extends BaseListDTO implements BaseDTO
     {
         $this->admissionYearId = $admissionYearId;
     }
-
 
     public function toArray(): array
     {

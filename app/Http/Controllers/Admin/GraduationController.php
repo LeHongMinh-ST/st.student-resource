@@ -8,29 +8,22 @@ use App\Exceptions\CreateResourceFailedException;
 use App\Exceptions\DeleteResourceFailedException;
 use App\Exceptions\UpdateResourceFailedException;
 use App\Factories\Graduation\CreateGraduationDTOFactory;
-use App\Factories\Graduation\ImportStudentGraduateDTOFactory;
 use App\Factories\Graduation\ListGraduationDTOFactory;
 use App\Factories\Graduation\UpdateGraduationDTOFactory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Graduation\DeleteGraduationRequest;
-use App\Http\Requests\Admin\Graduation\ImportStudentGraduateRequest;
 use App\Http\Requests\Admin\Graduation\ListGraduationRequest;
 use App\Http\Requests\Admin\Graduation\ShowGraduationRequest;
 use App\Http\Requests\Admin\Graduation\StoreGraduationRequest;
 use App\Http\Requests\Admin\Graduation\UpdateGraduationRequest;
 use App\Http\Resources\Graduation\GraduationCeremonyCollection;
 use App\Http\Resources\Graduation\GraduationCeremonyResource;
-use App\Models\ExcelImportFile;
 use App\Models\GraduationCeremony;
-use App\Services\ExcelImportFile\ExcelImportFileService;
 use App\Services\Graduation\GraduationService;
 use App\Supports\Constants;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Knuckles\Scribe\Attributes\ResponseFromApiResource;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * @group Admin API
@@ -45,7 +38,6 @@ class GraduationController extends Controller
 {
     public function __construct(
         private readonly GraduationService $graduationService,
-        private readonly ExcelImportFileService $excelImportFileService,
     ) {
     }
 
@@ -56,7 +48,6 @@ class GraduationController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param ListGraduationRequest $request
      * @return GraduationCeremonyCollection Returns the list of posts.
      */
     #[ResponseFromApiResource(GraduationCeremonyCollection::class, GraduationCeremony::class, Response::HTTP_OK, paginate: Constants::PAGE_LIMIT)]
@@ -67,15 +58,11 @@ class GraduationController extends Controller
         return new GraduationCeremonyCollection($this->graduationService->getList($command));
     }
 
-
     /**
      * Create graduation ceremony
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param StoreGraduationRequest $request
-     *
-     * @return GraduationCeremonyResource
      * @throws CreateResourceFailedException
      */
     #[ResponseFromApiResource(GraduationCeremonyResource::class, GraduationCeremony::class, Response::HTTP_CREATED)]
@@ -91,11 +78,6 @@ class GraduationController extends Controller
      * Show graduation ceremony
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
-     *
-     * @param ShowGraduationRequest $request
-     * @param GraduationCeremony $graduationCeremony
-     *
-     * @return GraduationCeremonyResource
      */
     #[ResponseFromApiResource(GraduationCeremonyResource::class, GraduationCeremony::class, Response::HTTP_OK)]
     public function show(ShowGraduationRequest $request, GraduationCeremony $graduationCeremony): GraduationCeremonyResource
@@ -108,11 +90,6 @@ class GraduationController extends Controller
      * Update graduation ceremony
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
-     *
-     * @param UpdateGraduationRequest $request
-     * @param GraduationCeremony $graduationCeremony
-     *
-     * @return GraduationCeremonyResource
      *
      * @throws UpdateResourceFailedException
      */
@@ -127,55 +104,13 @@ class GraduationController extends Controller
     }
 
     /**
-     * Import student graduate
-     *
-     * This endpoint allows student to import a student graduate
-     *
-     * @authenticated Indicates that users must be authenticated to access this endpoint.
-     *
-     * @return JsonResponse Returns a response with no content upon successful deletion.
-     *
-     * @throws CreateResourceFailedException
-     *
-     * @response 204
-     */
-    public function importStudent(ImportStudentGraduateRequest $request): JsonResponse
-    {
-        $command = ImportStudentGraduateDTOFactory::make($request);
-
-        $this->graduationService->importStudentGraduate($command);
-
-        return $this->noContent();
-    }
-
-    /**
-     * Download template import
-     *
-     * This endpoint allows student to download file student.
-     *
-     * @authenticated Indicates that users must be authenticated to access this endpoint.
-     *
-     * @response 200
-     *
-     * @throws AuthorizationException
-     */
-    public function downloadTemplateImport(): BinaryFileResponse
-    {
-        $this->authorize('admin.graduation.import');
-
-        $file = public_path() . '/template/template_student_graduated.xlsx';
-
-        return response()->download($file, 'template-student-graduated.xlsx');
-    }
-
-    /**
      * Delete Graduation Ceremony
      *
      * This endpoint allows student to delete a graduation ceremony.
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param GraduationCeremony $graduationCeremony The graduation ceremony entity to be deleted.
+     * @param  GraduationCeremony  $graduationCeremony  The graduation ceremony entity to be deleted.
      * @return JsonResponse Returns a response with no content upon successful deletion.
      *
      * @response 204 Indicates that the response will be a 204 No Content status.
@@ -187,27 +122,6 @@ class GraduationController extends Controller
         $this->graduationService->delete($graduationCeremony);
 
         return $this->noContent();
-    }
-
-    /**
-     * Download error import course
-     *
-     * This endpoint allows student to download file student.
-     *
-     * @authenticated Indicates that users must be authenticated to access this endpoint.
-     *
-     * @param ExcelImportFile $excelImportFileError
-     *
-     * @return StreamedResponse
-     * @throws AuthorizationException
-     * @response 200
-     *
-     */
-    public function downloadErrorImportCourse(ExcelImportFile $excelImportFileError): StreamedResponse
-    {
-        $this->authorize('admin.graduation.import');
-
-        return $this->excelImportFileService->exportErrorRecord($excelImportFileError->id);
     }
 
 }

@@ -27,7 +27,7 @@ class ExcelImportFileResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'user' => new UserResource($this->whenLoaded('user')),
-            'file_errors_count' => $this->recordErrorCount ?? 0,
+            'file_errors_count' => $this->excel_import_file_errors_count ?? 0,
         ];
     }
 }

@@ -90,15 +90,15 @@ class ExcelImportFile extends Model
 
     public function getStatusAttribute(): StatusFileImport
     {
-        if ($this->excelImportFileJobs()->count() === $this->total_job) {
+        if ($this->excelImportFileJobs->count() === $this->total_job) {
             return StatusFileImport::Completed;
         }
 
-        if (0 === $this->excelImportFileJobs()->count()) {
+        if (0 === $this->excelImportFileJobs->count()) {
             return StatusFileImport::Pending;
         }
 
-        if ($this->excelImportFileJobs()->count() < $this->total_job) {
+        if ($this->excelImportFileJobs->count() < $this->total_job) {
             return StatusFileImport::Processing;
         }
 

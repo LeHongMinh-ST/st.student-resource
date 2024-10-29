@@ -17,10 +17,14 @@ class GraduationCeremony extends Model
 
     protected $fillable = [
         'name',
-        'school_year',
+        'school_year_id',
         'certification',
         'certification_date',
         'faculty_id',
+    ];
+
+    protected $casts = [
+        'certification_date' => 'datetime',
     ];
 
     //----------------------- SCOPES ----------------------------------//
@@ -31,9 +35,14 @@ class GraduationCeremony extends Model
         return $this->belongsTo(Faculty::class);
     }
 
+    public function schoolYear(): BelongsTo
+    {
+        return $this->belongsTo(SchoolYear::class);
+    }
+
     public function students(): BelongsToMany
     {
-        return $this->belongsToMany(Student::class)
+        return $this->belongsToMany(Student::class, 'graduation_ceremony_students')
             ->withPivot('gpa', 'rank', 'email')->withTimestamps()
             ->using(GraduationCeremonyStudent::class);
     }
@@ -44,7 +53,6 @@ class GraduationCeremony extends Model
     }
 
     // ------------------------ CASTS -------------------------//
-
 
     // ---------------------- ACCESSORS AND MUTATORS --------------------//
 }
