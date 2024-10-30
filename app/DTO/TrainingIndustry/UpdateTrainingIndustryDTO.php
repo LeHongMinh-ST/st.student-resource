@@ -11,6 +11,16 @@ class UpdateTrainingIndustryDTO
     private ?int $id;
 
     private ?string $name;
+    private ?string $description;
+    private ?Status $status;
+
+    public function __construct()
+    {
+        $this->id = null;
+        $this->name = null;
+        $this->status = null;
+        $this->description = null;
+    }
 
     public function getDescription(): ?string
     {
@@ -20,15 +30,6 @@ class UpdateTrainingIndustryDTO
     public function setDescription(?string $description): void
     {
         $this->description = $description;
-    }
-    private ?string $description;
-
-    public function __construct()
-    {
-        $this->id = null;
-        $this->name = null;
-        $this->status = null;
-        $this->description = null;
     }
 
     public function getStatus(): ?Status
@@ -40,7 +41,6 @@ class UpdateTrainingIndustryDTO
     {
         $this->status = $status;
     }
-    private ?Status $status;
 
 
     public function getId(): int

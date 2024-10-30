@@ -11,6 +11,14 @@ class CreateTrainingIndustryDTO
     private string $name;
 
     private string $code;
+    private string $description;
+    private Status $status;
+
+    private int $facultyId;
+
+    public function __construct()
+    {
+    }
 
     public function getDescription(): string
     {
@@ -21,7 +29,6 @@ class CreateTrainingIndustryDTO
     {
         $this->description = $description;
     }
-    private string $description;
 
     public function getStatus(): Status
     {
@@ -32,11 +39,6 @@ class CreateTrainingIndustryDTO
     {
         $this->status = $status;
     }
-    private Status $status;
-
-    private int $facultyId;
-
-    public function __construct() {}
 
     public function getName(): string
     {
