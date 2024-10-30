@@ -34,7 +34,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class TrainingIndustryController extends Controller
 {
-    public function __construct(private readonly TrainingIndustryService $trainingIndustryService) {}
+    public function __construct(private readonly TrainingIndustryService $trainingIndustryService)
+    {
+    }
 
     /**
      * List of trainingIndustry
