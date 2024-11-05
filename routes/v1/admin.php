@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\StudentQuitController;
 use App\Http\Controllers\Admin\StudentUpdateRequestController;
 use App\Http\Controllers\Admin\StudentWarningController;
+use App\Http\Controllers\Admin\SurveyPeriodController;
 use App\Http\Controllers\Admin\TrainingIndustryController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,8 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
 
     Route::Resource('departments', DepartmentController::class);
     Route::Resource('training-industries', TrainingIndustryController::class);
+    Route::Resource('survey-periods', SurveyPeriodController::class)->except('update');
+    Route::patch('survey-periods/{surveyPeriod}', [SurveyPeriodController::class, 'update']);
 
     Route::prefix('users')->group(function (): void {
         Route::get('/', [UserController::class, 'index']);
