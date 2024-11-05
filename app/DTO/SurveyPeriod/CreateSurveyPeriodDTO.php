@@ -21,6 +21,18 @@ class CreateSurveyPeriodDTO
     private ?string $description;
 
     private int $facultyId;
+    private array $graduationCeremonyIds;
+    private int $createdBy;
+    private int $updatedBy;
+
+    private string $year;
+
+    private SurveyPeriodType $type;
+
+    public function __construct()
+    {
+        $this->description = null;
+    }
 
     public function getGraduationCeremonyIds(): array
     {
@@ -31,7 +43,6 @@ class CreateSurveyPeriodDTO
     {
         $this->graduationCeremonyIds = $graduationCeremonyIds;
     }
-    private array $graduationCeremonyIds;
 
     public function getCreatedBy(): int
     {
@@ -51,17 +62,6 @@ class CreateSurveyPeriodDTO
     public function setUpdatedBy(int $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
-    }
-    private int $createdBy;
-    private int $updatedBy;
-
-    private string $year;
-
-    private SurveyPeriodType $type;
-
-    public function __construct()
-    {
-        $this->description = null;
     }
 
     public function getYear(): string

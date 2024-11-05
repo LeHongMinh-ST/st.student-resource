@@ -21,6 +21,22 @@ class ListSurveyPeriodDTO extends BaseListDTO implements BaseDTO
 
     protected ?string $year;
 
+    protected ?string $startDate;
+    protected ?string $endDate;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->q = null;
+        $this->facultyId = auth()->user()->faculty_id;
+        $this->status = null;
+        $this->type = null;
+        $this->startDate = null;
+        $this->endDate = null;
+        $this->year = null;
+        $this->orderBy = 'id';
+    }
+
     public function getStartDate(): ?string
     {
         return $this->startDate;
@@ -39,22 +55,6 @@ class ListSurveyPeriodDTO extends BaseListDTO implements BaseDTO
     public function setEndDate(?string $endDate): void
     {
         $this->endDate = $endDate;
-    }
-
-    protected ?string $startDate;
-    protected ?string $endDate;
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->q = null;
-        $this->facultyId = auth()->user()->faculty_id;
-        $this->status = null;
-        $this->type = null;
-        $this->startDate = null;
-        $this->endDate = null;
-        $this->year = null;
-        $this->orderBy = 'id';
     }
 
     public function getYear(): ?string

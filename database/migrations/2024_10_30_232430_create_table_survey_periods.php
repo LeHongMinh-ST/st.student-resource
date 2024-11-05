@@ -1,17 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('survey_periods', function (Blueprint $table) {
+        Schema::create('survey_periods', function (Blueprint $table): void {
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
@@ -26,14 +27,14 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('survey_period_graduation', function (Blueprint $table) {
+        Schema::create('survey_period_graduation', function (Blueprint $table): void {
             $table->id();
             $table->unsignedBigInteger('survey_period_id')->index();
             $table->unsignedBigInteger('graduation_ceremony_id')->index();
             $table->timestamps();
         });
 
-        Schema::create('survey_period_student', function (Blueprint $table) {
+        Schema::create('survey_period_student', function (Blueprint $table): void {
             $table->id();
             $table->unsignedBigInteger('survey_period_id')->index();
             $table->unsignedBigInteger('student_id')->index();

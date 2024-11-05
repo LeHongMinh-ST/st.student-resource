@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Resources\SurveyPeriod;
 
 use App\Http\Resources\Graduation\GraduationCeremonyResource;
-use App\Http\Resources\Student\StudentResource;
 use App\Http\Resources\Student\StudentSurveyPeriodResource;
 use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;

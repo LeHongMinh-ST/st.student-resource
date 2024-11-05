@@ -6,4 +6,6 @@ namespace App\Http\Resources\SurveyPeriod;
 
 use App\Http\Resources\BaseListResourceCollection;
 
-class SurveyPeriodCollection extends BaseListResourceCollection {}
+class SurveyPeriodCollection extends BaseListResourceCollection
+{
+}
