@@ -36,7 +36,6 @@ class TrainingIndustry extends Model
     // ------------------------ CASTS -------------------------//
     protected function casts(): array
     {
-        dd(12312);
         return [
             'status' => Status::class,
         ];

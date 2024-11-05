@@ -47,6 +47,12 @@ class GraduationCeremony extends Model
             ->using(GraduationCeremonyStudent::class);
     }
 
+    public function surveyPeriods(): BelongsToMany
+    {
+        return $this->belongsToMany(SurveyPeriod::class, 'survey_period_graduation')
+            ->withTimestamps();
+    }
+
     public function excelImportFiles()
     {
         return $this->morphToMany(ExcelImportFile::class, 'excelImportFileable');

@@ -31,7 +31,10 @@ class StoreGraduationRequest extends FormRequest
                 'exists:school_years,id',
             ],
             'certification' => 'required',
-            'certification_date' => 'required',
+            'certification_date' => [
+                'required',
+                'date_format:Y-m-d',
+            ],
         ];
     }
 }

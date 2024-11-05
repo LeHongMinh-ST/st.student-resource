@@ -220,4 +220,20 @@ return [
             UserRole::Admin,
         ],
     ],
+    'survey-period' => [
+        'index' => [
+            UserRole::Admin,
+            UserRole::Office,
+            UserRole::Teacher,
+        ],
+        'create' => [
+            UserRole::Admin,
+        ],
+        'update' => [
+            UserRole::Admin,
+        ],
+        'destroy' => [
+            UserRole::Admin,
+        ],
+    ],
 ];
