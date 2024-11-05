@@ -11,6 +11,25 @@ class UpdateSurveyPeriodDTO
 {
     private ?int $id;
 
+    private ?string $title;
+    private ?DateTime $startDate;
+    private ?DateTime $endDate;
+    private ?string $description;
+    private ?Status $status;
+    private ?array $graduationCeremonyIds;
+    private ?int $updatedBy;
+
+    public function __construct()
+    {
+        $this->id = null;
+        $this->title = null;
+        $this->startDate = null;
+        $this->endDate = null;
+        $this->status = null;
+        $this->description = null;
+        $this->graduationCeremonyIds = null;
+    }
+
     public function getTitle(): ?string
     {
         return $this->title;
@@ -41,12 +60,6 @@ class UpdateSurveyPeriodDTO
         $this->endDate = $endDate;
     }
 
-    private ?string $title;
-    private ?DateTime $startDate;
-    private ?DateTime $endDate;
-    private ?string $description;
-    private ?Status $status;
-
     public function getGraduationCeremonyIds(): ?array
     {
         return $this->graduationCeremonyIds;
@@ -56,7 +69,6 @@ class UpdateSurveyPeriodDTO
     {
         $this->graduationCeremonyIds = $graduationCeremonyIds;
     }
-    private ?array $graduationCeremonyIds;
 
     public function getUpdatedBy(): ?int
     {
@@ -66,18 +78,6 @@ class UpdateSurveyPeriodDTO
     public function setUpdatedBy(?int $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
-    }
-    private ?int $updatedBy;
-
-    public function __construct()
-    {
-        $this->id = null;
-        $this->title = null;
-        $this->startDate = null;
-        $this->endDate = null;
-        $this->status = null;
-        $this->description = null;
-        $this->graduationCeremonyIds = null;
     }
 
     public function getDescription(): ?string

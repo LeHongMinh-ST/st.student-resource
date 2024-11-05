@@ -16,7 +16,6 @@ use App\Http\Resources\SurveyPeriod\SurveyPeriodResource;
 use App\Models\SurveyPeriod;
 use App\Services\SurveyPeriod\SurveyPeriodService;
 use App\Supports\Constants;
-use DB;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -34,7 +33,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SurveyPeriodController extends Controller
 {
-    public function __construct(private readonly SurveyPeriodService $surveyPeriodService) {}
+    public function __construct(private readonly SurveyPeriodService $surveyPeriodService)
+    {
+    }
 
     /**
      * List of surveyPeriod
@@ -84,8 +85,9 @@ class SurveyPeriodController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param  UpdateSurveyPeriodRequest  $request  The HTTP request object containing student data.
+     * @param UpdateSurveyPeriodRequest $request The HTTP request object containing student data.
      * @return SurveyPeriodResource Returns the newly SurveyPeriodResource as a resource.
+     * @throws \Exception
      */
     #[ResponseFromApiResource(SurveyPeriodResource::class, SurveyPeriod::class, Response::HTTP_OK, with: [
         'faculty',
