@@ -33,7 +33,6 @@ class StoreGraduationRequest extends FormRequest
             'certification' => 'required',
             'certification_date' => [
                 'required',
-                'date_format:Y-m-d',
             ],
         ];
     }
