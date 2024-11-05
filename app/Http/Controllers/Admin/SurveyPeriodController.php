@@ -16,6 +16,7 @@ use App\Http\Resources\SurveyPeriod\SurveyPeriodResource;
 use App\Models\SurveyPeriod;
 use App\Services\SurveyPeriod\SurveyPeriodService;
 use App\Supports\Constants;
+use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -87,7 +88,7 @@ class SurveyPeriodController extends Controller
      *
      * @param UpdateSurveyPeriodRequest $request The HTTP request object containing student data.
      * @return SurveyPeriodResource Returns the newly SurveyPeriodResource as a resource.
-     * @throws \Exception
+     * @throws Exception
      */
     #[ResponseFromApiResource(SurveyPeriodResource::class, SurveyPeriod::class, Response::HTTP_OK, with: [
         'faculty',
