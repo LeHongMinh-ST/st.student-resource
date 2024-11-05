@@ -2,19 +2,20 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Admin\TrainingIndustry;
+namespace App\Http\Requests\Admin\SurveyPeriod;
 
 use App\Enums\Status;
+use App\Enums\SurveyPeriodType;
 use App\Http\Requests\ListRequest;
-use App\Models\TrainingIndustry;
+use App\Models\SurveyPeriod;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
-class ListTrainingIndustryRequest extends ListRequest
+class ListSurveyPeriodRequest extends ListRequest
 {
     public function authorize(): bool
     {
-        return Gate::allows('admin.training-industry.index');
+        return Gate::allows('admin.survey-period.index');
     }
 
     /**
@@ -26,6 +27,13 @@ class ListTrainingIndustryRequest extends ListRequest
     {
         return [
             'q' => 'nullable',
+            'faculty_id' => 'nullable|integer',
+            'type' => [
+                'nullable',
+                Rule::in(SurveyPeriodType::cases()),
+            ],
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date',
             'status' => [
                 'nullable',
                 Rule::in(Status::cases()),
@@ -36,6 +44,6 @@ class ListTrainingIndustryRequest extends ListRequest
 
     protected function getOrderByRuleModel(): string
     {
-        return TrainingIndustry::class;
+        return SurveyPeriod::class;
     }
 }
