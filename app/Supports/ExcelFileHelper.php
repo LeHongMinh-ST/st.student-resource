@@ -90,7 +90,6 @@ class ExcelFileHelper
             'Lớp' => 'class_code',
             'Mã SV' => 'code',
             'Niên khóa' => 'school_year',
-            'Khoa' => 'faculty',
             'Họ tên' => 'full_name',
             'Giới tính' => 'gender',
             'Ngày sinh' => 'dob',
@@ -102,6 +101,7 @@ class ExcelFileHelper
             'SĐT của bố' => 'father_phone',
             'Họ tên mẹ' => 'mother_name',
             'SĐT của mẹ' => 'mother_phone',
+            'Khoa' => 'faculty',
         ];
 
         return Arr::get($keys, trim($keyMap));
