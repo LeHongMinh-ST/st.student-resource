@@ -236,4 +236,16 @@ return [
             UserRole::Admin,
         ],
     ],
+    'employment-survey-response' => [
+        'index' => [
+            UserRole::Admin,
+            UserRole::Office,
+            UserRole::Teacher,
+        ],
+        'show' => [
+            UserRole::Admin,
+            UserRole::Office,
+            UserRole::Teacher,
+        ],
+    ],
 ];

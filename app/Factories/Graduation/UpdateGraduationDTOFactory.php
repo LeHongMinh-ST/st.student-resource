@@ -13,10 +13,18 @@ class UpdateGraduationDTOFactory
     {
         $command = new UpdateGraduationDTO();
         $command->setId($id);
-        $command->setCertification($request->get('certification'));
-        $command->setSchoolYear($request->get('school_year'));
-        $command->setName($request->get('name'));
-        $command->setCertificationDate($request->get('certification_date'));
+        if ($request->has('name')) {
+            $command->setName($request->get('name'));
+        }
+        if ($request->has('year')) {
+            $command->setYear($request->get('year'));
+        }
+        if ($request->has('certification')) {
+            $command->setCertification($request->get('certification'));
+        }
+        if ($request->has('certification_date')) {
+            $command->setCertificationDate($request->get('certification_date'));
+        }
         return $command;
     }
 }

@@ -30,6 +30,8 @@ class CreateStudentCourseByFileDTO implements BaseDTO
 
     private int $admissionYearId;
 
+    private ?int $trainingIndustryId;
+
     public function __construct()
     {
         $user = auth()->user();
@@ -37,6 +39,17 @@ class CreateStudentCourseByFileDTO implements BaseDTO
         $this->setPassword(PasswordHelper::makePassword());
         $this->setStatus(StudentStatus::CurrentlyStudying);
         $this->setFamily([]);
+        $this->setTrainingIndustryId(null);
+    }
+
+    public function getTrainingIndustryId(): ?int
+    {
+        return $this->trainingIndustryId;
+    }
+
+    public function setTrainingIndustryId(?int $trainingIndustryId): void
+    {
+        $this->trainingIndustryId = $trainingIndustryId;
     }
 
     public function getFamily(): array
@@ -151,8 +164,6 @@ class CreateStudentCourseByFileDTO implements BaseDTO
         $this->status = $status;
     }
 
-
-
     public function getAdmissionYearId(): int
     {
         return $this->admissionYearId;
@@ -174,6 +185,7 @@ class CreateStudentCourseByFileDTO implements BaseDTO
             'password' => $this->password,
             'status' => $this->status->value,
             'admission_year_id' => $this->admissionYearId,
+            'training_industry_id' => $this->trainingIndustryId,
         ];
     }
 }

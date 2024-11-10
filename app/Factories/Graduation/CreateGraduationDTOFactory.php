@@ -13,7 +13,7 @@ class CreateGraduationDTOFactory
     {
         $command = new CreateGraduationDTO();
         $command->setCertification($request->get('certification'));
-        $command->setSchoolYearId($request->get('school_year_id'));
+        $command->setYear($request->get('year'));
         $command->setName($request->get('name'));
         $command->setCertificationDate($request->get('certification_date'));
         return $command;

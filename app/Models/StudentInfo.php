@@ -38,6 +38,10 @@ class StudentInfo extends Model
         'student_id',
     ];
 
+    protected $casts = [
+        'dob' => 'date',
+    ];
+
     // ------------------------ RELATIONS -------------------------//
     public function student(): BelongsTo
     {
