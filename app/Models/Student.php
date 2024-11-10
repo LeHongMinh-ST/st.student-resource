@@ -33,6 +33,7 @@ class Student extends Authenticatable implements JWTSubject
         'faculty_id',
         'status',
         'admission_year_id',
+        'training_industry_id',
     ];
 
     /**
@@ -48,6 +49,11 @@ class Student extends Authenticatable implements JWTSubject
     public function faculty(): BelongsTo
     {
         return $this->belongsTo(Faculty::class);
+    }
+
+    public function trainingIndustry(): BelongsTo
+    {
+        return $this->belongsTo(TrainingIndustry::class);
     }
 
     public function info(): HasOne
@@ -66,7 +72,6 @@ class Student extends Authenticatable implements JWTSubject
             ->withPivot(['status', 'start_date', 'end_date', 'role'])
             ->withTimestamps()->using(ClassStudent::class);
     }
-
 
     public function currentClass(): HasOneThrough
     {
@@ -96,12 +101,23 @@ class Student extends Authenticatable implements JWTSubject
         return $this->hasMany(LearningOutcome::class)->with(['detail']);
     }
 
-
     public function graduationCeremonies(): BelongsToMany
     {
         return $this->belongsToMany(GraduationCeremony::class, 'graduation_ceremony_students', 'student_id', 'graduation_ceremony_id')
             ->withPivot(['gpa', 'rank', 'email'])->withTimestamps()
             ->using(GraduationCeremonyStudent::class);
+    }
+
+    public function surveyPeriods(): BelongsToMany
+    {
+        return $this->belongsToMany(SurveyPeriod::class, 'survey_period_student', 'student_id', 'survey_period_id')
+            ->withPivot(['number_mail_send', 'code_verify'])
+            ->withTimestamps()->using(SurveyPeriodStudent::class);
+    }
+
+    public function employmentSurveyResponses(): HasMany
+    {
+        return $this->hasMany(EmploymentSurveyResponse::class, 'student_id');
     }
 
     // ---------------------- ACCESSORS AND MUTATORS --------------------//

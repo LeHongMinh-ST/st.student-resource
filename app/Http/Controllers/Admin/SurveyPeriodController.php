@@ -86,8 +86,9 @@ class SurveyPeriodController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param UpdateSurveyPeriodRequest $request The HTTP request object containing student data.
+     * @param  UpdateSurveyPeriodRequest  $request  The HTTP request object containing student data.
      * @return SurveyPeriodResource Returns the newly SurveyPeriodResource as a resource.
+     *
      * @throws Exception
      */
     #[ResponseFromApiResource(SurveyPeriodResource::class, SurveyPeriod::class, Response::HTTP_OK, with: [
@@ -102,6 +103,18 @@ class SurveyPeriodController extends Controller
         // Return a JSON response with the generated token and the admin API section
         return new SurveyPeriodResource($surveyPeriod);
     }
+
+    /**
+     * public function sendMail(SurveyPeriod $surveyPeriod, UpdateSurveyPeriodRequest $request): SurveyPeriodResource
+     * {
+     * $updateSurveyPeriodDTO = UpdateSurveyPeriodDTOFactory::make($request, $surveyPeriod);
+     *
+     * $surveyPeriod = $this->surveyPeriodService->sendMail($updateSurveyPeriodDTO);
+     *
+     * // Return a JSON response with the generated token and the admin API section
+     * return new SurveyPeriodResource($surveyPeriod);
+     * }
+     */
 
     /**
      * Delete surveyPeriod

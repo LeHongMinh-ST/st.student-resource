@@ -8,11 +8,11 @@ class UpdateGraduationDTO
 {
     private int|string $id;
     private string $name;
-    private string $schoolYear;
+    private int $year;
     private string $certification;
     private string $certificationDate;
 
-    public function getId(): string
+    public function getId(): int
     {
         return $this->id;
     }
@@ -32,14 +32,14 @@ class UpdateGraduationDTO
         $this->name = $name;
     }
 
-    public function getSchoolYear(): string
+    public function getYear(): int
     {
-        return $this->schoolYear;
+        return $this->year;
     }
 
-    public function setSchoolYear(string $schoolYear): void
+    public function setYear(int $year): void
     {
-        $this->schoolYear = $schoolYear;
+        $this->year = $year;
     }
 
     public function getCertification(): string
@@ -66,7 +66,7 @@ class UpdateGraduationDTO
     {
         return [
             'name' => $this->name,
-            'school_year' => $this->schoolYear,
+            'year' => $this->year,
             'certification' => $this->certification,
             'certification_date' => $this->certificationDate,
         ];

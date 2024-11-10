@@ -113,8 +113,19 @@ class ExcelFileHelper
             'STT' => 'index',
             'Mã SV' => 'code',
             'Email' => 'email',
+            'Họ và tên' => 'full_name',
+            'Ngày sinh' => 'dob',
+            'Mã ngành đào tạo' => 'training_industry_code',
+            'Ngành đào tạo' => 'training_industry_name',
+            'Mã lớp' => 'class_code',
             'Điểm TB' => 'gpa',
             'Xếp loại' => 'rank',
+            'CCCD/CMND' => 'identity_card',
+            'Nơi sinh' => 'address',
+            'Hệ đào tạo' => 'training_system',
+            'Lớp' => 'class_name',
+            'SĐT' => 'phone_number',
+            'Giới tính' => 'gender',
         ];
 
         return Arr::get($keys, trim($keyMap));

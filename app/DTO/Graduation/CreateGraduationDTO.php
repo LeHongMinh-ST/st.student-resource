@@ -7,7 +7,7 @@ namespace App\DTO\Graduation;
 class CreateGraduationDTO
 {
     private string $name;
-    private int $schoolYearId;
+    private int $year;
     private string $certification;
     private string $certificationDate;
 
@@ -21,14 +21,14 @@ class CreateGraduationDTO
         $this->name = $name;
     }
 
-    public function getSchoolYearId(): int
+    public function getYear(): int
     {
-        return $this->schoolYearId;
+        return $this->year;
     }
 
-    public function setSchoolYearId(int $schoolYearId): void
+    public function setYear(int $year): void
     {
-        $this->schoolYearId = $schoolYearId;
+        $this->year = $year;
     }
 
     public function getCertification(): string
@@ -55,7 +55,7 @@ class CreateGraduationDTO
     {
         return [
             'name' => $this->name,
-            'school_year_id' => $this->schoolYearId,
+            'year' => $this->year,
             'certification' => $this->certification,
             'certification_date' => $this->certificationDate,
         ];
