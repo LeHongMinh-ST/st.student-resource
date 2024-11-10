@@ -28,7 +28,7 @@ class UpdateTrainingIndustryRequest extends FormRequest
             'code' => [
                 'string',
                 'nullable',
-                'unique:training_industries,code,' . $this->trainingIndustry?->id . ',id',
+                'unique:training_industries,code,' . $this->id . ',id',
             ],
             'name' => 'nullable',
         ];
