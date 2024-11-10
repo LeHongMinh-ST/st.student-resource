@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Enums\AuthApiSection;
 use App\Http\Controllers\Student\AuthController;
+use App\Http\Controllers\Student\EmploymentSurveyResponseController;
 use App\Http\Controllers\Student\ReflectController;
 use App\Http\Controllers\Student\RequestUpdateController;
 use Illuminate\Support\Facades\Route;
@@ -13,6 +14,8 @@ Route::prefix('auth')->group(function (): void {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
 });
+
+Route::post('/employment-survey-response', [EmploymentSurveyResponseController::class, 'store']);
 Route::middleware(['auth:' . AuthApiSection::Student->value])->group(function (): void {
 
     Route::prefix('auth')->group(function (): void {

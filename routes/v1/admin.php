@@ -6,6 +6,7 @@ use App\Enums\AuthApiSection;
 use App\Http\Controllers\Admin\AdmissionYearController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DepartmentController;
+use App\Http\Controllers\Admin\EmploymentSurveyResponseController;
 use App\Http\Controllers\Admin\ExcelImportFileController;
 use App\Http\Controllers\Admin\GeneralClassController;
 use App\Http\Controllers\Admin\GraduationController;
@@ -44,6 +45,8 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
     Route::Resource('training-industries', TrainingIndustryController::class);
     Route::Resource('survey-periods', SurveyPeriodController::class)->except('update');
     Route::patch('survey-periods/{surveyPeriod}', [SurveyPeriodController::class, 'update']);
+    //Route::post('survey-periods/{surveyPeriod}/send-mail', [SurveyPeriodController::class, 'sendMail']);
+    Route::Resource('employment-survey-response', EmploymentSurveyResponseController::class)->only(['index', 'show']);
 
     Route::prefix('users')->group(function (): void {
         Route::get('/', [UserController::class, 'index']);

@@ -7,9 +7,10 @@ namespace App\DTO\Student;
 use App\DTO\BaseDTO;
 use App\Enums\Gender;
 use App\Enums\TrainingType;
-use App\Supports\DateTimeHelper;
+use Carbon\Carbon;
+use Illuminate\Support\Arr;
 
-class CreateStudentInfoByFileImportDTO implements BaseDTO
+class UpdateStudentInfoByFileGraduationDTO implements BaseDTO
 {
     private ?string $personEmail;
 
@@ -23,31 +24,16 @@ class CreateStudentInfoByFileImportDTO implements BaseDTO
 
     private ?string $phone;
 
-    private ?string $ethnic;
-
-    private ?string $thumbnail;
-
     private ?string $citizenIdentification;
-
-    public function __construct()
+    public function __construct(array $data)
     {
-        $this->citizenIdentification = null;
-        $this->personEmail = null;
-        $this->phone = null;
-        $this->dob = null;
-        $this->address = null;
-        $this->ethnic = null;
-        $this->thumbnail = null;
-    }
-
-    public function getCitizenIdentification(): ?string
-    {
-        return $this->citizenIdentification;
-    }
-
-    public function setCitizenIdentification(?string $citizenIdentification): void
-    {
-        $this->citizenIdentification = $citizenIdentification;
+        $this->personEmail = Arr::get($data, 'person_email');
+        $this->gender = Arr::get($data, 'gender') ? Gender::mapValue($data['gender']) : null;
+        $this->dob = Arr::get($data, 'dob');
+        $this->address = Arr::get($data, 'address');
+        $this->trainingType = TrainingType::FormalUniversity;
+        $this->phone = Arr::get($data, 'phone_number');
+        $this->citizenIdentification = Arr::get($data, 'citizen_identification');
     }
 
     public function getPersonEmail(): ?string
@@ -75,7 +61,6 @@ class CreateStudentInfoByFileImportDTO implements BaseDTO
         return $this->dob;
     }
 
-    // Set dob with format d/m/Y
     public function setDob(?string $dob): void
     {
         $this->dob = $dob;
@@ -111,24 +96,14 @@ class CreateStudentInfoByFileImportDTO implements BaseDTO
         $this->phone = $phone;
     }
 
-    public function setEthnic(?string $ethnic): void
+    public function getCitizenIdentification(): ?string
     {
-        $this->ethnic = $ethnic;
+        return $this->citizenIdentification;
     }
 
-    public function getEthnic(): ?string
+    public function setCitizenIdentification(?string $citizenIdentification): void
     {
-        return $this->ethnic;
-    }
-
-    public function getThumbnail(): ?string
-    {
-        return $this->thumbnail;
-    }
-
-    public function setThumbnail(?string $thumbnail): void
-    {
-        $this->thumbnail = $thumbnail;
+        $this->citizenIdentification = $citizenIdentification;
     }
 
     public function toArray(): array
@@ -136,12 +111,10 @@ class CreateStudentInfoByFileImportDTO implements BaseDTO
         return array_filter([
             'person_email' => $this->getPersonEmail(),
             'gender' => $this->getGender(),
-            'dob' => $this->getDob() ? DateTimeHelper::createDateTime($this->getDob()) : null,
+            'dob' => $this->getDob() ? Carbon::createFromFormat('d/m/Y', $this->getDob()) : null,
             'address' => $this->getAddress(),
             'training_type' => $this->getTrainingType(),
             'phone' => $this->getPhone(),
-            'ethnic' => $this->getEthnic(), // Dân tộc
-            'thumbnail' => $this->getThumbnail(),
             'citizen_identification' => $this->getCitizenIdentification(),
         ], fn ($value) => null !== $value);
     }

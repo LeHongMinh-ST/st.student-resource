@@ -9,17 +9,17 @@ use App\DTO\BaseListDTO;
 
 class ListGraduationDTO extends BaseListDTO implements BaseDTO
 {
-    private ?int $schoolYearId;
+    private ?int $year;
     private ?string $certification;
 
-    public function getSchoolYearId(): ?int
+    public function getYear(): ?int
     {
-        return $this->schoolYearId;
+        return $this->year;
     }
 
-    public function setSchoolYear(?int $schoolYearId): void
+    public function setYear(?int $year): void
     {
-        $this->schoolYearId = $schoolYearId;
+        $this->year = $year;
     }
 
     public function getCertification(): ?string

@@ -15,7 +15,7 @@ class ListGraduationDTOFactory
         $command = new ListGraduationDTO();
         $command = MakeDataHelper::makeListData($request, $command);
         $command->setCertification($request->get('certification'));
-        $command->setSchoolYear($request->get('school_year'));
+        $command->setYear($request->get('year'));
         return $command;
     }
 }

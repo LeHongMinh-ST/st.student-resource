@@ -8,7 +8,7 @@ class GraduationCeremonyStudentDTO
 {
     private int|string $id;
     private string $name;
-    private string $schoolYear;
+    private string $year;
     private string $certification;
     private string $certificationDate;
 
@@ -32,14 +32,14 @@ class GraduationCeremonyStudentDTO
         $this->name = $name;
     }
 
-    public function getSchoolYear(): string
+    public function getYear(): string
     {
-        return $this->schoolYear;
+        return $this->year;
     }
 
-    public function setSchoolYear(string $schoolYear): void
+    public function setYear(string $year): void
     {
-        $this->schoolYear = $schoolYear;
+        $this->year = $year;
     }
 
     public function getCertification(): string
@@ -66,7 +66,7 @@ class GraduationCeremonyStudentDTO
     {
         return [
             'name' => $this->name,
-            'school_year' => $this->schoolYear,
+            'school_year' => $this->year,
             'certification' => $this->certification,
             'certification_date' => $this->certificationDate,
         ];

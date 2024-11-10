@@ -100,4 +100,72 @@ class SurveyPeriodService
 
         return $surveyPeriod->delete();
     }
+
+    public function sendMail(): void
+    {
+        /*
+        DB::beginTransaction();
+        try {
+            $data = $request->all();
+            if (!$data['links']) {
+                throw new BadRequestException('Không tồn tại email');
+            }
+            $formEmpty = $this->formRepository->findById($id);
+            if(!$formEmpty) {
+                throw new Exception();
+            }
+            $faculty = $this->facultyRepository->findById(auth()->user()->faculty_id, ['id', 'name']);
+
+            $open_time = Carbon::createFromFormat('Y-m-d H:i:s', $formEmpty['open_time'])->format('d/m/Y');
+            $close_time = Carbon::createFromFormat('Y-m-d H:i:s', $formEmpty['close_time'])->format('d/m/Y');
+            $emails = array_keys($data['links']);
+            $dateNow = Carbon::now()->startOfDay();
+            $dateSendEmail = !empty($data['open_time']) ? Carbon::parse($data['open_time']) : null;
+            $condition[] = ['email', 'in', $emails];
+            $studentGraduates = $this->studentGraduate->allBy($condition, ['forms'], ['*']);
+            foreach ($studentGraduates as $student) {
+                foreach (@$student->forms as $form) {
+                    if (@$form->id == $data['form_id']) {
+                        @$form->pivot->increment('number_sent_email');
+                    }
+                }
+            }
+            if($dateSendEmail && ($dateSendEmail->greaterThan($dateNow))) {
+                foreach ($data['links'] as $key => $value) {
+                    SendMailForm::dispatch(
+                        $key,
+                        $form['title'],
+                        $faculty['name'],
+                        $open_time . " đến " . $close_time,
+                        url('/khao-sat-viec-lam-sinh-vien/' . $value),
+                    )->delay($dateSendEmail);
+                }
+            } else {
+                foreach ($data['links'] as $key => $value) {
+                    SendMailForm::dispatch(
+                        $key,
+                        $form['title'],
+                        $faculty['name'],
+                        $open_time . " đến " . $close_time,
+                        url('/khao-sat-viec-lam-sinh-vien/' . $value),
+                    );
+                }
+            }
+            DB::commit();
+            return $this->responseSuccess();
+        } catch (Exception $exception) {
+            DB::rollBack();
+            Log::error('Error store form', [
+                'method' => __METHOD__,
+                'message' => $exception->getMessage()
+            ]);
+            return $this->responseError('Có lỗi xảy ra, vui lòng thử lại sau');
+        }
+        */
+    }
+
+    private function generateCodeVerifySendMail(int $studentId, int $surveyPeriodId): string
+    {
+        return md5($studentId . $surveyPeriodId . now()->timestamp);
+    }
 }

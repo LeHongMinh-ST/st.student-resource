@@ -14,12 +14,13 @@ class SurveyPeriodStudent extends Pivot
 
     public $timestamps = true;
 
-    protected $table = 'survey_period_graduation';
+    protected $table = 'survey_period_student';
 
     protected $fillable = [
         'student_id',
         'survey_period_id',
         'number_mail_send',
+        'code_verify',
     ];
 
     // ------------------------ RELATIONS -------------------------//

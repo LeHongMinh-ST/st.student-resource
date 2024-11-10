@@ -50,7 +50,7 @@ class SurveyPeriod extends Model
     public function students(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Student::class, 'survey_period_student')
-            ->withPivot('number_mail_send')
+            ->withPivot(['number_mail_send', 'code_verify'])
             ->withTimestamps()
             ->using(SurveyPeriodStudent::class);
     }
