@@ -17,7 +17,7 @@ class GraduationCeremony extends Model
 
     protected $fillable = [
         'name',
-        'school_year_id',
+        'year',
         'certification',
         'certification_date',
         'faculty_id',
@@ -33,11 +33,6 @@ class GraduationCeremony extends Model
     public function faculty(): BelongsTo
     {
         return $this->belongsTo(Faculty::class);
-    }
-
-    public function schoolYear(): BelongsTo
-    {
-        return $this->belongsTo(SchoolYear::class);
     }
 
     public function students(): BelongsToMany

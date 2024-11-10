@@ -26,9 +26,8 @@ class StoreGraduationRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
-            'school_year_id' => [
+            'year' => [
                 'required',
-                'exists:school_years,id',
             ],
             'certification' => 'required',
             'certification_date' => [
