@@ -47,7 +47,7 @@ class TrainingIndustryService
     {
         $trainingIndustry = TrainingIndustry::where('id', $id)->first();
         if (Status::Enable === $trainingIndustry->status) {
-            throw ValidationException::withMessages(['Can not delete training industry with status enable']);
+            throw ValidationException::withMessages(['message' => 'không thể xóa ngành đào tạo đang hoạt động']);
         }
 
         return $trainingIndustry->delete();

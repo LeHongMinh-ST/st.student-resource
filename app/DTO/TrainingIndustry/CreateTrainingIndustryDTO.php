@@ -11,21 +11,22 @@ class CreateTrainingIndustryDTO
     private string $name;
 
     private string $code;
-    private string $description;
+    private ?string $description;
     private Status $status;
 
     private int $facultyId;
 
     public function __construct()
     {
+        $this->setDescription(null);
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(?string $description): void
     {
         $this->description = $description;
     }
