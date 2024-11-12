@@ -29,7 +29,7 @@ class UpdateSurveyPeriodRequest extends FormRequest
      */
     public function rules(): array
     {
-        $endDateCurrent = $this->surveyPeriod->end_time;
+        $endDateCurrent = $this->surveyPeriod?->end_time;
 
         return [
             'status' => [
