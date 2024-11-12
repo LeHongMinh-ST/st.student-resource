@@ -32,7 +32,6 @@ class StoreSurveyPeriodRequest extends FormRequest
         return [
             'title' => 'required',
             'year' => [
-                'required',
                 'integer',
             ],
             'start_date' => [
@@ -52,7 +51,6 @@ class StoreSurveyPeriodRequest extends FormRequest
             ],
             'graduation_ceremony_ids.*' => [
                 'required',
-                'integer',
                 function (string $attribute, mixed $value, Closure $fail): void {
                     $isExist = SurveyPeriodGraduation::query()
                         ->where('graduation_ceremony_id', $value)

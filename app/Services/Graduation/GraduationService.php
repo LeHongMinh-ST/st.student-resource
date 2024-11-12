@@ -8,6 +8,7 @@ use App\DTO\Graduation\CreateGraduationDTO;
 use App\DTO\Graduation\ListGraduationDTO;
 use App\DTO\Graduation\UpdateGraduationDTO;
 use App\Enums\AuthApiSection;
+use App\Enums\Status;
 use App\Exceptions\CreateResourceFailedException;
 use App\Exceptions\UpdateResourceFailedException;
 use App\Models\GraduationCeremony;
@@ -24,6 +25,9 @@ class GraduationService
         $query = GraduationCeremony::query()
             ->when($graduationDTO->getYear(), fn ($query) => $query->where('year', $graduationDTO->getYear()))
             ->when($graduationDTO->getCertification(), fn ($query) => $query->where('certification', $graduationDTO->getCertification()))
+            ->when($graduationDTO->getIsGraduationDoesntHaveSurveyPeriod(), fn ($query) => $query->whereDoesntHave('surveyPeriods', function ($query): void {
+                $query->where('status', Status::Enable->value);
+            }))
             ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
             ->withCount('students')
             ->orderBy($graduationDTO->getOrderBy(), $graduationDTO->getOrder()->value);

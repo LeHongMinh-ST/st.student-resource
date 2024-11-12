@@ -7,7 +7,9 @@ namespace App\Services\SurveyPeriod;
 use App\DTO\SurveyPeriod\CreateSurveyPeriodDTO;
 use App\DTO\SurveyPeriod\ListSurveyPeriodDTO;
 use App\DTO\SurveyPeriod\UpdateSurveyPeriodDTO;
+use App\Jobs\SendMailForm;
 use App\Models\SurveyPeriod;
+use App\Models\SurveyPeriodStudent;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -101,67 +103,42 @@ class SurveyPeriodService
         return $surveyPeriod->delete();
     }
 
-    public function sendMail(): void
+    public function sendMail(SurveyPeriod $surveyPeriod, array $data): void
     {
-        /*
-        DB::beginTransaction();
         try {
-            $data = $request->all();
-            if (!$data['links']) {
-                throw new BadRequestException('Không tồn tại email');
-            }
-            $formEmpty = $this->formRepository->findById($id);
-            if(!$formEmpty) {
-                throw new Exception();
-            }
-            $faculty = $this->facultyRepository->findById(auth()->user()->faculty_id, ['id', 'name']);
-
-            $open_time = Carbon::createFromFormat('Y-m-d H:i:s', $formEmpty['open_time'])->format('d/m/Y');
-            $close_time = Carbon::createFromFormat('Y-m-d H:i:s', $formEmpty['close_time'])->format('d/m/Y');
-            $emails = array_keys($data['links']);
-            $dateNow = Carbon::now()->startOfDay();
-            $dateSendEmail = !empty($data['open_time']) ? Carbon::parse($data['open_time']) : null;
-            $condition[] = ['email', 'in', $emails];
-            $studentGraduates = $this->studentGraduate->allBy($condition, ['forms'], ['*']);
-            foreach ($studentGraduates as $student) {
-                foreach (@$student->forms as $form) {
-                    if (@$form->id == $data['form_id']) {
-                        @$form->pivot->increment('number_sent_email');
-                    }
-                }
-            }
-            if($dateSendEmail && ($dateSendEmail->greaterThan($dateNow))) {
-                foreach ($data['links'] as $key => $value) {
-                    SendMailForm::dispatch(
-                        $key,
-                        $form['title'],
-                        $faculty['name'],
-                        $open_time . " đến " . $close_time,
-                        url('/khao-sat-viec-lam-sinh-vien/' . $value),
-                    )->delay($dateSendEmail);
-                }
+            if (Arr::get($data, 'is_all_mail_student')) {
+                $mails = $surveyPeriod->graduationCeremonies()->with('students')->first()->students->flatten();
             } else {
-                foreach ($data['links'] as $key => $value) {
-                    SendMailForm::dispatch(
-                        $key,
-                        $form['title'],
-                        $faculty['name'],
-                        $open_time . " đến " . $close_time,
-                        url('/khao-sat-viec-lam-sinh-vien/' . $value),
-                    );
-                }
+                $mails = $surveyPeriod->graduationCeremonies()->with('students')->first()->students->whereIn('email', $data['list_student_mail']);
             }
-            DB::commit();
-            return $this->responseSuccess();
+
+            $open_time = $surveyPeriod->start_time?->format('d/m/Y');
+            $close_time = $surveyPeriod->end_time?->format('d/m/Y');
+
+            foreach ($mails as $mail) {
+                if (null === $mail->pivot->email) {
+                    continue;
+                }
+                $codeVerify = $this->generateCodeVerifySendMail($mail->id, $surveyPeriod->id);
+
+                SurveyPeriodStudent::where('student_id', $mail->id)
+                    ->where('survey_period_id', $surveyPeriod->id)
+                    ->update([
+                        'code_verify' => $codeVerify,
+                        'number_mail_send' => DB::raw('number_mail_send + 1'),
+                    ]);
+
+                SendMailForm::dispatch(
+                    $mail->pivot->email,
+                    $surveyPeriod->title,
+                    $surveyPeriod->faculty->name,
+                    $open_time . ' đến ' . $close_time,
+                    url('/khao-sat-viec-lam-sinh-vien/' . $codeVerify),
+                )->onQueue('default');
+            }
         } catch (Exception $exception) {
-            DB::rollBack();
-            Log::error('Error store form', [
-                'method' => __METHOD__,
-                'message' => $exception->getMessage()
-            ]);
-            return $this->responseError('Có lỗi xảy ra, vui lòng thử lại sau');
+            throw new Exception($exception->getMessage());
         }
-        */
     }
 
     private function generateCodeVerifySendMail(int $studentId, int $surveyPeriodId): string

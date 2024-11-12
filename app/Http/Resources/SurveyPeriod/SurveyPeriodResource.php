@@ -33,6 +33,7 @@ class SurveyPeriodResource extends JsonResource
             'updated_user' => new UserResource($this->whenLoaded('updatedBy')),
             'students' => StudentSurveyPeriodResource::collection($this->whenLoaded('students')) ?? [],
             'graduation_ceremonies' => GraduationCeremonyResource::collection($this->whenLoaded('graduationCeremonies')) ?? [],
+            'graduation_ceremony_ids' => $this->whenLoaded('graduationCeremonies', fn () => $this->graduationCeremonies->map(fn ($graduationCeremony) => (string) $graduationCeremony->id)),
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
             'created_at' => $this->created_at,
