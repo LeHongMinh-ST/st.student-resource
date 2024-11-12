@@ -37,6 +37,9 @@ class CreateEmploymentSurveyResponseDTOFactory
         $dto->setPhoneNumber($request->input('phone_number'));
         $dto->setCodeStudent($request->input('code_student'));
         $dto->setIdentificationCardNumber($request->input('identification_card_number'));
+        if ($request->has('identification_card_number_update')) {
+            $dto->setIdentificationCardNumberUpdate($request->input('identification_card_number_update'));
+        }
         $dto->setIdentificationIssuancePlace($request->input('identification_issuance_place'));
         $dto->setIdentificationIssuanceDate(Carbon::createFromFormat('Y-m-d', $request->input('identification_issuance_date')));
         $dto->setTrainingIndustryId($request->input('training_industry_id'));

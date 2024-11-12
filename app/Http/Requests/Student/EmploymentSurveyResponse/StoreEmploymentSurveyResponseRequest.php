@@ -17,6 +17,8 @@ use App\Enums\EmploymentSurvey\SolutionsGetJob;
 use App\Enums\EmploymentSurvey\TrainedField;
 use App\Enums\EmploymentSurvey\WorkArea;
 use App\Enums\Gender;
+use App\Enums\Status;
+use App\Models\SurveyPeriod;
 use App\Rules\PhoneNumberRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -42,7 +44,22 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
             'survey_period_id' => [
                 'required',
                 'integer',
-                'exists:survey_periods,id',
+                function ($attribute, $value, $fail): void {
+                    $surveyPeriod = SurveyPeriod::where('id', $value)->first();
+                    if (! $surveyPeriod) {
+                        $fail('Không tìm thấy kỳ đợt khảo sát');
+                    } else {
+                        if (now()->gt($surveyPeriod->end_date)) {
+                            $fail('Đợt khảo sát đã kết thúc');
+                        }
+                        if (now()->lt($surveyPeriod->start_date)) {
+                            $fail('Đợt khảo sát chưa bắt đầu');
+                        }
+                        if (Status::Disable === $surveyPeriod->status) {
+                            $fail('Đợt khảo sát đã đóng');
+                        }
+                    }
+                },
             ],
             'student_id' => [
                 'nullable',
@@ -76,7 +93,12 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
             'identification_card_number' => [
                 'required',
                 'string',
-                'max:255',
+                'max:30',
+            ],
+            'identification_card_number_update' => [
+                'required',
+                'string',
+                'max:30',
             ],
             'identification_issuance_place' => [
                 'required',
@@ -211,13 +233,35 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
         ];
     }
 
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'code_student' => 'Mã sinh viên',
             'phone_number' => 'Số điện thoại',
             'dob' => 'Ngày sinh',
+            'identification_card_number' => 'Số CCCD',
+            'identification_card_number_update' => 'Số CCCD mới',
+            'identification_issuance_place' => 'Nơi cấp CCCD',
             'identification_issuance_date' => 'Ngày cấp CCCD',
+            'training_industry_id' => 'Ngành đào tạo',
+            'admission_year_id' => 'Năm nhập học',
+            'employment_status' => 'Tình trạng việc làm',
+            'recruit_partner_name' => 'Tên đơn vị tuyển dụng',
+            'recruit_partner_address' => 'Địa chỉ đơn vị tuyển dụng',
+            'recruit_partner_date' => 'Ngày tuyển dụng',
+            'recruit_partner_position' => 'Chức vụ',
+            'work_area' => 'Khu vực làm việc',
+            'employed_since' => 'Có việc làm từ khi nào',
+            'trained_field' => 'Mức độ phù hợp với ngành đào tạo',
+            'professional_qualification_field' => 'Mức độ phù hợp với chuyên môn đào tạo',
+            'level_knowledge_acquired' => 'Mức độ học được kiến thức, kỹ năng cần thiết cho công việc',
+            'starting_salary' => 'Mức lương khởi điểm khi mới nhận việc',
+            'average_income' => 'Mức thu nhập bình quân/tháng',
+            'job_search_method' => 'Tìm việc làm theo hình thức nào',
+            'recruitment_type' => 'Hình thức tuyển dụng',
+            'soft_skills_required' => 'Kỹ năng mềm cần có',
+            'must_attended_courses' => 'Các khóa học phải tham ra để nâng cao kỹ năng',
+            'solutions_get_job' => 'Các giải pháp để có việc làm',
         ];
     }
 }

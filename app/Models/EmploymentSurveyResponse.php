@@ -29,6 +29,7 @@ class EmploymentSurveyResponse extends Model
         'gender',
         'code_student',
         'identification_card_number',
+        'identification_card_number_update',
         'identification_issuance_place',
         'identification_issuance_date',
         'training_industry_id',

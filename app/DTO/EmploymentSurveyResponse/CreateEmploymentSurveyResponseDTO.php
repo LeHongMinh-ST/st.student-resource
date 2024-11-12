@@ -32,6 +32,8 @@ class CreateEmploymentSurveyResponseDTO
 
     private string $identificationCardNumber;
 
+    private ?string $identificationCardNumberUpdate;
+
     private string $identificationIssuancePlace;
 
     private DateTime $identificationIssuanceDate;
@@ -95,6 +97,17 @@ class CreateEmploymentSurveyResponseDTO
         $this->mustAttendedCourses = null;
         $this->trainedField = null;
         $this->solutionsGetJob = null;
+        $this->identificationCardNumberUpdate = null;
+    }
+
+    public function getIdentificationCardNumberUpdate(): ?string
+    {
+        return $this->identificationCardNumberUpdate;
+    }
+
+    public function setIdentificationCardNumberUpdate(?string $identificationCardNumberUpdate): void
+    {
+        $this->identificationCardNumberUpdate = $identificationCardNumberUpdate;
     }
 
     public function getFullName(): string
