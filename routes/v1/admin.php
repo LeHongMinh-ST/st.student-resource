@@ -45,7 +45,7 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
     Route::Resource('training-industries', TrainingIndustryController::class);
     Route::Resource('survey-periods', SurveyPeriodController::class)->except('update');
     Route::patch('survey-periods/{surveyPeriod}', [SurveyPeriodController::class, 'update']);
-    //Route::post('survey-periods/{surveyPeriod}/send-mail', [SurveyPeriodController::class, 'sendMail']);
+    Route::post('survey-periods/{surveyPeriod}/send-mail', [SurveyPeriodController::class, 'sendMails']);
     Route::Resource('employment-survey-response', EmploymentSurveyResponseController::class)->only(['index', 'show']);
 
     Route::prefix('users')->group(function (): void {
