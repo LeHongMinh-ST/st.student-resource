@@ -31,6 +31,8 @@ class SurveyPeriod extends Model
 
     protected $casts = [
         'status' => Status::class,
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
         'type' => SurveyPeriodType::class,
     ];
 

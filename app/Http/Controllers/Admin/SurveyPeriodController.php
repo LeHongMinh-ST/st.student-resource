@@ -9,6 +9,7 @@ use App\Factories\SurveyPeriod\ListSurveyPeriodDTOFactory;
 use App\Factories\SurveyPeriod\UpdateSurveyPeriodDTOFactory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\SurveyPeriod\ListSurveyPeriodRequest;
+use App\Http\Requests\Admin\SurveyPeriod\SendMailSurveyPeriodRequest;
 use App\Http\Requests\Admin\SurveyPeriod\StoreSurveyPeriodRequest;
 use App\Http\Requests\Admin\SurveyPeriod\UpdateSurveyPeriodRequest;
 use App\Http\Resources\SurveyPeriod\SurveyPeriodCollection;
@@ -105,16 +106,25 @@ class SurveyPeriodController extends Controller
     }
 
     /**
-     * public function sendMail(SurveyPeriod $surveyPeriod, UpdateSurveyPeriodRequest $request): SurveyPeriodResource
-     * {
-     * $updateSurveyPeriodDTO = UpdateSurveyPeriodDTOFactory::make($request, $surveyPeriod);
+     * send mail surveyPeriod
      *
-     * $surveyPeriod = $this->surveyPeriodService->sendMail($updateSurveyPeriodDTO);
+     * This endpoint allows generalClasses to delete a generalClass.
      *
-     * // Return a JSON response with the generated token and the admin API section
-     * return new SurveyPeriodResource($surveyPeriod);
-     * }
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @param  SurveyPeriod  $surveyPeriod  The generalClass entity to be deleted.
+     * @return JsonResponse Returns a response with no content upon successful deletion.
+     *
+     * @throws AuthorizationException|Exception
+     *
+     * @response 204 Indicates that the response will be a 204 No Content status.
      */
+    public function sendMails(SurveyPeriod $surveyPeriod, SendMailSurveyPeriodRequest $request): JsonResponse
+    {
+        $this->surveyPeriodService->sendMail($surveyPeriod, $request->only('list_student_mail', 'is_all_mail_student'));
+
+        return $this->noContent();
+    }
 
     /**
      * Delete surveyPeriod
