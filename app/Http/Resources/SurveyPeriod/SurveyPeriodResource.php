@@ -25,7 +25,7 @@ class SurveyPeriodResource extends JsonResource
             'description' => $this->description,
             'status' => $this->status,
             'start_date' => $this->start_time,
-            'end_date' => $this->end_time,
+            'end_date' => $this?->end_time,
             'year' => $this->year,
             'type' => $this->type,
             'faculty_id' => $this->faculty_id,
