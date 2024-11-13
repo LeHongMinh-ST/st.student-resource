@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Student;
 
 use App\Factories\EmploymentSurveyResponse\CreateEmploymentSurveyResponseDTOFactory;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Student\EmploymentSurveyResponse\ExternalSearchEmploymentResponseRequest;
 use App\Http\Requests\Student\EmploymentSurveyResponse\StoreEmploymentSurveyResponseRequest;
 use App\Http\Resources\EmploymentSurveyResponse\EmploymentSurveyResponseResource;
 use App\Models\EmploymentSurveyResponse;
@@ -27,6 +28,25 @@ class EmploymentSurveyResponseController extends Controller
 {
     public function __construct(private readonly EmploymentSurveyResponseService $employmentSurveyResponseService)
     {
+    }
+
+    /**
+     * search employmentSurveyResponse.
+     *
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @param  ExternalSearchEmploymentResponseRequest  $request  The HTTP request object containing student data.
+     * @return EmploymentSurveyResponseResource Returns the newly EmploymentSurveyResponseResource as a resource.
+     */
+    #[ResponseFromApiResource(EmploymentSurveyResponseResource::class, EmploymentSurveyResponse::class, Response::HTTP_CREATED, with: [
+        'faculty',
+    ])]
+    public function search(ExternalSearchEmploymentResponseRequest $request): EmploymentSurveyResponseResource
+    {
+        $employmentSurveyResponse = $this->employmentSurveyResponseService->searchByCode($request->only(['student_code', 'survey_period_id']));
+
+        // Return a JSON response with the generated token and the student API section
+        return new EmploymentSurveyResponseResource($employmentSurveyResponse);
     }
 
     /**

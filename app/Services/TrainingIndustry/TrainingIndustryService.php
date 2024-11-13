@@ -30,6 +30,20 @@ class TrainingIndustryService
         return $listTrainingIndustryDTO->getPage() ? $query->paginate($listTrainingIndustryDTO->getLimit()) : $query->get();
     }
 
+    public function getListTrainingIndustryExternal(ListTrainingIndustryDTO $listTrainingIndustryDTO): Collection|LengthAwarePaginator|array
+    {
+        $query = TrainingIndustry::query()
+            ->when(
+                $listTrainingIndustryDTO->getQ(),
+                fn ($q) => $q->where('code', 'like', '%' . $listTrainingIndustryDTO->getQ() . '%')->orWhere('name', 'like', '%' . $listTrainingIndustryDTO->getQ() . '%')
+            )
+            ->when($listTrainingIndustryDTO->getStatus(), fn ($q) => $q->where('status', $listTrainingIndustryDTO->getStatus()))
+            ->when($listTrainingIndustryDTO->getFacultyId(), fn ($q) => $q->where('faculty_id', $listTrainingIndustryDTO->getFacultyId()))
+            ->orderBy($listTrainingIndustryDTO->getOrderBy(), $listTrainingIndustryDTO->getOrder()->value);
+
+        return $listTrainingIndustryDTO->getPage() ? $query->paginate($listTrainingIndustryDTO->getLimit()) : $query->get();
+    }
+
     public function create(CreateTrainingIndustryDTO $createTrainingIndustryDTO): TrainingIndustry
     {
         return TrainingIndustry::create($createTrainingIndustryDTO->toArray());

@@ -42,7 +42,7 @@ class CreateEmploymentSurveyResponseDTO
 
     private string $phoneNumber;
 
-    private int $admissionYearId;
+    private string $source;
 
     private EmploymentStatus $employmentStatus;
 
@@ -98,6 +98,16 @@ class CreateEmploymentSurveyResponseDTO
         $this->trainedField = null;
         $this->solutionsGetJob = null;
         $this->identificationCardNumberUpdate = null;
+    }
+
+    public function getSource(): string
+    {
+        return $this->source;
+    }
+
+    public function setSource(string $source): void
+    {
+        $this->source = $source;
     }
 
     public function getIdentificationCardNumberUpdate(): ?string
@@ -230,15 +240,6 @@ class CreateEmploymentSurveyResponseDTO
         $this->phoneNumber = $phoneNumber;
     }
 
-    public function getAdmissionYearId(): int
-    {
-        return $this->admissionYearId;
-    }
-
-    public function setAdmissionYearId(int $admissionYearId): void
-    {
-        $this->admissionYearId = $admissionYearId;
-    }
 
     public function getEmploymentStatus(): EmploymentStatus
     {
@@ -425,7 +426,7 @@ class CreateEmploymentSurveyResponseDTO
             'identification_issuance_date' => $this->getIdentificationIssuanceDate(),
             'training_industry_id' => $this->getTrainingIndustryId(),
             'phone_number' => $this->getPhoneNumber(),
-            'admission_year_id' => $this->getAdmissionYearId(),
+            'source' => $this->getSource(),
             'employment_status' => $this->getEmploymentStatus(),
             'recruit_partner_name' => $this->getRecruitPartnerName(),
             'recruit_partner_address' => $this->getRecruitPartnerAddress(),

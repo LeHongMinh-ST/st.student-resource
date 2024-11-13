@@ -12,7 +12,7 @@ class ListTrainingIndustryDTO extends BaseListDTO implements BaseDTO
 {
     protected ?string $q;
 
-    protected int $facultyId;
+    protected ?int $facultyId;
 
     protected ?Status $status;
 
@@ -20,7 +20,7 @@ class ListTrainingIndustryDTO extends BaseListDTO implements BaseDTO
     {
         parent::__construct();
         $this->q = null;
-        $this->facultyId = auth()->user()->faculty_id;
+        $this->facultyId = null;
         $this->status = null;
         $this->orderBy = 'id';
     }
@@ -35,12 +35,12 @@ class ListTrainingIndustryDTO extends BaseListDTO implements BaseDTO
         $this->status = $status;
     }
 
-    public function getFacultyId(): int
+    public function getFacultyId(): ?int
     {
         return $this->facultyId;
     }
 
-    public function setFacultyId(int $facultyId): void
+    public function setFacultyId(?int $facultyId): void
     {
         $this->facultyId = $facultyId;
     }

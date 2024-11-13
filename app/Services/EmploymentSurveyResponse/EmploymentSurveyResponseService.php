@@ -46,6 +46,13 @@ class EmploymentSurveyResponseService
         return $id instanceof EmploymentSurveyResponse ? $id : EmploymentSurveyResponse::where('id', $id)->first();
     }
 
+    public function searchByCode(array $filter): EmploymentSurveyResponse
+    {
+        return EmploymentSurveyResponse::where('code_student', $filter['code_student'])
+            ->where('survey_period_id', $filter['survey_period_id'])
+            ->first();
+    }
+
     private function validateData(CreateEmploymentSurveyResponseDTO $createEmploymentSurveyResponseDTO): void
     {
         $student = Student::where('code', $createEmploymentSurveyResponseDTO->getCodeStudent())->first();

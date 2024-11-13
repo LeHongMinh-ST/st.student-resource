@@ -18,6 +18,7 @@ use App\Enums\EmploymentSurvey\TrainedField;
 use App\Enums\EmploymentSurvey\WorkArea;
 use App\Enums\Gender;
 use App\Enums\Status;
+use App\Models\Student;
 use App\Models\SurveyPeriod;
 use App\Rules\PhoneNumberRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -49,10 +50,10 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
                     if (! $surveyPeriod) {
                         $fail('Không tìm thấy kỳ đợt khảo sát');
                     } else {
-                        if (now()->gt($surveyPeriod->end_date)) {
+                        if (now()->gt($surveyPeriod->end_time)) {
                             $fail('Đợt khảo sát đã kết thúc');
                         }
-                        if (now()->lt($surveyPeriod->start_date)) {
+                        if (now()->lt($surveyPeriod->start_time)) {
                             $fail('Đợt khảo sát chưa bắt đầu');
                         }
                         if (Status::Disable === $surveyPeriod->status) {
@@ -85,7 +86,16 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
                 Rule::in(Gender::cases()),
             ],
             'code_student' => [
-                Rule::exists('students', 'code'),
+                function ($attribute, $value, $fail): void {
+                    $student = Student::with(['surveyPeriods'])->where('code', $value)->first();
+                    if (! $student) {
+                        $fail('Không tìm thấy sinh viên');
+                    }
+
+                    if ($student?->surveyPeriods->where('id', $this->input('survey_period_id'))->isEmpty()) {
+                        $fail('Sinh viên không thuộc đợt khảo sát');
+                    }
+                },
                 'required',
                 'string',
                 'max:255',
@@ -96,7 +106,6 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
                 'max:30',
             ],
             'identification_card_number_update' => [
-                'required',
                 'string',
                 'max:30',
             ],
@@ -119,10 +128,9 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
                 'string',
                 new PhoneNumberRule(),
             ],
-            'admission_year_id' => [
+            'source' => [
                 'required',
-                'integer',
-                'exists:admission_years,id',
+
             ],
             'employment_status' => [
                 'required',
@@ -180,6 +188,9 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
             ],
             'job_search_method.value' => [
                 Rule::requiredIf($this->job_search_method),
+                'array',
+            ],
+            'job_search_method.value.*' => [
                 Rule::in(JobSearchMethod::cases()),
             ],
             'job_search_method.content_other' => [
@@ -191,6 +202,9 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
             ],
             'recruitment_type.value' => [
                 Rule::requiredIf($this->recruitment_type),
+                'array',
+            ],
+            'recruitment_type.value.*' => [
                 Rule::in(RecruitmentType::cases()),
             ],
             'recruitment_type.content_other' => [
@@ -202,6 +216,9 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
             ],
             'soft_skills_required.value' => [
                 Rule::requiredIf($this->soft_skills_required),
+                'array',
+            ],
+            'soft_skills_required.value.*' => [
                 Rule::in(SoftSkillsRequired::cases()),
             ],
             'soft_skills_required.content_other' => [
@@ -213,6 +230,10 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
             ],
             'must_attended_courses.value' => [
                 Rule::requiredIf($this->must_attended_courses),
+                'array',
+            ],
+            'must_attended_courses.value.*' => [
+                'nullable',
                 Rule::in(MustAttendedCourses::cases()),
             ],
             'must_attended_courses.content_other' => [
@@ -224,6 +245,9 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
             ],
             'solutions_get_job.value' => [
                 'required',
+                'array',
+            ],
+            'solutions_get_job.value.*' => [
                 Rule::in(SolutionsGetJob::cases()),
             ],
             'solutions_get_job.content_other' => [

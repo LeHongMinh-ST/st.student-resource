@@ -35,7 +35,7 @@ class EmploymentSurveyResponseResource extends JsonResource
             'identification_issuance_place' => $this->indentification_issuance_place,
             'identification_issuance_date' => $this->identification_issuance_date,
             'training_industry_id' => $this->training_industry_id,
-            'admission_year_id' => $this->admission_year_id,
+            'source' => $this->source,
             'employment_status' => $this->employment_status,
             'recruit_partner_name' => $this->recruit_partner_name,
             'recruit_partner_address' => $this->recruit_partner_address,

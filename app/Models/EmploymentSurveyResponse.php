@@ -33,8 +33,8 @@ class EmploymentSurveyResponse extends Model
         'identification_issuance_place',
         'identification_issuance_date',
         'training_industry_id',
+        'course',
         'phone_number',
-        'admission_year_id',
         'employment_status', // Tình trạng việc làm
         'recruit_partner_name', // Tên đơn vị tuyển dụng
         'recruit_partner_address', // Địa chỉ đơn vị tuyển dụng
