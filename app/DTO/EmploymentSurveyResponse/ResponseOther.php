@@ -6,13 +6,15 @@ namespace App\DTO\EmploymentSurveyResponse;
 
 class ResponseOther
 {
-    private int $value;
+    private array $value;
 
     private ?string $contentOther;
 
+    private int $valueOther = 0;
+
     public function __construct($value = null, $contentOther = null)
     {
-        $this->value = null !== $value ? $value : 99;
+        $this->value = null !== $value ? $value : [$this->valueOther];
         $this->contentOther = $contentOther;
     }
 
@@ -22,12 +24,12 @@ class ResponseOther
         $this->contentOther = $contentOther;
     }
 
-    public function getValue(): int
+    public function getValue(): array
     {
         return $this->value;
     }
 
-    public function setValue(int $value): void
+    public function setValue(array $value): void
     {
         $this->value = $value;
     }
@@ -36,7 +38,7 @@ class ResponseOther
     {
         return [
             'value' => $this->getValue(),
-            'content_other' => $this->getContentOther(),
+            'content_other' => in_array($this->valueOther, $this->value) ? $this->contentOther : null,
         ];
     }
 
