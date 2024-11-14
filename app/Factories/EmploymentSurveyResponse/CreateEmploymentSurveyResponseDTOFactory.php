@@ -43,14 +43,17 @@ class CreateEmploymentSurveyResponseDTOFactory
         $dto->setIdentificationIssuancePlace($request->input('identification_issuance_place'));
         $dto->setIdentificationIssuanceDate(Carbon::createFromFormat('Y-m-d', $request->input('identification_issuance_date')));
         $dto->setTrainingIndustryId((int) $request->input('training_industry_id'));
-        $dto->setSource($request->input('source'));
-        $dto->setEmploymentStatus(EmploymentStatus::from($request->input('employment_status')));
+        $dto->setCourse($request->input('course'));
+        $dto->setEmploymentStatus(EmploymentStatus::from((int) $request->input('employment_status')));
         if (EmploymentStatus::Employed === $dto->getEmploymentStatus()) {
             if ($request->has('recruit_partner_name')) {
                 $dto->setRecruitPartnerName($request->input('recruit_partner_name'));
             }
             if ($request->has('recruit_partner_address')) {
                 $dto->setRecruitPartnerAddress($request->input('recruit_partner_address'));
+            }
+            if ($request->has('city_work_id')) {
+                $dto->setCityWorkId((int) $request->input('city_work_id'));
             }
             if ($request->has('recruit_partner_date')) {
                 $dto->setRecruitPartnerDate(Carbon::createFromFormat('Y-m-d', $request->input('recruit_partner_date')));

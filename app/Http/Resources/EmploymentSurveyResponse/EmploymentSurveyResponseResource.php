@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\EmploymentSurveyResponse;
 
+use App\Http\Resources\City\CityResource;
 use App\Http\Resources\Student\StudentSurveyPeriodResource;
 use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
@@ -22,6 +23,7 @@ class EmploymentSurveyResponseResource extends JsonResource
             'id' => $this->id ?? 0,
             'survey_period' => new StudentSurveyPeriodResource($this->whenLoaded('surveyPeriod')),
             'student' => new UserResource($this->whenLoaded('student')),
+            'city_work' => new CityResource($this->whenLoaded($this->whenLoaded('cityWork'))),
             'email' => $this->email,
             'full_name' => $this->full_name,
             'survey_period_id' => $this->survey_period_id,
@@ -42,6 +44,7 @@ class EmploymentSurveyResponseResource extends JsonResource
             'recruit_partner_date' => $this->recruit_partner_date,
             'recruit_partner_position' => $this->recruit_partner_position,
             'work_area' => $this->work_area,
+            'city_work_id' => $this->city_work_id,
             'employed_since' => $this->employed_since,
             'trained_field' => $this->trained_field,
             'professional_qualification_field' => $this->professional_qualification_field,

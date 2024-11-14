@@ -1,0 +1,506 @@
+[
+    {
+        "id": 1,
+        "name": "Hà Nội",
+        "priority": 1,
+        "map_name": "[\"ha-noi\",\"tpha-noi\",\"tp-ha-noi\",\"thanh-pho-ha-noi\",\"hanoi\",\"hn\"]",
+        "created_at": "2023-01-10 04:24:47",
+        "updated_at": "2024-06-29 11:47:16"
+    },
+    {
+        "id": 2,
+        "name": "Hồ Chí Minh",
+        "priority": 1,
+        "map_name": "[\"ho-chi-minh\",\"tpho-chi-minh\",\"tp-ho-chi-minh\",\"thanh-pho-ho-chi-minh\",\"hcm\",\"hochiminh\",\"saigon\",\"sg\"]",
+        "created_at": "2023-01-10 04:25:02",
+        "updated_at": "2024-06-29 11:47:24"
+    },
+    {
+        "id": 3,
+        "name": "Đà Nẵng",
+        "priority": 3,
+        "map_name": "[\"da-nang\",\"tpda-nang\",\"tp-da-nang\",\"thanh-pho-da-nang\",\"danang\",\"dn\"]",
+        "created_at": "2023-01-10 04:25:12",
+        "updated_at": "2024-06-29 11:47:35"
+    },
+    {
+        "id": 4,
+        "name": "An Giang",
+        "priority": 99,
+        "map_name": "[\"an-giang\",\"tinh-an-giang\",\"tan-giang\",\"t-an-giang\",\"angiang\"]",
+        "created_at": "2023-01-10 04:25:15",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 5,
+        "name": "Bà Rịa - Vũng Tàu",
+        "priority": 99,
+        "map_name": "[\"ba-ria-vung-tau\",\"tinh-ba-ria-vung-tau\",\"tba-ria-vung-tau\",\"t-ba-ria-vung-tau\",\"bariavungtau\",\"vungtau\",\"ba-riavung-tau\"]",
+        "created_at": "2023-01-10 04:25:20",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 6,
+        "name": "Bắc Ninh",
+        "priority": 99,
+        "map_name": "[\"bac-ninh\",\"tinh-bac-ninh\",\"tbac-ninh\",\"t-bac-ninh\",\"bacninh\"]",
+        "created_at": "2023-01-10 04:25:25",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 7,
+        "name": "Bắc Giang",
+        "priority": 99,
+        "map_name": "[\"bac-giang\",\"tinh-bac-giang\",\"tbac-giang\",\"t-bac-giang\",\"bacgiang\"]",
+        "created_at": "2023-01-10 04:25:29",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 8,
+        "name": "Bình Dương",
+        "priority": 99,
+        "map_name": "[\"binh-duong\",\"tinh-binh-duong\",\"tbinh-duong\",\"t-binh-duong\",\"binhduong\"]",
+        "created_at": "2023-01-10 04:25:35",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 9,
+        "name": "Bình Định",
+        "priority": 99,
+        "map_name": "[\"binh-dinh\",\"tinh-binh-dinh\",\"tbinh-dinh\",\"t-binh-dinh\",\"binhdinh\"]",
+        "created_at": "2023-01-10 04:25:40",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 10,
+        "name": "Bình Phước",
+        "priority": 99,
+        "map_name": "[\"binh-phuoc\",\"tinh-binh-phuoc\",\"tbinh-phuoc\",\"t-binh-phuoc\",\"binhphuoc\"]",
+        "created_at": "2023-01-10 04:25:45",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 11,
+        "name": "Bình Thuận",
+        "priority": 99,
+        "map_name": "[\"binh-thuan\",\"tinh-binh-thuan\",\"tbinh-thuan\",\"t-binh-thuan\",\"binhthuan\"]",
+        "created_at": "2023-01-10 04:25:50",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 12,
+        "name": "Bạc Liêu",
+        "priority": 99,
+        "map_name": "[\"bac-lieu\",\"tinh-bac-lieu\",\"tbac-lieu\",\"t-bac-lieu\",\"baclieu\"]",
+        "created_at": "2023-01-10 04:25:54",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 13,
+        "name": "Bến Tre",
+        "priority": 99,
+        "map_name": "[\"ben-tre\",\"tinh-ben-tre\",\"tben-tre\",\"t-ben-tre\",\"bentre\"]",
+        "created_at": "2023-01-10 04:25:59",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 14,
+        "name": "Bắc Cạn",
+        "priority": 99,
+        "map_name": "[\"bac-can\",\"bac-kan\",\"tinh-bac-kan\",\"tbac-kan\",\"t-bac-kan\",\"backan\",\"baccan\"]",
+        "created_at": "2023-01-10 04:26:04",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 15,
+        "name": "Cần Thơ",
+        "priority": 99,
+        "map_name": "[\"can-tho\",\"tpcan-tho\",\"tp-can-tho\",\"thanh-pho-can-tho\",\"cantho\"]",
+        "created_at": "2023-01-10 04:26:09",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 16,
+        "name": "Khánh Hòa",
+        "priority": 99,
+        "map_name": "[\"khanh-hoa\",\"tinh-khanh-hoa\",\"tkhanh-hoa\",\"t-khanh-hoa\",\"khanhhoa\"]",
+        "created_at": "2023-01-10 04:26:17",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 17,
+        "name": "Thừa Thiên Huế",
+        "priority": 99,
+        "map_name": "[\"thua-thien-hue\",\"tinh-thua-thien-hue\",\"tthua-thien-hue\",\"t-thua-thien-hue\",\"hue\",\"thuathienhue\"]",
+        "created_at": "2023-01-10 04:26:23",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 18,
+        "name": "Lào Cai",
+        "priority": 99,
+        "map_name": "[\"lao-cai\",\"tinh-lao-cai\",\"tlao-cai\",\"t-lao-cai\",\"laocai\"]",
+        "created_at": "2023-01-10 04:26:27",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 19,
+        "name": "Quảng Ninh",
+        "priority": 99,
+        "map_name": "[\"quang-ninh\",\"tinh-quang-ninh\",\"tquang-ninh\",\"t-quang-ninh\",\"quangninh\"]",
+        "created_at": "2023-01-10 04:26:32",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 20,
+        "name": "Đồng Nai",
+        "priority": 99,
+        "map_name": "[\"dong-nai\",\"tinh-dong-nai\",\"tdong-nai\",\"t-dong-nai\",\"dongnai\"]",
+        "created_at": "2023-01-10 04:26:38",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 21,
+        "name": "Nam Định",
+        "priority": 99,
+        "map_name": "[\"nam-dinh\",\"tinh-nam-dinh\",\"tnam-dinh\",\"t-nam-dinh\",\"namdinh\"]",
+        "created_at": "2023-01-10 04:26:45",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 22,
+        "name": "Cà Mau",
+        "priority": 99,
+        "map_name": "[\"ca-mau\",\"tinh-ca-mau\",\"tca-mau\",\"t-ca-mau\",\"camau\"]",
+        "created_at": "2023-01-10 04:26:50",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 23,
+        "name": "Cao Bằng",
+        "priority": 99,
+        "map_name": "[\"cao-bang\",\"tinh-cao-bang\",\"tcao-bang\",\"t-cao-bang\",\"caobang\"]",
+        "created_at": "2023-01-10 04:26:55",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 24,
+        "name": "Gia Lai",
+        "priority": 99,
+        "map_name": "[\"gia-lai\",\"tinh-gia-lai\",\"tgia-lai\",\"t-gia-lai\",\"gialai\"]",
+        "created_at": "2023-01-10 04:27:02",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 25,
+        "name": "Hà Giang",
+        "priority": 99,
+        "map_name": "[\"ha-giang\",\"tinh-ha-giang\",\"tha-giang\",\"t-ha-giang\",\"hagiang\"]",
+        "created_at": "2023-01-10 04:27:10",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 26,
+        "name": "Hà Nam",
+        "priority": 99,
+        "map_name": "[\"ha-nam\",\"tinh-ha-nam\",\"tha-nam\",\"t-ha-nam\",\"hanam\"]",
+        "created_at": "2023-01-10 04:27:16",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 27,
+        "name": "Hà Tĩnh",
+        "priority": 99,
+        "map_name": "[\"ha-tinh\",\"tinh-ha-tinh\",\"tha-tinh\",\"t-ha-tinh\",\"hatinh\"]",
+        "created_at": "2023-01-10 04:27:20",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 28,
+        "name": "Hải Dương",
+        "priority": 99,
+        "map_name": "[\"hai-duong\",\"tinh-hai-duong\",\"thai-duong\",\"t-hai-duong\",\"haiduong\"]",
+        "created_at": "2023-01-10 04:27:30",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 29,
+        "name": "Hải Phòng",
+        "priority": 99,
+        "map_name": "[\"hai-phong\",\"tphai-phong\",\"tp-hai-phong\",\"thanh-pho-hai-phong\",\"haiphong\"]",
+        "created_at": "2023-01-10 04:27:38",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 30,
+        "name": "Hòa Bình",
+        "priority": 99,
+        "map_name": "[\"hoa-binh\",\"tinh-hoa-binh\",\"thoa-binh\",\"t-hoa-binh\",\"hoabinh\"]",
+        "created_at": "2023-01-10 04:27:47",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 31,
+        "name": "Hưng Yên",
+        "priority": 99,
+        "map_name": "[\"hung-yen\",\"tinh-hung-yen\",\"thung-yen\",\"t-hung-yen\",\"hungyen\"]",
+        "created_at": "2023-01-10 04:27:54",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 32,
+        "name": "Kiên Giang",
+        "priority": 99,
+        "map_name": "[\"kien-giang\",\"tinh-kien-giang\",\"tkien-giang\",\"t-kien-giang\",\"kiengiang\"]",
+        "created_at": "2023-01-10 04:28:01",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 33,
+        "name": "Kon Tum",
+        "priority": 99,
+        "map_name": "[\"kon-tum\",\"tinh-kon-tum\",\"tkon-tum\",\"t-kon-tum\",\"kontum\",\"contum\"]",
+        "created_at": "2023-01-10 04:28:09",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 34,
+        "name": "Lai Châu",
+        "priority": 99,
+        "map_name": "[\"lai-chau\",\"tinh-lai-chau\",\"tlai-chau\",\"t-lai-chau\",\"laichau\"]",
+        "created_at": "2023-01-10 04:28:17",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 35,
+        "name": "Lâm Đồng",
+        "priority": 99,
+        "map_name": "[\"lam-dong\",\"tinh-lam-dong\",\"tlam-dong\",\"t-lam-dong\",\"lamdong\"]",
+        "created_at": "2023-01-10 04:28:22",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 36,
+        "name": "Lạng Sơn",
+        "priority": 99,
+        "map_name": "[\"lang-son\",\"tinh-lang-son\",\"tlang-son\",\"t-lang-son\",\"langson\"]",
+        "created_at": "2023-01-10 04:28:34",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 37,
+        "name": "Long An",
+        "priority": 99,
+        "map_name": "[\"long-an\",\"tinh-long-an\",\"tlong-an\",\"t-long-an\",\"longan\"]",
+        "created_at": "2023-01-10 04:28:40",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 38,
+        "name": "Nghệ An",
+        "priority": 99,
+        "map_name": "[\"nghe-an\",\"tinh-nghe-an\",\"tnghe-an\",\"t-nghe-an\",\"nghean\"]",
+        "created_at": "2023-01-10 04:28:47",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 39,
+        "name": "Ninh Bình",
+        "priority": 99,
+        "map_name": "[\"ninh-binh\",\"tinh-ninh-binh\",\"tninh-binh\",\"t-ninh-binh\",\"ninhbinh\"]",
+        "created_at": "2023-01-10 04:29:02",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 40,
+        "name": "Ninh Thuận",
+        "priority": 99,
+        "map_name": "[\"ninh-thuan\",\"tinh-ninh-thuan\",\"tninh-thuan\",\"t-ninh-thuan\",\"ninhthuan\"]",
+        "created_at": "2023-01-10 04:29:06",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 41,
+        "name": "Phú Thọ",
+        "priority": 99,
+        "map_name": "[\"phu-tho\",\"tinh-phu-tho\",\"tphu-tho\",\"t-phu-tho\",\"phutho\"]",
+        "created_at": "2023-01-10 04:29:10",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 42,
+        "name": "Phú Yên",
+        "priority": 99,
+        "map_name": "[\"phu-yen\",\"tinh-phu-yen\",\"tphu-yen\",\"t-phu-yen\",\"phuyen\"]",
+        "created_at": "2023-01-10 04:29:24",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 43,
+        "name": "Quảng Bình",
+        "priority": 99,
+        "map_name": "[\"quang-binh\",\"tinh-quang-binh\",\"tquang-binh\",\"t-quang-binh\",\"quangbinh\"]",
+        "created_at": "2023-01-10 04:29:31",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 44,
+        "name": "Quảng Nam",
+        "priority": 99,
+        "map_name": "[\"quang-nam\",\"tinh-quang-nam\",\"tquang-nam\",\"t-quang-nam\",\"quangnam\"]",
+        "created_at": "2023-01-10 04:29:37",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 45,
+        "name": "Quảng Ngãi",
+        "priority": 99,
+        "map_name": "[\"quang-ngai\",\"tinh-quang-ngai\",\"tquang-ngai\",\"t-quang-ngai\",\"quangngai\"]",
+        "created_at": "2023-01-10 04:29:46",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 46,
+        "name": "Quảng Trị",
+        "priority": 99,
+        "map_name": "[\"quang-tri\",\"tinh-quang-tri\",\"tquang-tri\",\"t-quang-tri\",\"quangtri\"]",
+        "created_at": "2023-01-10 04:29:54",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 47,
+        "name": "Sóc Trăng",
+        "priority": 99,
+        "map_name": "[\"soc-trang\",\"tinh-soc-trang\",\"tsoc-trang\",\"t-soc-trang\",\"soctrang\"]",
+        "created_at": "2023-01-10 04:29:59",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 48,
+        "name": "Sơn La",
+        "priority": 99,
+        "map_name": "[\"son-la\",\"tinh-son-la\",\"tson-la\",\"t-son-la\",\"sonla\"]",
+        "created_at": "2023-01-10 04:30:04",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 49,
+        "name": "Tây Ninh",
+        "priority": 99,
+        "map_name": "[\"tay-ninh\",\"tinh-tay-ninh\",\"ttay-ninh\",\"t-tay-ninh\",\"tayninh\"]",
+        "created_at": "2023-01-10 04:30:12",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 50,
+        "name": "Thái Bình",
+        "priority": 99,
+        "map_name": "[\"thai-binh\",\"tinh-thai-binh\",\"tthai-binh\",\"t-thai-binh\",\"thaibinh\"]",
+        "created_at": "2023-01-10 04:30:16",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 51,
+        "name": "Thái Nguyên",
+        "priority": 99,
+        "map_name": "[\"thai-nguyen\",\"tinh-thai-nguyen\",\"tthai-nguyen\",\"t-thai-nguyen\",\"thainguyen\"]",
+        "created_at": "2023-01-10 04:30:21",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 52,
+        "name": "Thanh Hóa",
+        "priority": 99,
+        "map_name": "[\"thanh-hoa\",\"tinh-thanh-hoa\",\"tthanh-hoa\",\"t-thanh-hoa\",\"thanhhoa\"]",
+        "created_at": "2023-01-10 04:30:27",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 53,
+        "name": "Tiền Giang",
+        "priority": 99,
+        "map_name": "[\"tien-giang\",\"tinh-tien-giang\",\"ttien-giang\",\"t-tien-giang\",\"tiengiang\"]",
+        "created_at": "2023-01-10 04:30:39",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 54,
+        "name": "Trà Vinh",
+        "priority": 99,
+        "map_name": "[\"tra-vinh\",\"tinh-tra-vinh\",\"ttra-vinh\",\"t-tra-vinh\",\"travinh\"]",
+        "created_at": "2023-01-10 04:30:44",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 55,
+        "name": "Tuyên Quang",
+        "priority": 99,
+        "map_name": "[\"tuyen-quang\",\"tinh-tuyen-quang\",\"ttuyen-quang\",\"t-tuyen-quang\",\"tuyenquang\"]",
+        "created_at": "2023-01-10 04:30:49",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 56,
+        "name": "Vĩnh Long",
+        "priority": 99,
+        "map_name": "[\"vinh-long\",\"tinh-vinh-long\",\"tvinh-long\",\"t-vinh-long\",\"vinhlong\"]",
+        "created_at": "2023-01-10 04:30:55",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 57,
+        "name": "Vĩnh Phúc",
+        "priority": 99,
+        "map_name": "[\"vinh-phuc\",\"tinh-vinh-phuc\",\"tvinh-phuc\",\"t-vinh-phuc\",\"vinhphuc\"]",
+        "created_at": "2023-01-10 04:31:00",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 58,
+        "name": "Yên Bái",
+        "priority": 99,
+        "map_name": "[\"yen-bai\",\"tinh-yen-bai\",\"tyen-bai\",\"t-yen-bai\",\"yenbai\"]",
+        "created_at": "2023-01-10 04:31:04",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 59,
+        "name": "Đắk Lắk",
+        "priority": 99,
+        "map_name": "[\"dak-lak\",\"tinh-dak-lak\",\"tdak-lak\",\"t-dak-lak\",\"daklak\",\"daclac\",\"daklac\",\"daclak\",\"dac-lac\",\"tinh-dac-lac\",\"t-dac-lac\",\"tdac-lac\"]",
+        "created_at": "2023-01-10 04:31:10",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 60,
+        "name": "Đồng Tháp",
+        "priority": 99,
+        "map_name": "[\"dong-thap\",\"tinh-dong-thap\",\"tdong-thap\",\"t-dong-thap\",\"dongthap\"]",
+        "created_at": "2023-01-10 04:31:18",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 61,
+        "name": "Đắk Nông",
+        "priority": 99,
+        "map_name": "[\"dak-nong\",\"tinh-dak-nong\",\"tdak-nong\",\"t-dak-nong\",\"daknong\",\"dacnong\",\"dac-nong\",\"t-dac-nong\",\"tdac-nong\"]",
+        "created_at": "2023-01-10 04:31:24",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 62,
+        "name": "Hậu Giang",
+        "priority": 99,
+        "map_name": "[\"hau-giang\",\"tinh-hau-giang\",\"thau-giang\",\"t-hau-giang\",\"haugiang\"]",
+        "created_at": "2023-01-10 04:31:28",
+        "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "id": 63,
+        "name": "Điện Biên",
+        "priority": 99,
+        "map_name": "[\"dien-bien\",\"tinh-dien-bien\",\"tdien-bien\",\"t-dien-bien\",\"dienbien\"]",
+        "created_at": "2023-01-10 04:31:32",
+        "updated_at": "2024-05-23 17:57:40"
+    }
+]

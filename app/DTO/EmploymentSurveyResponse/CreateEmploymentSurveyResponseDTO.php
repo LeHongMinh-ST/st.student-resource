@@ -26,6 +26,8 @@ class CreateEmploymentSurveyResponseDTO
 
     private DateTime $dob;
 
+    private ?int $cityWorkId;
+
     private Gender $gender;
 
     private string $codeStudent;
@@ -42,7 +44,7 @@ class CreateEmploymentSurveyResponseDTO
 
     private string $phoneNumber;
 
-    private string $source;
+    private string $course;
 
     private EmploymentStatus $employmentStatus;
 
@@ -98,16 +100,27 @@ class CreateEmploymentSurveyResponseDTO
         $this->trainedField = null;
         $this->solutionsGetJob = null;
         $this->identificationCardNumberUpdate = null;
+        $this->cityWorkId = null;
     }
 
-    public function getSource(): string
+    public function getCityWorkId(): ?int
     {
-        return $this->source;
+        return $this->cityWorkId;
     }
 
-    public function setSource(string $source): void
+    public function setCityWorkId(?int $cityWorkId): void
     {
-        $this->source = $source;
+        $this->cityWorkId = $cityWorkId;
+    }
+
+    public function getCourse(): string
+    {
+        return $this->course;
+    }
+
+    public function setCourse(string $course): void
+    {
+        $this->course = $course;
     }
 
     public function getIdentificationCardNumberUpdate(): ?string
@@ -239,7 +252,6 @@ class CreateEmploymentSurveyResponseDTO
     {
         $this->phoneNumber = $phoneNumber;
     }
-
 
     public function getEmploymentStatus(): EmploymentStatus
     {
@@ -426,7 +438,7 @@ class CreateEmploymentSurveyResponseDTO
             'identification_issuance_date' => $this->getIdentificationIssuanceDate(),
             'training_industry_id' => $this->getTrainingIndustryId(),
             'phone_number' => $this->getPhoneNumber(),
-            'source' => $this->getSource(),
+            'course' => $this->getCourse(),
             'employment_status' => $this->getEmploymentStatus(),
             'recruit_partner_name' => $this->getRecruitPartnerName(),
             'recruit_partner_address' => $this->getRecruitPartnerAddress(),
@@ -444,6 +456,7 @@ class CreateEmploymentSurveyResponseDTO
             'soft_skills_required' => $this->getSoftSkillsRequired()?->toString(),
             'must_attended_courses' => $this->getMustAttendedCourses()?->toString(),
             'solutions_get_job' => $this->getSolutionsGetJob()?->toString(),
+            'city_work_id' => $this->getCityWorkId(),
         ];
     }
 }
