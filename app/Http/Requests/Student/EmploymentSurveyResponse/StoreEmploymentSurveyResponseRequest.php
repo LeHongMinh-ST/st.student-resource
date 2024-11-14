@@ -206,7 +206,6 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
                 Rule::requiredIf((int) $this->employment_status === EmploymentStatus::Employed->value),
             ],
             'recruitment_type.value' => [
-                Rule::requiredIf($this->recruitment_type),
                 'array',
             ],
             'recruitment_type.value.*' => [
