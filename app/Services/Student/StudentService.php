@@ -23,6 +23,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -194,7 +195,7 @@ class StudentService
                 'faculty_id' => auth(AuthApiSection::Admin->value)->user()?->faculty_id,
                 'user_id' => auth(AuthApiSection::Admin->value)->id(),
                 'type_id' => $courseStudentDTO->getAdmissionYearId(),
-                'total_job' => count($data['file_names'])
+                'total_job' => count($data['file_names']),
             ]);
 
             foreach ($data['file_names'] as $fileName) {
@@ -221,5 +222,27 @@ class StudentService
     public function getStudentByCode(string $code): Model|Builder
     {
         return Student::query()->where(['code' => $code])->firstOrFail();
+    }
+
+    public function searchOneStudent(array $filter): Model|Builder
+    {
+        return Student::when(Arr::get($filter, 'code'), fn ($q) => $q->where('code', $filter['code']))
+            ->when(Arr::get($filter, 'email'), function ($q) use ($filter) {
+                return $q->whereHas('graduationCeremonies', function ($q) use ($filter): void {
+                    $q->where('email', $filter['email']);
+                });
+            })
+            ->when(Arr::get($filter, 'phone_number'), function ($q) use ($filter) {
+                return $q->whereHas('info', function ($q) use ($filter): void {
+                    $q->where('phone_number', $filter['phone_number']);
+                });
+            })
+            ->when(Arr::get($filter, 'code_verify'), function ($q) use ($filter) {
+                return $q->whereHas('surveyPeriods', function ($q) use ($filter): void {
+                    $q->where('survey_periods.code_verify', $filter['code_verify']);
+                });
+            })
+            ->with(['info', 'graduationCeremonies'])
+            ->first();
     }
 }

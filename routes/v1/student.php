@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 use App\Enums\AuthApiSection;
 use App\Http\Controllers\Student\AuthController;
+use App\Http\Controllers\Student\CitiController;
 use App\Http\Controllers\Student\EmploymentSurveyResponseController;
 use App\Http\Controllers\Student\ReflectController;
 use App\Http\Controllers\Student\RequestUpdateController;
+use App\Http\Controllers\Student\StudentController;
 use App\Http\Controllers\Student\SurveyPeriodController;
 use App\Http\Controllers\Student\TrainingIndustryController;
 use Illuminate\Support\Facades\Route;
@@ -20,8 +22,10 @@ Route::prefix('auth')->group(function (): void {
 Route::prefix('external')->group(function (): void {
     Route::post('/employment-survey-response', [EmploymentSurveyResponseController::class, 'store']);
     Route::get('/employment-survey-response-search', [EmploymentSurveyResponseController::class, 'search']);
+    Route::get('/student-info-search', [StudentController::class, 'search']);
     Route::get('/survey-periods/{surveyPeriod}', [SurveyPeriodController::class, 'show']);
     Route::get('/training-industries', [TrainingIndustryController::class, 'index']);
+    Route::get('/cities', [CitiController::class, 'index']);
 });
 
 Route::middleware(['auth:' . AuthApiSection::Student->value])->group(function (): void {

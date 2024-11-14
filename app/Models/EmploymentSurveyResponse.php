@@ -38,6 +38,7 @@ class EmploymentSurveyResponse extends Model
         'employment_status', // Tình trạng việc làm
         'recruit_partner_name', // Tên đơn vị tuyển dụng
         'recruit_partner_address', // Địa chỉ đơn vị tuyển dụng
+        'city_work_id', // Thành phố làm việc
         'recruit_partner_date', // Ngày tuyển dụng
         'recruit_partner_position', // Chức vụ
         'work_area', // Khu vực làm việc
@@ -104,5 +105,10 @@ class EmploymentSurveyResponse extends Model
     public function surveyPeriod(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(SurveyPeriod::class);
+    }
+
+    public function cityWork(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Cities::class, 'city_work_id');
     }
 }
