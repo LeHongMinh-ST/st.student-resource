@@ -11,7 +11,7 @@ class DateTimeHelper
 {
     public static function createDateTime($date): bool|Carbon|null
     {
-        $formats = ['d/m/y', 'd-m-Y', 'd/m/Y', 'd-m-y', 'Y-m-d', 'm/d/Y', 'j-n-Y'];
+        $formats = ['d/m/y', 'd-m-Y', 'd/m/Y', 'd-m-y', 'Y-m-d'];
 
         foreach ($formats as $format) {
             try {
