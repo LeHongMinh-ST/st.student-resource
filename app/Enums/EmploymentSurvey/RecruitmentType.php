@@ -15,5 +15,5 @@ enum RecruitmentType: int
     // Biệt phái
     case Seconded = 4;
     // Khác
-    case Other = 99;
+    case Other = 0;
 }

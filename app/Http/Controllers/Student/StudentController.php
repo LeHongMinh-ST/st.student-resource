@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Student;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Student\Student\StudentSearchRequest;
 use App\Http\Resources\Student\StudentCollection;
+use App\Http\Resources\Student\StudentResource;
 use App\Models\Student;
 use App\Services\Student\StudentService;
 use App\Supports\Constants;
@@ -38,14 +39,14 @@ class StudentController extends Controller
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
      * @param  StudentSearchRequest  $request  The HTTP request object containing the role ID.
-     * @return StudentCollection Returns the list of Student.
+     * @return StudentResource Returns the list of Student.
      */
     #[ResponseFromApiResource(StudentCollection::class, Student::class, Response::HTTP_OK, with: [
         'info', 'faculty', 'families',
     ], paginate: Constants::PAGE_LIMIT)]
-    public function search(StudentSearchRequest $request): StudentCollection
+    public function search(StudentSearchRequest $request): StudentResource
     {
         // The StudentCollection may format the data as needed before sending it as a response
-        return new StudentCollection($this->studentService->searchOneStudent($request->only(['code', 'email', 'phone_number', 'code_verify'])));
+        return new StudentResource($this->studentService->searchOneStudent($request->only(['code', 'email', 'phone_number', 'code_verify'])));
     }
 }

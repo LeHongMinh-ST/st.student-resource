@@ -107,7 +107,7 @@ class SurveyPeriodService
     {
         try {
             if (Arr::get($data, 'is_all_mail_student')) {
-                $mails = $surveyPeriod->graduationCeremonies()->with('students')->first()->students->flatten();
+                $mails = $surveyPeriod->graduationCeremonies()->with('students')->get()->pluck('students')->flatten();
             } else {
                 $mails = $surveyPeriod->graduationCeremonies()->with('students')->first()->students->whereIn('email', $data['list_student_mail']);
             }
@@ -116,7 +116,7 @@ class SurveyPeriodService
             $close_time = $surveyPeriod->end_time?->format('d/m/Y');
 
             foreach ($mails as $mail) {
-                if (null === $mail->pivot->email) {
+                if (! (bool) ($mail->pivot->email)) {
                     continue;
                 }
                 $codeVerify = $this->generateCodeVerifySendMail($mail->id, $surveyPeriod->id);
@@ -133,7 +133,7 @@ class SurveyPeriodService
                     $surveyPeriod->title,
                     $surveyPeriod->faculty->name,
                     $open_time . ' đến ' . $close_time,
-                    url('/khao-sat-viec-lam-sinh-vien/' . $codeVerify),
+                    env('APP_STUDENT_URL') . '/form-job-survey/' . $surveyPeriod->id . '?code=' . $codeVerify,
                 )->onQueue('default');
             }
         } catch (Exception $exception) {

@@ -19,5 +19,5 @@ enum MustAttendedCourses: int
     // Tiếp tục học lên cao lên trình độ thạc sỹ, tiến sỹ
     case ContinueStudyingToHigherDegrees = 6;
     // Các khóa học khác
-    case OtherCourses = 99;
+    case OtherCourses = 0;
 }

@@ -92,7 +92,6 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
                         $fail('Không tìm thấy sinh viên');
                     }
 
-
                     if ($student?->surveyPeriods->where('id', $this->input('survey_period_id'))->where('status', Status::Enable)->isEmpty()) {
                         $fail('Sinh viên không thuộc đợt khảo sát');
                     }
@@ -140,70 +139,86 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
             'recruit_partner_name' => [
                 Rule::requiredIf((int) $this->employment_status === EmploymentStatus::Employed->value),
                 'string',
+                'nullable',
                 'max:255',
             ],
             'city_work_id' => [
                 Rule::requiredIf((int) $this->employment_status === EmploymentStatus::Employed->value),
+                'nullable',
                 Rule::exists('cities', 'id'),
             ],
             'recruit_partner_address' => [
                 Rule::requiredIf((int) $this->employment_status === EmploymentStatus::Employed->value),
+                'nullable',
                 'string',
                 'max:255',
             ],
             'recruit_partner_date' => [
                 Rule::requiredIf((int) $this->employment_status === EmploymentStatus::Employed->value),
+                'nullable',
                 'date_format:Y-m-d',
             ],
             'recruit_partner_position' => [
                 Rule::requiredIf((int) $this->employment_status === EmploymentStatus::Employed->value),
+                'nullable',
                 'string',
                 'max:255',
             ],
             'work_area' => [
                 Rule::requiredIf((int) $this->employment_status === EmploymentStatus::Employed->value),
+                'nullable',
                 Rule::in(WorkArea::cases()),
             ],
             'employed_since' => [
                 Rule::in(EmployedSince::cases()),
                 Rule::requiredIf((int) $this->employment_status === EmploymentStatus::Employed->value),
+                'nullable',
             ],
             'trained_field' => [
                 Rule::in(TrainedField::cases()),
                 Rule::requiredIf((int) $this->employment_status === EmploymentStatus::Employed->value),
+                'nullable',
             ],
             'professional_qualification_field' => [
                 Rule::in(ProfessionalQualificationField::cases()),
                 Rule::requiredIf((int) $this->employment_status === EmploymentStatus::Employed->value),
+                'nullable',
             ],
             'level_knowledge_acquired' => [
                 Rule::in(LevelKnowledgeAcquired::cases()),
                 Rule::requiredIf((int) $this->employment_status === EmploymentStatus::Employed->value),
+                'nullable',
             ],
             'starting_salary' => [
                 'numeric',
                 Rule::requiredIf((int) $this->employment_status === EmploymentStatus::Employed->value),
+                'nullable',
             ],
             'average_income' => [
                 Rule::in(AverageIncome::cases()),
                 Rule::requiredIf((int) $this->employment_status === EmploymentStatus::Employed->value),
+                'nullable',
             ],
             'job_search_method' => [
                 Rule::requiredIf((int) $this->employment_status === EmploymentStatus::Employed->value),
+                'nullable',
             ],
             'job_search_method.value' => [
                 Rule::requiredIf($this->job_search_method),
                 'array',
+                'nullable',
             ],
             'job_search_method.value.*' => [
                 Rule::in(JobSearchMethod::cases()),
             ],
             'job_search_method.content_other' => [
                 'string',
+                'nullable',
                 'max:255',
             ],
             'recruitment_type' => [
                 Rule::requiredIf((int) $this->employment_status === EmploymentStatus::Employed->value),
+                'nullable',
             ],
             'recruitment_type.value' => [
                 'array',
@@ -214,9 +229,11 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
             'recruitment_type.content_other' => [
                 'string',
                 'max:255',
+                'nullable',
             ],
             'soft_skills_required' => [
                 Rule::requiredIf((int) $this->employment_status === EmploymentStatus::Employed->value),
+                'nullable',
             ],
             'soft_skills_required.value' => [
                 Rule::requiredIf($this->soft_skills_required),
@@ -227,14 +244,17 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
             ],
             'soft_skills_required.content_other' => [
                 'string',
+                'nullable',
                 'max:255',
             ],
             'must_attended_courses' => [
                 Rule::requiredIf((int) $this->employment_status === EmploymentStatus::Employed->value),
+                'nullable',
             ],
             'must_attended_courses.value' => [
                 Rule::requiredIf($this->must_attended_courses),
                 'array',
+                'nullable',
             ],
             'must_attended_courses.value.*' => [
                 'nullable',
@@ -242,6 +262,7 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
             ],
             'must_attended_courses.content_other' => [
                 'string',
+                'nullable',
                 'max:255',
             ],
             'solutions_get_job' => [
@@ -255,6 +276,7 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
                 Rule::in(SolutionsGetJob::cases()),
             ],
             'solutions_get_job.content_other' => [
+                'nullable',
                 'string',
                 'max:255',
             ],

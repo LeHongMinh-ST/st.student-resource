@@ -15,5 +15,5 @@ enum JobSearchMethod: int
     // Tự tạo việc làm
     case Create = 4;
     // Hinh thức khác
-    case Other = 99;
+    case Other = 0;
 }

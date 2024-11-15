@@ -17,5 +17,5 @@ enum SolutionsGetJob: int
     // Tăng cường các hoạt động thực hành và chuyên môn tại cơ sở
     case EnhancePracticeActivities = 5;
     // Các giải pháp khác
-    case OtherSolutions = 99;
+    case OtherSolutions = 0;
 }
