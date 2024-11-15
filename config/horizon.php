@@ -197,34 +197,30 @@ return [
 
     'environments' => [
         'production' => [
-            'production' => [
-                'supervisor-default' => [
-                    'connection' => 'redis',
-                    'queue' => ['default'], // Queue cho default
-                    'balance' => 'auto',
-                    'processes' => 3,
-                    'tries' => 3,
-                ],
-                'supervisor-mail' => [
-                    'connection' => 'redis',
-                    'queue' => ['mail'], // Queue cho mail
-                    'balance' => 'auto',
-                    'processes' => 3,
-                    'tries' => 3,
-                ],
-                'supervisor-import' => [
-                    'connection' => 'redis',
-                    'queue' => ['import'], // Queue cho import
-                    'balance' => 'auto',
-                    'processes' => 3,
-                    'tries' => 3,
-                ],
+            'supervisor-1' => [
+                'connection' => 'redis',
+                'queue' => ['default', 'mail', 'import'],
+                'balance' => 'auto',
+                'autoScalingStrategy' => 'time',
+                'minProcesses' => 1,
+                'maxProcesses' => 10,
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 3,
+                'tries' => 3,
             ],
         ],
 
         'local' => [
             'supervisor-1' => [
-                'maxProcesses' => 3,
+                'connection' => 'redis',
+                'queue' => ['default', 'mail', 'import'],
+                'balance' => 'auto',
+                'autoScalingStrategy' => 'time',
+                'minProcesses' => 1,
+                'maxProcesses' => 10,
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 3,
+                'tries' => 3,
             ],
         ],
     ],
