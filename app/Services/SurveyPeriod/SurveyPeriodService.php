@@ -133,7 +133,7 @@ class SurveyPeriodService
                     $surveyPeriod->title,
                     $surveyPeriod->faculty->name,
                     $open_time . ' đến ' . $close_time,
-                    env('APP_STUDENT_URL') . '/form-job-survey/' . $surveyPeriod->id . '?code=' . $codeVerify,
+                    config('vnua.app_student_url') . '/form-job-survey/' . $surveyPeriod->id . '?code=' . $codeVerify,
                 )->onQueue('default');
             }
         } catch (Exception $exception) {
