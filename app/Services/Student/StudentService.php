@@ -239,7 +239,7 @@ class StudentService
             })
             ->when(Arr::get($filter, 'code_verify'), function ($q) use ($filter) {
                 return $q->whereHas('surveyPeriods', function ($q) use ($filter): void {
-                    $q->where('survey_periods.code_verify', $filter['code_verify']);
+                    $q->where('survey_period_student.code_verify', $filter['code_verify']);
                 });
             })
             ->with(['info', 'graduationCeremonies'])

@@ -23,6 +23,6 @@ enum SoftSkillsRequired: int
     // Kỹ năng hội nhập quốc tế
     case InternationalIntegrationSkills = 8;
     // Kỹ năng khác
-    case OtherSkills = 99;
+    case OtherSkills = 0;
 
 }
