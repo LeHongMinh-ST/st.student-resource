@@ -37,18 +37,18 @@ class StudentService
     public function getList(ListStudentDTO $listStudentDTO): Collection|LengthAwarePaginator|array
     {
         $query = Student::query()
-            ->when($listStudentDTO->getAdmissionYearId(), fn ($q) => $q->where('admission_year_id', $listStudentDTO->getAdmissionYearId()))
+            ->when($listStudentDTO->getAdmissionYearId(), fn($q) => $q->where('admission_year_id', $listStudentDTO->getAdmissionYearId()))
             ->when(
                 $listStudentDTO->getQ(),
-                fn ($q) => $q
+                fn($q) => $q
                     ->where(DB::raw("CONCAT(last_name, ' ', first_name)"), 'like', '%' . $listStudentDTO->getQ() . '%')
                     ->orWhere('email', 'like', '%' . $listStudentDTO->getQ() . '%')
                     ->orWhere('code', 'like', '%' . $listStudentDTO->getQ() . '%')
             )
-            ->when($listStudentDTO->getGraduationId(), fn ($q) => $q->whereHas('graduationCeremonies', fn ($q) => $q->where('graduation_ceremony_id', $listStudentDTO->getGraduationId())))
-            ->when($listStudentDTO->getStatus(), fn ($q) => $q->where('status', $listStudentDTO->getStatus()))
+            ->when($listStudentDTO->getGraduationId(), fn($q) => $q->whereHas('graduationCeremonies', fn($q) => $q->where('graduation_ceremony_id', $listStudentDTO->getGraduationId())))
+            ->when($listStudentDTO->getStatus(), fn($q) => $q->where('status', $listStudentDTO->getStatus()))
             ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
-            ->when($listStudentDTO->getClassId(), fn ($q) => $q->whereHas('generalClass', fn ($q) => $q->where('classes.id', $listStudentDTO->getClassId())))
+            ->when($listStudentDTO->getClassId(), fn($q) => $q->whereHas('generalClass', fn($q) => $q->where('classes.id', $listStudentDTO->getClassId())))
             ->with(['info', 'currentClass', 'families', 'graduationCeremonies'])
             ->orderBy($listStudentDTO->getOrderBy(), $listStudentDTO->getOrder()->value);
 
@@ -58,17 +58,17 @@ class StudentService
     public function getTotalStudent(ListStudentDTO $listStudentDTO): int
     {
         return Student::query()
-            ->when($listStudentDTO->getAdmissionYearId(), fn ($q) => $q->where('admission_year_id', $listStudentDTO->getAdmissionYearId()))
+            ->when($listStudentDTO->getAdmissionYearId(), fn($q) => $q->where('admission_year_id', $listStudentDTO->getAdmissionYearId()))
             ->when(
                 $listStudentDTO->getQ(),
-                fn ($q) => $q
+                fn($q) => $q
                     ->where(DB::raw("CONCAT(last_name, ' ', first_name)"), 'like', '%' . $listStudentDTO->getQ() . '%')
                     ->orWhere('email', 'like', '%' . $listStudentDTO->getQ() . '%')
                     ->orWhere('code', 'like', '%' . $listStudentDTO->getQ() . '%')
             )
-            ->when($listStudentDTO->getStatus(), fn ($q) => $q->where('status', $listStudentDTO->getStatus()))
+            ->when($listStudentDTO->getStatus(), fn($q) => $q->where('status', $listStudentDTO->getStatus()))
             ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
-            ->when($listStudentDTO->getClassId(), fn ($q) => $q->whereHas('generalClass', fn ($q) => $q->where('classes.id', $listStudentDTO->getClassId())))
+            ->when($listStudentDTO->getClassId(), fn($q) => $q->whereHas('generalClass', fn($q) => $q->where('classes.id', $listStudentDTO->getClassId())))
             ->count();
     }
 
@@ -111,14 +111,16 @@ class StudentService
         try {
             // check if student already exists
             if (Student::where('code', $command->getCode())->exists()) {
-                throw new CreateResourceFailedException('Student already exists');
+//                throw new CreateResourceFailedException('Student already exists');
+                $student = Student::where('code', $command->getCode())->first();
+                $this->studentInfoService->updateByStudentFileCourse($student, $command);
+            } else {
+                // Create a new student using the CreateStudentAction
+                $student = Student::create($command->toArray());
+
+                // Create additional student information
+                $this->studentInfoService->createByStudentFileCourse($student, $command);
             }
-
-            // Create a new student using the CreateStudentAction
-            $student = Student::create($command->toArray());
-
-            // Create additional student information
-            $this->studentInfoService->createByStudentFileCourse($student, $command);
 
             // Load additional information into the student object
             DB::commit();
@@ -226,7 +228,7 @@ class StudentService
 
     public function searchOneStudent(array $filter): Model|Builder
     {
-        return Student::when(Arr::get($filter, 'code'), fn ($q) => $q->where('code', $filter['code']))
+        return Student::when(Arr::get($filter, 'code'), fn($q) => $q->where('code', $filter['code']))
             ->when(Arr::get($filter, 'email'), function ($q) use ($filter) {
                 return $q->whereHas('graduationCeremonies', function ($q) use ($filter): void {
                     $q->where('email', $filter['email']);
