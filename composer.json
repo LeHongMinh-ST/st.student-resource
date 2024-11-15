@@ -10,6 +10,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "knuckleswtf/scribe": "^4.37",
         "laravel/framework": "^10.10",
+        "laravel/horizon": "^5.29",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "laravolt/avatar": "^5.1",
