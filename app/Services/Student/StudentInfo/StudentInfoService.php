@@ -41,6 +41,15 @@ class StudentInfoService
         return $studentInfo;
     }
 
+    public function updateByStudentFileCourse(Student $student, CreateStudentCourseByFileDTO $createStudentFileDTO): StudentInfo
+    {
+        $studentInfo = StudentInfo::where([
+            'student_id' => $student->id,
+        ])->update(array_merge($createStudentFileDTO->getStudentInfoDTO()->toArray()));
+
+        return $studentInfo;
+    }
+
     public function update(UpdateStudentInfoDTO $updateStudentInfoDTO): StudentInfo
     {
         $infoStudent = StudentInfo::where('student_id', $updateStudentInfoDTO->getId())->first();

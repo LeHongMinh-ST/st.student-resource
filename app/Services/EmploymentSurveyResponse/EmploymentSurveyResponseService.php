@@ -77,7 +77,7 @@ class EmploymentSurveyResponseService
             // || $student->info->citizen_identification !== $createEmploymentSurveyResponseDTO->getIdentificationCardNumber()
         ) {
             throw ValidationException::withMessages([
-                'message' => trans('employment_survey_response.message.data_student_incorrect'),
+                'message' => "Dữ liệu sinh viên không chính xác",
             ]);
         }
     }
