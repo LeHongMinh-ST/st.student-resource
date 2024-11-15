@@ -109,11 +109,11 @@ class StudentService
     {
         DB::beginTransaction();
         try {
+            $student = Student::query()->where('code', $command->getCode())->first();
             // check if student already exists
-            if (Student::where('code', $command->getCode())->exists()) {
-                throw new CreateResourceFailedException('Student already exists');
-//                $student = Student::where('code', $command->getCode())->first();
-//                $this->studentInfoService->updateByStudentFileCourse($student, $command);
+            if ($student) {
+//                throw new CreateResourceFailedException('Student already exists');
+                $this->studentInfoService->updateByStudentFileCourse($student->id, $command);
             } else {
                 // Create a new student using the CreateStudentAction
                 $student = Student::create($command->toArray());
