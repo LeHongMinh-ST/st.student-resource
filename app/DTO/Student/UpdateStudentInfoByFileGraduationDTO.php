@@ -7,6 +7,7 @@ namespace App\DTO\Student;
 use App\DTO\BaseDTO;
 use App\Enums\Gender;
 use App\Enums\TrainingType;
+use App\Supports\DateTimeHelper;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 
@@ -111,7 +112,7 @@ class UpdateStudentInfoByFileGraduationDTO implements BaseDTO
         return array_filter([
             'person_email' => $this->getPersonEmail(),
             'gender' => $this->getGender(),
-            'dob' => $this->getDob() ? Carbon::createFromFormat('d/m/Y', $this->getDob()) : null,
+            'dob' => $this->getDob() ? DateTimeHelper::createDateTime($this->getDob()) : null,
             'address' => $this->getAddress(),
             'training_type' => $this->getTrainingType(),
             'phone' => $this->getPhone(),
