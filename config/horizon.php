@@ -197,10 +197,28 @@ return [
 
     'environments' => [
         'production' => [
-            'supervisor-1' => [
-                'maxProcesses' => 10,
-                'balanceMaxShift' => 1,
-                'balanceCooldown' => 3,
+            'production' => [
+                'supervisor-default' => [
+                    'connection' => 'redis',
+                    'queue' => ['default'], // Queue cho default
+                    'balance' => 'auto',
+                    'processes' => 3,
+                    'tries' => 3,
+                ],
+                'supervisor-mail' => [
+                    'connection' => 'redis',
+                    'queue' => ['mail'], // Queue cho mail
+                    'balance' => 'auto',
+                    'processes' => 3,
+                    'tries' => 3,
+                ],
+                'supervisor-import' => [
+                    'connection' => 'redis',
+                    'queue' => ['import'], // Queue cho import
+                    'balance' => 'auto',
+                    'processes' => 3,
+                    'tries' => 3,
+                ],
             ],
         ],
 
