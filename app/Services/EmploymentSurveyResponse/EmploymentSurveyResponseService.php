@@ -46,9 +46,13 @@ class EmploymentSurveyResponseService
         return $id instanceof EmploymentSurveyResponse ? $id : EmploymentSurveyResponse::where('id', $id)->first();
     }
 
-    public function searchByCode(array $filter): EmploymentSurveyResponse
+    public function searchByCode(array $filter): EmploymentSurveyResponse|null
     {
-        return EmploymentSurveyResponse::where('code_student', $filter['code_student'])
+        if (! isset($filter['student_code']) || ! isset($filter['survey_period_id'])) {
+            return null;
+        }
+
+        return EmploymentSurveyResponse::where('code_student', $filter['student_code'])
             ->where('survey_period_id', $filter['survey_period_id'])
             ->first();
     }
@@ -72,13 +76,13 @@ class EmploymentSurveyResponseService
         }
 
         // data student is correct
-        if (
-            $student->info->dob->format('Y-m-d') !== $createEmploymentSurveyResponseDTO->getDob()->format('Y-m-d')
-            // || $student->info->citizen_identification !== $createEmploymentSurveyResponseDTO->getIdentificationCardNumber()
-        ) {
-            throw ValidationException::withMessages([
-                'message' => "Dữ liệu sinh viên không chính xác",
-            ]);
-        }
+        //        if (
+        //            $student->info->dob->format('Y-m-d') !== $createEmploymentSurveyResponseDTO->getDob()->format('Y-m-d')
+        //            // || $student->info->citizen_identification !== $createEmploymentSurveyResponseDTO->getIdentificationCardNumber()
+        //        ) {
+        //            throw ValidationException::withMessages([
+        //                'message' => 'Dữ liệu sinh viên không chính xác',
+        //            ]);
+        //        }
     }
 }
