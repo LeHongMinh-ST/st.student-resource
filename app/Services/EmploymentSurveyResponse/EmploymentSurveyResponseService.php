@@ -9,6 +9,7 @@ use App\Enums\Status;
 use App\Models\EmploymentSurveyResponse;
 use App\Models\Student;
 use App\Models\SurveyPeriod;
+use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
 
 class EmploymentSurveyResponseService
@@ -48,11 +49,12 @@ class EmploymentSurveyResponseService
 
     public function searchByCode(array $filter): EmploymentSurveyResponse|null
     {
-        if (! isset($filter['student_code']) || ! isset($filter['survey_period_id'])) {
+        if (! isset($filter['survey_period_id'])) {
             return null;
         }
 
-        return EmploymentSurveyResponse::where('code_student', $filter['student_code'])
+        return EmploymentSurveyResponse::when(Arr::get($filter, 'student_code'), fn ($query) => $query->where('code_student', $filter['student_code']))
+            ->when(Arr::get($filter, 'code_verify'), fn ($query) => $query->whereHas('student', fn ($query) => $query->whereHas('surveyPeriods', fn ($query) => $query->where('survey_period_student.code_verify', $filter['code_verify']))))
             ->where('survey_period_id', $filter['survey_period_id'])
             ->first();
     }

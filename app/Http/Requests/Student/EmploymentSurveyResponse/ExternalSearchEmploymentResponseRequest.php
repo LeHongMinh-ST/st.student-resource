@@ -23,7 +23,9 @@ class ExternalSearchEmploymentResponseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'student_code' => 'required|string',
+            'student_code' => [
+                'nullable',
+            ],
             'survey_period_id' => [
                 'required',
                 'integer',

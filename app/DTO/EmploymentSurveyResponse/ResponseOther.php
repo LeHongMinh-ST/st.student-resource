@@ -10,7 +10,7 @@ class ResponseOther
 
     private ?string $contentOther;
 
-    private int $valueOther = 0;
+    private ?string $valueOther = '0';
 
     public function __construct($value = null, $contentOther = null)
     {

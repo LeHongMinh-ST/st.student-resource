@@ -14,6 +14,8 @@ enum RecruitmentType: int
     case Contract = 3;
     // Biệt phái
     case Seconded = 4;
+    // Điều động
+    case Mobilized = 5;
     // Khác
     case Other = 0;
 }
