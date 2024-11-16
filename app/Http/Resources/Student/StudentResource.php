@@ -26,6 +26,7 @@ class StudentResource extends JsonResource
             'full_name' => $this->last_name . ' ' . $this->first_name,
             'email' => $this->email,
             'code' => $this->code,
+            'training_industry_id' => $this->training_industry_id,
             'admission_year' => new AdmissionYearResource($this->whenLoaded('admissionYear')),
             'faculty' => new FacultyForLoadResource($this->faculty),
             'status' => $this->status,

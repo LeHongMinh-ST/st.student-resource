@@ -209,6 +209,7 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
                 'nullable',
             ],
             'job_search_method.value.*' => [
+                "string",
                 Rule::in(JobSearchMethod::cases()),
             ],
             'job_search_method.content_other' => [

@@ -43,7 +43,7 @@ class EmploymentSurveyResponseController extends Controller
     ])]
     public function search(ExternalSearchEmploymentResponseRequest $request): EmploymentSurveyResponseResource
     {
-        $employmentSurveyResponse = $this->employmentSurveyResponseService->searchByCode($request->only(['student_code', 'survey_period_id']));
+        $employmentSurveyResponse = $this->employmentSurveyResponseService->searchByCode($request->only(['student_code', 'survey_period_id', 'code_verify']));
 
         // Return a JSON response with the generated token and the student API section
         return new EmploymentSurveyResponseResource($employmentSurveyResponse);
