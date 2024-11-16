@@ -204,7 +204,7 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
                 'nullable',
             ],
             'job_search_method.value' => [
-                Rule::requiredIf($this->job_search_method),
+                Rule::requiredIf((int) $this->employment_status === EmploymentStatus::Employed->value && $this->job_search_method),
                 'array',
                 'nullable',
             ],
