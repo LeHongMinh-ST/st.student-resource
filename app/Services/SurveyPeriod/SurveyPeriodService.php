@@ -120,6 +120,7 @@ class SurveyPeriodService
                     continue;
                 }
                 $codeVerify = $this->generateCodeVerifySendMail($mail->id, $surveyPeriod->id);
+                $url = config('vnua.app_student_url') . '/form-job-survey/' . $surveyPeriod->id . '?code=' . $codeVerify;
 
                 SurveyPeriodStudent::where('student_id', $mail->id)
                     ->where('survey_period_id', $surveyPeriod->id)
@@ -133,7 +134,7 @@ class SurveyPeriodService
                     $surveyPeriod->title,
                     $surveyPeriod->faculty->name,
                     $open_time . ' đến ' . $close_time,
-                    env('APP_STUDENT_URL') . '/form-job-survey/' . $surveyPeriod->id . '?code=' . $codeVerify,
+                    $url,
                 )->onQueue('default');
             }
         } catch (Exception $exception) {

@@ -68,13 +68,13 @@ class EmploymentSurveyResponseService
             ->where('start_time', '<=', now()->format('Y-m-d H:i:s'))
             ->where('end_time', '>=', now()->format('Y-m-d H:i:s'))
             ->doesntExist()) {
-            throw ValidationException::withMessages(['survey_period_id' => trans('survey_period_student.message.survey_period_not_found')]);
+            throw ValidationException::withMessages(['survey_period_id' => 'Đợt khảo sát không tồn tại']);
         }
 
         // check student in list survey period
         if ($student->surveyPeriods->where('id', $createEmploymentSurveyResponseDTO->getSurveyPeriodId())
             ->where('status', Status::Enable)->isEmpty()) {
-            throw ValidationException::withMessages(['code_student' => trans('survey_period_student.message.student_not_in_survey_period')]);
+            throw ValidationException::withMessages(['code_student' => 'Sinh viên không thuộc đợt khảo sát này']);
         }
 
         // data student is correct
