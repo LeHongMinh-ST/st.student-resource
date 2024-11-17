@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\SurveyPeriod\ExternalSurveyPeriodResource;
 use App\Http\Resources\SurveyPeriod\SurveyPeriodResource;
 use App\Models\SurveyPeriod;
 use App\Services\SurveyPeriod\SurveyPeriodService;
@@ -33,14 +34,14 @@ class SurveyPeriodController extends Controller
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
      * @param  Request  $request  The HTTP request object containing student data.
-     * @return SurveyPeriodResource Returns the newly SurveyPeriodResource as a resource.
+     * @return ExternalSurveyPeriodResource Returns the newly SurveyPeriodResource as a resource.
      *
      */
     #[ResponseFromApiResource(SurveyPeriodResource::class, SurveyPeriod::class, Response::HTTP_OK, with: [
         'faculty',
     ])]
-    public function show(SurveyPeriod $surveyPeriod, Request $request): SurveyPeriodResource
+    public function show(SurveyPeriod $surveyPeriod, Request $request): ExternalSurveyPeriodResource
     {
-        return new SurveyPeriodResource($this->surveyPeriodService->show($surveyPeriod));
+        return new ExternalSurveyPeriodResource($this->surveyPeriodService->show($surveyPeriod));
     }
 }
