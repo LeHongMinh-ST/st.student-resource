@@ -20,12 +20,10 @@ class ExternalSurveyPeriodResource extends JsonResource
             'id' => $this->id ?? 0,
             'title' => $this->title,
             'description' => $this->description,
-            'status' => $this->status,
             'start_date' => $this->start_time,
             'end_date' => $this?->end_time,
             'year' => $this->year,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'faculty_id' => $this->faculty_id,
         ];
     }
 }
