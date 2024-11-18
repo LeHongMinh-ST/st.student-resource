@@ -87,7 +87,9 @@ class CreateEmploymentSurveyResponseDTOFactory
                 $dto->setAverageIncome(AverageIncome::from((int) $request->input('average_income')));
             }
             if ($request->has('job_search_method')) {
-                $jobSearchMethod = new ResponseOther();
+                $jobSearchMethod = new ResponseOther(
+                    $request->input('job_search_method.value'),
+                    $request->input('job_search_method.content_other'));
                 $dto->setJobSearchMethod($jobSearchMethod);
             }
             if ($request->has('recruitment_type')) {
