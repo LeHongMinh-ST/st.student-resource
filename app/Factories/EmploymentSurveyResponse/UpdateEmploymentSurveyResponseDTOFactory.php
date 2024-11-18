@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Factories\EmploymentSurveyResponse;
 
-use App\DTO\EmploymentSurveyResponse\CreateEmploymentSurveyResponseDTO;
 use App\DTO\EmploymentSurveyResponse\ResponseOther;
+use App\DTO\EmploymentSurveyResponse\UpdateEmploymentSurveyResponseDTO;
 use App\Enums\EmploymentSurvey\AverageIncome;
 use App\Enums\EmploymentSurvey\EmployedSince;
 use App\Enums\EmploymentSurvey\EmploymentStatus;
@@ -13,16 +13,16 @@ use App\Enums\EmploymentSurvey\LevelKnowledgeAcquired;
 use App\Enums\EmploymentSurvey\ProfessionalQualificationField;
 use App\Enums\EmploymentSurvey\TrainedField;
 use App\Enums\EmploymentSurvey\WorkArea;
-use App\Enums\Gender;
-use App\Http\Requests\Student\EmploymentSurveyResponse\StoreEmploymentSurveyResponseRequest;
+use App\Http\Requests\Student\EmploymentSurveyResponse\UpdateEmploymentSurveyResponseRequest;
+use App\Models\EmploymentSurveyResponse;
 use App\Models\Student;
 use Carbon\Carbon;
 
-class CreateEmploymentSurveyResponseDTOFactory
+class UpdateEmploymentSurveyResponseDTOFactory
 {
-    public static function make(StoreEmploymentSurveyResponseRequest $request): CreateEmploymentSurveyResponseDTO
+    public static function make(UpdateEmploymentSurveyResponseRequest $request, EmploymentSurveyResponse $employmentSurveyResponse): UpdateEmploymentSurveyResponseDTO
     {
-        $dto = new CreateEmploymentSurveyResponseDTO();
+        $dto = new UpdateEmploymentSurveyResponseDTO();
         $dto->setSurveyPeriodId($request->input('survey_period_id'));
         if ($request->has('student_id')) {
             $dto->setStudentId($request->input('student_id'));
@@ -30,18 +30,13 @@ class CreateEmploymentSurveyResponseDTOFactory
             $studentId = Student::select('id')->where('code', $request->input('code_student'))->first()->id;
             $dto->setStudentId($studentId);
         }
-        $dto->setEmail($request->input('email'));
         $dto->setFullName($request->input('full_name'));
-        $dto->setGender(Gender::from($request->input('gender')));
-        $dto->setDob(Carbon::createFromFormat('Y-m-d', $request->input('dob')));
-        $dto->setPhoneNumber($request->input('phone_number'));
         $dto->setCodeStudent($request->input('code_student'));
-        $dto->setIdentificationCardNumber($request->input('identification_card_number'));
         if ($request->has('identification_card_number_update')) {
             $dto->setIdentificationCardNumberUpdate($request->input('identification_card_number_update'));
+        } else {
+            $dto->setIdentificationCardNumberUpdate($employmentSurveyResponse->identification_card_number_update);
         }
-        $dto->setIdentificationIssuancePlace($request->input('identification_issuance_place'));
-        $dto->setIdentificationIssuanceDate(Carbon::createFromFormat('Y-m-d', $request->input('identification_issuance_date')));
         $dto->setTrainingIndustryId((int) $request->input('training_industry_id'));
         $dto->setCourse($request->input('course'));
         $dto->setEmploymentStatus(EmploymentStatus::from((int) $request->input('employment_status')));

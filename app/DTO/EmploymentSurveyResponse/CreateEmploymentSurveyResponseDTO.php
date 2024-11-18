@@ -436,6 +436,7 @@ class CreateEmploymentSurveyResponseDTO
             'identification_card_number' => $this->getIdentificationCardNumber(),
             'identification_issuance_place' => $this->getIdentificationIssuancePlace(),
             'identification_issuance_date' => $this->getIdentificationIssuanceDate(),
+            'identification_card_number_update' => $this->getIdentificationCardNumberUpdate(),
             'training_industry_id' => $this->getTrainingIndustryId(),
             'phone_number' => $this->getPhoneNumber(),
             'course' => $this->getCourse(),

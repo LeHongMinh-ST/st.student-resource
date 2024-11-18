@@ -11,54 +11,41 @@ use App\Enums\EmploymentSurvey\LevelKnowledgeAcquired;
 use App\Enums\EmploymentSurvey\ProfessionalQualificationField;
 use App\Enums\EmploymentSurvey\TrainedField;
 use App\Enums\EmploymentSurvey\WorkArea;
-use App\Enums\Gender;
-use Illuminate\Support\Facades\Date;
+use DateTime;
 
 class UpdateEmploymentSurveyResponseDTO
 {
-    private ?int $id;
-
     private int $surveyPeriodId;
 
     private string $fullName;
 
     private ?int $studentId;
 
-    private string $email;
-
-    private Date $dob;
-
-    private Gender $gender;
+    private ?int $cityWorkId;
 
     private string $codeStudent;
 
-    private string $identificationCardNumber;
-
-    private string $identificationIssuancePlace;
-
-    private Date $identificationIssuanceDate;
+    private ?string $identificationCardNumberUpdate;
 
     private int $trainingIndustryId;
 
-    private string $phoneNumber;
-
-    private string $source;
+    private string $course;
 
     private EmploymentStatus $employmentStatus;
 
-    private string $recruitPartnerName;
+    private ?string $recruitPartnerName;
 
-    private string $recruitPartnerAddress;
+    private ?string $recruitPartnerAddress;
 
-    private Date $recruitPartnerDate;
+    private ?DateTime $recruitPartnerDate;
 
-    private string $recruitPartnerPosition;
+    private ?string $recruitPartnerPosition;
 
     private ?WorkArea $workArea;
 
     private ?EmployedSince $employedSince;
 
-    private TrainedField $trainedField;
+    private ?TrainedField $trainedField;
 
     private ?ProfessionalQualificationField $professionalQualificationField;
 
@@ -81,6 +68,10 @@ class UpdateEmploymentSurveyResponseDTO
     public function __construct()
     {
         $this->studentId = null;
+        $this->recruitPartnerName = null;
+        $this->recruitPartnerAddress = null;
+        $this->recruitPartnerDate = null;
+        $this->recruitPartnerPosition = null;
         $this->workArea = null;
         $this->employedSince = null;
         $this->professionalQualificationField = null;
@@ -91,27 +82,40 @@ class UpdateEmploymentSurveyResponseDTO
         $this->recruitmentType = null;
         $this->softSkillsRequired = null;
         $this->mustAttendedCourses = null;
+        $this->trainedField = null;
         $this->solutionsGetJob = null;
+        $this->identificationCardNumberUpdate = null;
+        $this->cityWorkId = null;
     }
 
-    public function getSource(): string
+    public function getCityWorkId(): ?int
     {
-        return $this->source;
+        return $this->cityWorkId;
     }
 
-    public function setSource(string $source): void
+    public function setCityWorkId(?int $cityWorkId): void
     {
-        $this->source = $source;
+        $this->cityWorkId = $cityWorkId;
     }
 
-    public function getId(): ?int
+    public function getCourse(): string
     {
-        return $this->id;
+        return $this->course;
     }
 
-    public function setId(?int $id): void
+    public function setCourse(string $course): void
     {
-        $this->id = $id;
+        $this->course = $course;
+    }
+
+    public function getIdentificationCardNumberUpdate(): ?string
+    {
+        return $this->identificationCardNumberUpdate;
+    }
+
+    public function setIdentificationCardNumberUpdate(?string $identificationCardNumberUpdate): void
+    {
+        $this->identificationCardNumberUpdate = $identificationCardNumberUpdate;
     }
 
     public function getFullName(): string
@@ -144,36 +148,6 @@ class UpdateEmploymentSurveyResponseDTO
         $this->studentId = $studentId;
     }
 
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): void
-    {
-        $this->email = $email;
-    }
-
-    public function getDob(): Date
-    {
-        return $this->dob;
-    }
-
-    public function setDob(Date $dob): void
-    {
-        $this->dob = $dob;
-    }
-
-    public function getGender(): Gender
-    {
-        return $this->gender;
-    }
-
-    public function setGender(Gender $gender): void
-    {
-        $this->gender = $gender;
-    }
-
     public function getCodeStudent(): string
     {
         return $this->codeStudent;
@@ -182,36 +156,6 @@ class UpdateEmploymentSurveyResponseDTO
     public function setCodeStudent(string $codeStudent): void
     {
         $this->codeStudent = $codeStudent;
-    }
-
-    public function getIdentificationCardNumber(): string
-    {
-        return $this->identificationCardNumber;
-    }
-
-    public function setIdentificationCardNumber(string $identificationCardNumber): void
-    {
-        $this->identificationCardNumber = $identificationCardNumber;
-    }
-
-    public function getIdentificationIssuancePlace(): string
-    {
-        return $this->identificationIssuancePlace;
-    }
-
-    public function setIdentificationIssuancePlace(string $identificationIssuancePlace): void
-    {
-        $this->identificationIssuancePlace = $identificationIssuancePlace;
-    }
-
-    public function getIdentificationIssuanceDate(): Date
-    {
-        return $this->identificationIssuanceDate;
-    }
-
-    public function setIdentificationIssuanceDate(Date $identificationIssuanceDate): void
-    {
-        $this->identificationIssuanceDate = $identificationIssuanceDate;
     }
 
     public function getTrainingIndustryId(): int
@@ -224,16 +168,6 @@ class UpdateEmploymentSurveyResponseDTO
         $this->trainingIndustryId = $trainingIndustryId;
     }
 
-    public function getPhoneNumber(): string
-    {
-        return $this->phoneNumber;
-    }
-
-    public function setPhoneNumber(string $phoneNumber): void
-    {
-        $this->phoneNumber = $phoneNumber;
-    }
-
     public function getEmploymentStatus(): EmploymentStatus
     {
         return $this->employmentStatus;
@@ -244,42 +178,42 @@ class UpdateEmploymentSurveyResponseDTO
         $this->employmentStatus = $employmentStatus;
     }
 
-    public function getRecruitPartnerName(): string
+    public function getRecruitPartnerName(): ?string
     {
         return $this->recruitPartnerName;
     }
 
-    public function setRecruitPartnerName(string $recruitPartnerName): void
+    public function setRecruitPartnerName(?string $recruitPartnerName): void
     {
         $this->recruitPartnerName = $recruitPartnerName;
     }
 
-    public function getRecruitPartnerAddress(): string
+    public function getRecruitPartnerAddress(): ?string
     {
         return $this->recruitPartnerAddress;
     }
 
-    public function setRecruitPartnerAddress(string $recruitPartnerAddress): void
+    public function setRecruitPartnerAddress(?string $recruitPartnerAddress): void
     {
         $this->recruitPartnerAddress = $recruitPartnerAddress;
     }
 
-    public function getRecruitPartnerDate(): Date
+    public function getRecruitPartnerDate(): ?DateTime
     {
         return $this->recruitPartnerDate;
     }
 
-    public function setRecruitPartnerDate(Date $recruitPartnerDate): void
+    public function setRecruitPartnerDate(?DateTime $recruitPartnerDate): void
     {
         $this->recruitPartnerDate = $recruitPartnerDate;
     }
 
-    public function getRecruitPartnerPosition(): string
+    public function getRecruitPartnerPosition(): ?string
     {
         return $this->recruitPartnerPosition;
     }
 
-    public function setRecruitPartnerPosition(string $recruitPartnerPosition): void
+    public function setRecruitPartnerPosition(?string $recruitPartnerPosition): void
     {
         $this->recruitPartnerPosition = $recruitPartnerPosition;
     }
@@ -304,12 +238,12 @@ class UpdateEmploymentSurveyResponseDTO
         $this->employedSince = $employedSince;
     }
 
-    public function getTrainedField(): TrainedField
+    public function getTrainedField(): ?TrainedField
     {
         return $this->trainedField;
     }
 
-    public function setTrainedField(TrainedField $trainedField): void
+    public function setTrainedField(?TrainedField $trainedField): void
     {
         $this->trainedField = $trainedField;
     }
@@ -406,25 +340,19 @@ class UpdateEmploymentSurveyResponseDTO
 
     public function toArray(): array
     {
-        $resultArray = [
+        return [
             'survey_period_id' => $this->getSurveyPeriodId(),
             'student_id' => $this->getStudentId(),
-            'email' => $this->getEmail(),
-            'dob' => $this->getDob(),
-            'gender' => $this->getGender(),
             'code_student' => $this->getCodeStudent(),
             'full_name' => $this->getFullName(),
-            'identification_card_number' => $this->getIdentificationCardNumber(),
-            'identification_issuance_place' => $this->getIdentificationIssuancePlace(),
-            'identification_issuance_date' => $this->getIdentificationIssuanceDate(),
             'training_industry_id' => $this->getTrainingIndustryId(),
-            'phone_number' => $this->getPhoneNumber(),
-            'source' => $this->getSource(),
+            'course' => $this->getCourse(),
             'employment_status' => $this->getEmploymentStatus(),
             'recruit_partner_name' => $this->getRecruitPartnerName(),
             'recruit_partner_address' => $this->getRecruitPartnerAddress(),
             'recruit_partner_date' => $this->getRecruitPartnerDate(),
             'recruit_partner_position' => $this->getRecruitPartnerPosition(),
+            'identification_card_number_update' => $this->getIdentificationCardNumberUpdate(),
             'work_area' => $this->getWorkArea(),
             'employed_since' => $this->getEmployedSince(),
             'trained_field' => $this->getTrainedField(),
@@ -432,13 +360,12 @@ class UpdateEmploymentSurveyResponseDTO
             'level_knowledge_acquired' => $this->getLevelKnowledgeAcquired(),
             'starting_salary' => $this->getStartingSalary(),
             'average_income' => $this->getAverageIncome(),
-            'job_search_method' => $this->getJobSearchMethod(),
-            'recruitment_type' => $this->getRecruitmentType(),
-            'soft_skills_required' => $this->getSoftSkillsRequired(),
-            'must_attended_courses' => $this->getMustAttendedCourses(),
-            'solutions_get_job' => $this->getSolutionsGetJob(),
+            'job_search_method' => $this->getJobSearchMethod()?->toString(),
+            'recruitment_type' => $this->getRecruitmentType()?->toString(),
+            'soft_skills_required' => $this->getSoftSkillsRequired()?->toString(),
+            'must_attended_courses' => $this->getMustAttendedCourses()?->toString(),
+            'solutions_get_job' => $this->getSolutionsGetJob()?->toString(),
+            'city_work_id' => $this->getCityWorkId(),
         ];
-
-        return collect($resultArray)->filter(fn ($value) => null !== $value)->toArray();
     }
 }

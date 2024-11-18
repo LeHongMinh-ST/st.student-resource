@@ -21,6 +21,7 @@ Route::prefix('auth')->group(function (): void {
 
 Route::prefix('external')->group(function (): void {
     Route::post('/employment-survey-response', [EmploymentSurveyResponseController::class, 'store']);
+    Route::patch('/employment-survey-response/{id}', [EmploymentSurveyResponseController::class, 'update']);
     Route::get('/employment-survey-response-search', [EmploymentSurveyResponseController::class, 'search']);
     Route::get('/student-info-search', [StudentController::class, 'search']);
     Route::get('/survey-periods/{surveyPeriod}', [SurveyPeriodController::class, 'show']);
