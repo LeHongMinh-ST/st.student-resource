@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\EmploymentSurveyResponse;
 
 use App\DTO\EmploymentSurveyResponse\CreateEmploymentSurveyResponseDTO;
+use App\DTO\EmploymentSurveyResponse\UpdateEmploymentSurveyResponseDTO;
 use App\Enums\Status;
 use App\Models\EmploymentSurveyResponse;
 use App\Models\Student;
@@ -41,13 +42,20 @@ class EmploymentSurveyResponseService
 
         return $employmentSurveyResponse;
     }
+    public function update(UpdateEmploymentSurveyResponseDTO $createEmploymentSurveyResponseDTO, mixed $id): EmploymentSurveyResponse
+    {
+        $this->validateData($createEmploymentSurveyResponseDTO);
+        $employmentSurveyResponse = EmploymentSurveyResponse::where('id', $id)->first();
+        $employmentSurveyResponse->update($createEmploymentSurveyResponseDTO->toArray());
+        return $employmentSurveyResponse;
+    }
 
     public function show(mixed $id): EmploymentSurveyResponse
     {
         return $id instanceof EmploymentSurveyResponse ? $id : EmploymentSurveyResponse::where('id', $id)->first();
     }
 
-    public function searchByCode(array $filter): EmploymentSurveyResponse|null
+    public function searchByCode(array $filter): ?EmploymentSurveyResponse
     {
         if (! isset($filter['survey_period_id'])) {
             return null;
@@ -59,7 +67,7 @@ class EmploymentSurveyResponseService
             ->first();
     }
 
-    private function validateData(CreateEmploymentSurveyResponseDTO $createEmploymentSurveyResponseDTO): void
+    private function validateData(CreateEmploymentSurveyResponseDTO|UpdateEmploymentSurveyResponseDTO $createEmploymentSurveyResponseDTO): void
     {
         $student = Student::where('code', $createEmploymentSurveyResponseDTO->getCodeStudent())->first();
 
