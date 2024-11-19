@@ -115,6 +115,20 @@ class Student extends Authenticatable implements JWTSubject
             ->withTimestamps()->using(SurveyPeriodStudent::class);
     }
 
+    public function activeResponseSurvey(): HasOne|\Illuminate\Database\Eloquent\Builder
+    {
+        return $this->hasOne(EmploymentSurveyResponse::class)->whereHas('surveyPeriod', function ($query): void {
+            $query->where('status', Status::Enable);
+        });
+    }
+
+    public function currentSurvey(): HasOneThrough
+    {
+        return $this->hasOneThrough(SurveyPeriod::class, SurveyPeriodStudent::class, 'student_id', 'id', 'id', 'survey_period_id')
+            ->where('survey_periods.status', Status::Enable)
+            ->select('survey_periods.*', 'survey_period_student.number_mail_send', 'survey_period_student.updated_at as send_mail_updated_at');
+    }
+
     public function employmentSurveyResponses(): HasMany
     {
         return $this->hasMany(EmploymentSurveyResponse::class, 'student_id');

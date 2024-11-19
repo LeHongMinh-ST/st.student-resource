@@ -9,6 +9,7 @@ use App\Exceptions\UpdateResourceFailedException;
 use App\Factories\Student\CreateStudentDTOFactory;
 use App\Factories\Student\ImportCourseStudentDTOFactory;
 use App\Factories\Student\ListStudentDTOFactory;
+use App\Factories\Student\ListStudentSurveyDTOFactory;
 use App\Factories\Student\UpdateStudentDTOFactory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Student\CreateStudentRequest;
@@ -18,6 +19,7 @@ use App\Http\Requests\Admin\Student\ShowStudentRequest;
 use App\Http\Requests\Admin\Student\UpdateStudentRequest;
 use App\Http\Resources\Student\StudentCollection;
 use App\Http\Resources\Student\StudentResource;
+use App\Http\Resources\Student\StudentSurveyCollection;
 use App\Models\ExcelImportFile;
 use App\Models\Student;
 use App\Services\ExcelImportFile\ExcelImportFileService;
@@ -69,6 +71,28 @@ class StudentController extends Controller
 
         // The StudentCollection may format the data as needed before sending it as a response
         return new StudentCollection($this->studentService->getList($command));
+    }
+
+    /**
+     * List of student By Survey Period
+     *
+     * This endpoint lets you views list a Student
+     *
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @param  ListStudentRequest  $request  The HTTP request object containing the role ID.
+     * @return StudentSurveyCollection Returns the list of Student.
+     */
+    #[ResponseFromApiResource(StudentSurveyCollection::class, Student::class, Response::HTTP_OK, with: [
+        'info', 'surveyPeriods',
+    ], paginate: Constants::PAGE_LIMIT)]
+    public function getBySurveyPeriod(ListStudentRequest $request, mixed $id): StudentSurveyCollection
+    {
+        // Create a ListStudentDTOFactory object using the provided request
+        $command = ListStudentSurveyDTOFactory::make($request, $id);
+
+        // The StudentCollection may format the data as needed before sending it as a response
+        return new StudentSurveyCollection($this->studentService->getBySurveyPeriod($command));
     }
 
     /**
