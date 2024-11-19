@@ -27,6 +27,7 @@ class ListStudentRequest extends ListRequest
             'status' => 'nullable',
             'teacher_id' => 'nullable',
             'admission_year_id' => 'nullable',
+            'survey_period_id' => 'nullable',
             'graduation_id' => 'nullable',
             ...parent::rules(),
         ];

@@ -57,6 +57,10 @@ class SurveyPeriod extends Model
             ->using(SurveyPeriodStudent::class);
     }
 
+    public function employmentSurveyResponses(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(EmploymentSurveyResponse::class);
+    }
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');

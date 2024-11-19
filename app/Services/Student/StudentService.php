@@ -8,6 +8,7 @@ use App\DTO\Student\CreateStudentCourseByFileDTO;
 use App\DTO\Student\CreateStudentDTO;
 use App\DTO\Student\ImportCourseStudentDTO;
 use App\DTO\Student\ListStudentDTO;
+use App\DTO\Student\ListStudentSurveyDTO;
 use App\DTO\Student\UpdateStudentDTO;
 use App\Enums\AuthApiSection;
 use App\Enums\ExcelImportType;
@@ -51,6 +52,29 @@ class StudentService
             ->when($listStudentDTO->getClassId(), fn ($q) => $q->whereHas('generalClass', fn ($q) => $q->where('classes.id', $listStudentDTO->getClassId())))
             ->with(['info', 'currentClass', 'families', 'graduationCeremonies'])
             ->orderBy($listStudentDTO->getOrderBy(), $listStudentDTO->getOrder()->value);
+
+        return $listStudentDTO->getPage() ? $query->paginate($listStudentDTO->getLimit()) : $query->get();
+    }
+
+    public function getBySurveyPeriod(ListStudentSurveyDTO $listStudentDTO): Collection|LengthAwarePaginator|array
+    {
+        $query = Student::query()
+            ->when(
+                $listStudentDTO->getSurveyPeriodId(),
+                fn ($q) => $q->whereHas('surveyPeriods', fn ($q) => $q->where('survey_period_student.survey_period_id', $listStudentDTO->getSurveyPeriodId()))
+            )
+            ->when(
+                $listStudentDTO->getQ(),
+                fn ($q) => $q
+                    ->where(DB::raw("CONCAT(last_name, ' ', first_name)"), 'like', '%' . $listStudentDTO->getQ() . '%')
+                    ->orWhere('email', 'like', '%' . $listStudentDTO->getQ() . '%')
+                    ->orWhere('code', 'like', '%' . $listStudentDTO->getQ() . '%')
+            )
+            ->when($listStudentDTO->getStatus(), fn ($q) => $q->where('status', $listStudentDTO->getStatus()))
+            ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
+            ->with(['info', 'currentSurvey', 'currentClass', 'activeResponseSurvey', 'faculty'])
+            ->orderBy($listStudentDTO->getOrderBy(), $listStudentDTO->getOrder()->value);
+
 
         return $listStudentDTO->getPage() ? $query->paginate($listStudentDTO->getLimit()) : $query->get();
     }
