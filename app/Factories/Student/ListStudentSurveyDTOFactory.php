@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Factories\Student;
 
 use App\DTO\Student\ListStudentSurveyDTO;
-use App\Enums\StudentSurveyStatus;
 use App\Http\Requests\Admin\Student\ListStudentRequest;
 use App\Supports\MakeDataHelper;
 
@@ -20,9 +19,6 @@ class ListStudentSurveyDTOFactory
         $command = MakeDataHelper::makeListData($request, $command);
 
         $command->setSurveyPeriodId((int) $id);
-        if ($request->has('status_survey')) {
-            $command->setStatus(StudentSurveyStatus::from($request->get('status_survey')));
-        }
 
         if ($request->has('q')) {
             $command->setQ($request->get('q'));
@@ -32,6 +28,14 @@ class ListStudentSurveyDTOFactory
         }
         if ($request->has('graduation_id')) {
             $command->setGraduationId((int) $request->get('graduation_id'));
+        }
+
+        if ($request->has('status_survey') && in_array($request->get('status_survey'), ['response', 'unresponse'])) {
+            if ('response' === $request->get('status_survey')) {
+                $command->setIsResponse(1);
+            } else {
+                $command->setIsResponse(0);
+            }
         }
 
         return $command;

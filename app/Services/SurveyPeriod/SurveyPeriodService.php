@@ -88,10 +88,16 @@ class SurveyPeriodService
 
     public function show(mixed $id): SurveyPeriod
     {
-        $surveyPeriod = $id instanceof SurveyPeriod ? $id : SurveyPeriod::where('id', $id)->first();
-        $surveyPeriod->load('graduationCeremonies', 'students.info', 'students.currentClass');
-
-        return $surveyPeriod;
+        return SurveyPeriod::where('id', $id)
+            ->withCount([
+                'employmentSurveyResponses as total_student_responses',
+                'students as total_student' => function ($query) use ($id): void {
+                    $query->whereHas('surveyPeriods', function ($q) use ($id): void {
+                        $q->where('survey_periods.id', $id);
+                    });
+                },
+            ])
+            ->first();
     }
 
     public function delete(mixed $id): bool

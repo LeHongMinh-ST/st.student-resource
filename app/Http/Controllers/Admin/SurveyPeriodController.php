@@ -166,6 +166,6 @@ class SurveyPeriodController extends Controller
     {
         $this->authorize('admin.training-industry.index');
 
-        return new SurveyPeriodResource($this->surveyPeriodService->show($surveyPeriod));
+        return new SurveyPeriodResource($this->surveyPeriodService->show($surveyPeriod->id));
     }
 }
