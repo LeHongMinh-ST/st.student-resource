@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\EmploymentSurvey\AverageIncome;
 use App\Enums\EmploymentSurvey\EmployedSince;
+use App\Enums\EmploymentSurvey\EmploymentStatus;
 use App\Enums\EmploymentSurvey\LevelKnowledgeAcquired;
 use App\Enums\EmploymentSurvey\ProfessionalQualificationField;
 use App\Enums\EmploymentSurvey\TrainedField;
@@ -56,6 +57,7 @@ class EmploymentSurveyResponse extends Model
     ];
 
     protected $casts = [
+        'employment_status' => EmploymentStatus::class,
         'employed_since' => EmployedSince::class,
         'work_area' => WorkArea::class,
         'trained_field' => TrainedField::class,
@@ -63,6 +65,7 @@ class EmploymentSurveyResponse extends Model
         'level_knowledge_acquired' => LevelKnowledgeAcquired::class,
         'average_income' => AverageIncome::class,
         'gender' => Gender::class,
+        'dob' => 'date',
     ];
 
     public function getJobSearchMethodAttribute($value)
@@ -110,5 +113,10 @@ class EmploymentSurveyResponse extends Model
     public function cityWork(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Cities::class, 'city_work_id');
+    }
+
+    public function trainingIndustry(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(TrainingIndustry::class);
     }
 }
