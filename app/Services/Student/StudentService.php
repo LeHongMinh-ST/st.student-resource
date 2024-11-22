@@ -63,18 +63,23 @@ class StudentService
                 $listStudentDTO->getSurveyPeriodId(),
                 fn ($q) => $q->whereHas('surveyPeriods', fn ($q) => $q->where('survey_period_student.survey_period_id', $listStudentDTO->getSurveyPeriodId()))
             )
-            ->when(
-                $listStudentDTO->getQ(),
-                fn ($q) => $q
-                    ->where(DB::raw("CONCAT(last_name, ' ', first_name)"), 'like', '%' . $listStudentDTO->getQ() . '%')
-                    ->orWhere('email', 'like', '%' . $listStudentDTO->getQ() . '%')
-                    ->orWhere('code', 'like', '%' . $listStudentDTO->getQ() . '%')
-            )
+            ->when(null !== $listStudentDTO->getIsResponse(), function ($q) use ($listStudentDTO) {
+                if (1 === $listStudentDTO->getIsResponse()) {
+                    return $q->whereHas('employmentSurveyResponses', fn ($q) => $q->where('employment_survey_responses.survey_period_id', $listStudentDTO->getSurveyPeriodId()));
+                }
+                return $q->whereDoesntHave('employmentSurveyResponses', fn ($q) => $q->where('employment_survey_responses.survey_period_id', $listStudentDTO->getSurveyPeriodId()));
+            })
             ->when($listStudentDTO->getStatus(), fn ($q) => $q->where('status', $listStudentDTO->getStatus()))
             ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
-            ->with(['info', 'currentSurvey', 'currentClass', 'activeResponseSurvey', 'faculty'])
+            ->when(
+                $listStudentDTO->getQ(),
+                fn ($q) => $q->where(function ($q) use ($listStudentDTO) {
+                    return $q->where(DB::raw("CONCAT(last_name, ' ', first_name)"), 'like', '%' . $listStudentDTO->getQ() . '%')
+                        ->orWhere('code', 'like', '%' . $listStudentDTO->getQ() . '%');
+                })
+            )
+            ->with(['info', 'currentSurvey', 'currentClass', 'activeResponseSurvey.trainingIndustry', 'activeResponseSurvey.cityWork'])
             ->orderBy($listStudentDTO->getOrderBy(), $listStudentDTO->getOrder()->value);
-
 
         return $listStudentDTO->getPage() ? $query->paginate($listStudentDTO->getLimit()) : $query->get();
     }

@@ -29,6 +29,8 @@ class SurveyPeriodResource extends JsonResource
             'year' => $this->year,
             'type' => $this->type,
             'faculty_id' => $this->faculty_id,
+            'total_student_responses' => $this->total_student_responses,
+            'total_student' => $this->total_student,
             'created_user' => new UserResource($this->whenLoaded('createdBy')),
             'updated_user' => new UserResource($this->whenLoaded('updatedBy')),
             'students' => StudentSurveyPeriodResource::collection($this->whenLoaded('students')) ?? [],

@@ -6,6 +6,7 @@ namespace App\Http\Resources\EmploymentSurveyResponse;
 
 use App\Http\Resources\City\CityResource;
 use App\Http\Resources\Student\StudentSurveyPeriodResource;
+use App\Http\Resources\TrainingIndustry\TrainingIndustryResource;
 use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -27,16 +28,18 @@ class EmploymentSurveyResponseResource extends JsonResource
             'survey_period' => new StudentSurveyPeriodResource($this->whenLoaded('surveyPeriod')),
             'student' => new UserResource($this->whenLoaded('student')),
             'city_work' => new CityResource($this->whenLoaded('cityWork')),
+            'training_industry' => new TrainingIndustryResource($this->whenLoaded('trainingIndustry')),
             'email' => $this->email,
             'full_name' => $this->full_name,
             'survey_period_id' => $this->survey_period_id,
             'student_id' => $this->student_id,
             'dob' => $this->dob,
             'gender' => $this->gender,
+            'gender_txt' => $this->gender->getName(),
             'code_student' => $this->code_student,
             'phone_number' => $this->phone_number,
             'identification_card_number' => $this->identification_card_number,
-            //            'identification_card_number_update' => $this->identification_card_number_update,
+            'identification_card_number_update' => $this->identification_card_number_update,
             'identification_issuance_place' => $this->identification_issuance_place,
             'identification_issuance_date' => $this->identification_issuance_date,
             'training_industry_id' => $this->training_industry_id,

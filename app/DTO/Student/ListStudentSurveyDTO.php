@@ -18,6 +18,8 @@ class ListStudentSurveyDTO extends BaseListDTO implements BaseDTO
 
     private ?int $surveyPeriodId;
 
+    private ?int $isResponse;
+
     public function __construct()
     {
         parent::__construct();
@@ -26,7 +28,18 @@ class ListStudentSurveyDTO extends BaseListDTO implements BaseDTO
         $this->classId = null;
         $this->graduationId = null;
         $this->surveyPeriodId = null;
+        $this->isResponse = null;
         $this->orderBy = 'first_name';
+    }
+
+    public function getIsResponse(): ?int
+    {
+        return $this->isResponse;
+    }
+
+    public function setIsResponse(?int $isResponse): void
+    {
+        $this->isResponse = $isResponse;
     }
 
     public function getSurveyPeriodId(): ?int

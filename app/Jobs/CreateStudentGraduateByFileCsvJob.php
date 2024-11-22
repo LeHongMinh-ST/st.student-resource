@@ -103,7 +103,7 @@ class CreateStudentGraduateByFileCsvJob implements ShouldQueue
                     'training_industry_id' => $listTrainingIndustry->where('code', $rowMapKey['training_industry_code'])->first()?->id,
                     'faculty_id' => $this->faculty->id,
                     'full_name' => $rowMapKey['full_name'],
-                    'personal_email' => Arr::get($rowMapKey, 'email'),
+                    'person_email' => Arr::get($rowMapKey, 'email'),
                     'code' => $rowMapKey['code'],
                     'gender' => Arr::get($rowMapKey, 'gender') ?? '',
                     'phone_number' => Arr::get($rowMapKey, 'phone_number'),
