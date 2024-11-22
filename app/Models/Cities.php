@@ -13,6 +13,7 @@ class Cities extends Model
 
     protected $fillable = [
         'mame',
+        'code',
         'priority',
         'map_name',
         'created_at',

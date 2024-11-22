@@ -18,4 +18,13 @@ enum Gender: string
             default => self::Unspecified,
         };
     }
+
+    public function getName(): string
+    {
+        return match ($this) {
+            self::Male => 'Nam',
+            self::Female => 'Nữ',
+            default => 'Khác',
+        };
+    }
 }

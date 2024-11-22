@@ -1,5 +1,6 @@
 [
     {
+        "code": "01",
         "id": 1,
         "name": "Hà Nội",
         "priority": 1,
@@ -8,6 +9,7 @@
         "updated_at": "2024-06-29 11:47:16"
     },
     {
+        "code": "79",
         "id": 2,
         "name": "Hồ Chí Minh",
         "priority": 1,
@@ -16,7 +18,8 @@
         "updated_at": "2024-06-29 11:47:24"
     },
     {
-        "id": 3,
+        "code": "48",
+"id": 3,
         "name": "Đà Nẵng",
         "priority": 3,
         "map_name": "[\"da-nang\",\"tpda-nang\",\"tp-da-nang\",\"thanh-pho-da-nang\",\"danang\",\"dn\"]",
@@ -24,7 +27,8 @@
         "updated_at": "2024-06-29 11:47:35"
     },
     {
-        "id": 4,
+        "code": "89",
+"id": 4,
         "name": "An Giang",
         "priority": 99,
         "map_name": "[\"an-giang\",\"tinh-an-giang\",\"tan-giang\",\"t-an-giang\",\"angiang\"]",
@@ -32,7 +36,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 5,
+        "code": "77",
+"id": 5,
         "name": "Bà Rịa - Vũng Tàu",
         "priority": 99,
         "map_name": "[\"ba-ria-vung-tau\",\"tinh-ba-ria-vung-tau\",\"tba-ria-vung-tau\",\"t-ba-ria-vung-tau\",\"bariavungtau\",\"vungtau\",\"ba-riavung-tau\"]",
@@ -40,7 +45,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 6,
+        "code": "27",
+"id": 6,
         "name": "Bắc Ninh",
         "priority": 99,
         "map_name": "[\"bac-ninh\",\"tinh-bac-ninh\",\"tbac-ninh\",\"t-bac-ninh\",\"bacninh\"]",
@@ -48,7 +54,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 7,
+        "code": "24",
+"id": 7,
         "name": "Bắc Giang",
         "priority": 99,
         "map_name": "[\"bac-giang\",\"tinh-bac-giang\",\"tbac-giang\",\"t-bac-giang\",\"bacgiang\"]",
@@ -56,7 +63,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 8,
+        "code": "74",
+"id": 8,
         "name": "Bình Dương",
         "priority": 99,
         "map_name": "[\"binh-duong\",\"tinh-binh-duong\",\"tbinh-duong\",\"t-binh-duong\",\"binhduong\"]",
@@ -64,7 +72,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 9,
+        "code": "52",
+"id": 9,
         "name": "Bình Định",
         "priority": 99,
         "map_name": "[\"binh-dinh\",\"tinh-binh-dinh\",\"tbinh-dinh\",\"t-binh-dinh\",\"binhdinh\"]",
@@ -72,7 +81,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 10,
+        "code": "70",
+"id": 10,
         "name": "Bình Phước",
         "priority": 99,
         "map_name": "[\"binh-phuoc\",\"tinh-binh-phuoc\",\"tbinh-phuoc\",\"t-binh-phuoc\",\"binhphuoc\"]",
@@ -80,7 +90,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 11,
+        "code": "60",
+"id": 11,
         "name": "Bình Thuận",
         "priority": 99,
         "map_name": "[\"binh-thuan\",\"tinh-binh-thuan\",\"tbinh-thuan\",\"t-binh-thuan\",\"binhthuan\"]",
@@ -88,7 +99,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 12,
+        "code": "95",
+"id": 12,
         "name": "Bạc Liêu",
         "priority": 99,
         "map_name": "[\"bac-lieu\",\"tinh-bac-lieu\",\"tbac-lieu\",\"t-bac-lieu\",\"baclieu\"]",
@@ -96,7 +108,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 13,
+        "code": "83",
+"id": 13,
         "name": "Bến Tre",
         "priority": 99,
         "map_name": "[\"ben-tre\",\"tinh-ben-tre\",\"tben-tre\",\"t-ben-tre\",\"bentre\"]",
@@ -104,7 +117,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 14,
+        "code": "06",
+"id": 14,
         "name": "Bắc Cạn",
         "priority": 99,
         "map_name": "[\"bac-can\",\"bac-kan\",\"tinh-bac-kan\",\"tbac-kan\",\"t-bac-kan\",\"backan\",\"baccan\"]",
@@ -112,7 +126,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 15,
+        "code": "92",
+"id": 15,
         "name": "Cần Thơ",
         "priority": 99,
         "map_name": "[\"can-tho\",\"tpcan-tho\",\"tp-can-tho\",\"thanh-pho-can-tho\",\"cantho\"]",
@@ -120,7 +135,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 16,
+        "code": "56",
+"id": 16,
         "name": "Khánh Hòa",
         "priority": 99,
         "map_name": "[\"khanh-hoa\",\"tinh-khanh-hoa\",\"tkhanh-hoa\",\"t-khanh-hoa\",\"khanhhoa\"]",
@@ -128,7 +144,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 17,
+        "code": "46",
+"id": 17,
         "name": "Thừa Thiên Huế",
         "priority": 99,
         "map_name": "[\"thua-thien-hue\",\"tinh-thua-thien-hue\",\"tthua-thien-hue\",\"t-thua-thien-hue\",\"hue\",\"thuathienhue\"]",
@@ -136,7 +153,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 18,
+        "code": "10",
+"id": 18,
         "name": "Lào Cai",
         "priority": 99,
         "map_name": "[\"lao-cai\",\"tinh-lao-cai\",\"tlao-cai\",\"t-lao-cai\",\"laocai\"]",
@@ -144,7 +162,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 19,
+        "code": "22",
+"id": 19,
         "name": "Quảng Ninh",
         "priority": 99,
         "map_name": "[\"quang-ninh\",\"tinh-quang-ninh\",\"tquang-ninh\",\"t-quang-ninh\",\"quangninh\"]",
@@ -152,7 +171,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 20,
+        "code": "75",
+"id": 20,
         "name": "Đồng Nai",
         "priority": 99,
         "map_name": "[\"dong-nai\",\"tinh-dong-nai\",\"tdong-nai\",\"t-dong-nai\",\"dongnai\"]",
@@ -160,7 +180,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 21,
+        "code": "36",
+"id": 21,
         "name": "Nam Định",
         "priority": 99,
         "map_name": "[\"nam-dinh\",\"tinh-nam-dinh\",\"tnam-dinh\",\"t-nam-dinh\",\"namdinh\"]",
@@ -168,7 +189,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 22,
+        "code": "96",
+"id": 22,
         "name": "Cà Mau",
         "priority": 99,
         "map_name": "[\"ca-mau\",\"tinh-ca-mau\",\"tca-mau\",\"t-ca-mau\",\"camau\"]",
@@ -176,7 +198,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 23,
+        "code": "04",
+"id": 23,
         "name": "Cao Bằng",
         "priority": 99,
         "map_name": "[\"cao-bang\",\"tinh-cao-bang\",\"tcao-bang\",\"t-cao-bang\",\"caobang\"]",
@@ -184,7 +207,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 24,
+        "code": "64",
+"id": 24,
         "name": "Gia Lai",
         "priority": 99,
         "map_name": "[\"gia-lai\",\"tinh-gia-lai\",\"tgia-lai\",\"t-gia-lai\",\"gialai\"]",
@@ -192,7 +216,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 25,
+        "code": "02",
+"id": 25,
         "name": "Hà Giang",
         "priority": 99,
         "map_name": "[\"ha-giang\",\"tinh-ha-giang\",\"tha-giang\",\"t-ha-giang\",\"hagiang\"]",
@@ -200,7 +225,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 26,
+        "code": "35",
+"id": 26,
         "name": "Hà Nam",
         "priority": 99,
         "map_name": "[\"ha-nam\",\"tinh-ha-nam\",\"tha-nam\",\"t-ha-nam\",\"hanam\"]",
@@ -208,7 +234,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 27,
+        "code": "42",
+"id": 27,
         "name": "Hà Tĩnh",
         "priority": 99,
         "map_name": "[\"ha-tinh\",\"tinh-ha-tinh\",\"tha-tinh\",\"t-ha-tinh\",\"hatinh\"]",
@@ -216,7 +243,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 28,
+        "code": "30",
+"id": 28,
         "name": "Hải Dương",
         "priority": 99,
         "map_name": "[\"hai-duong\",\"tinh-hai-duong\",\"thai-duong\",\"t-hai-duong\",\"haiduong\"]",
@@ -224,7 +252,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 29,
+        "code": "31",
+"id": 29,
         "name": "Hải Phòng",
         "priority": 99,
         "map_name": "[\"hai-phong\",\"tphai-phong\",\"tp-hai-phong\",\"thanh-pho-hai-phong\",\"haiphong\"]",
@@ -232,7 +261,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 30,
+        "code": "17",
+"id": 30,
         "name": "Hòa Bình",
         "priority": 99,
         "map_name": "[\"hoa-binh\",\"tinh-hoa-binh\",\"thoa-binh\",\"t-hoa-binh\",\"hoabinh\"]",
@@ -240,7 +270,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 31,
+        "code": "33",
+"id": 31,
         "name": "Hưng Yên",
         "priority": 99,
         "map_name": "[\"hung-yen\",\"tinh-hung-yen\",\"thung-yen\",\"t-hung-yen\",\"hungyen\"]",
@@ -248,7 +279,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 32,
+        "code": "91",
+"id": 32,
         "name": "Kiên Giang",
         "priority": 99,
         "map_name": "[\"kien-giang\",\"tinh-kien-giang\",\"tkien-giang\",\"t-kien-giang\",\"kiengiang\"]",
@@ -256,7 +288,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 33,
+        "code": "62",
+"id": 33,
         "name": "Kon Tum",
         "priority": 99,
         "map_name": "[\"kon-tum\",\"tinh-kon-tum\",\"tkon-tum\",\"t-kon-tum\",\"kontum\",\"contum\"]",
@@ -264,23 +297,26 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 34,
+        "code": "12",
+"id": 34,
         "name": "Lai Châu",
-        "priority": 99,
+        "priority": 12,
         "map_name": "[\"lai-chau\",\"tinh-lai-chau\",\"tlai-chau\",\"t-lai-chau\",\"laichau\"]",
         "created_at": "2023-01-10 04:28:17",
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 35,
+        "code": "68",
+"id": 35,
         "name": "Lâm Đồng",
-        "priority": 99,
+        "priority": 68,
         "map_name": "[\"lam-dong\",\"tinh-lam-dong\",\"tlam-dong\",\"t-lam-dong\",\"lamdong\"]",
         "created_at": "2023-01-10 04:28:22",
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 36,
+        "code": "20",
+"id": 36,
         "name": "Lạng Sơn",
         "priority": 99,
         "map_name": "[\"lang-son\",\"tinh-lang-son\",\"tlang-son\",\"t-lang-son\",\"langson\"]",
@@ -288,7 +324,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 37,
+        "code": "80",
+"id": 37,
         "name": "Long An",
         "priority": 99,
         "map_name": "[\"long-an\",\"tinh-long-an\",\"tlong-an\",\"t-long-an\",\"longan\"]",
@@ -296,7 +333,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 38,
+        "code": "40",
+"id": 38,
         "name": "Nghệ An",
         "priority": 99,
         "map_name": "[\"nghe-an\",\"tinh-nghe-an\",\"tnghe-an\",\"t-nghe-an\",\"nghean\"]",
@@ -304,7 +342,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 39,
+        "code": "37",
+"id": 39,
         "name": "Ninh Bình",
         "priority": 99,
         "map_name": "[\"ninh-binh\",\"tinh-ninh-binh\",\"tninh-binh\",\"t-ninh-binh\",\"ninhbinh\"]",
@@ -312,7 +351,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 40,
+        "code": "58",
+"id": 40,
         "name": "Ninh Thuận",
         "priority": 99,
         "map_name": "[\"ninh-thuan\",\"tinh-ninh-thuan\",\"tninh-thuan\",\"t-ninh-thuan\",\"ninhthuan\"]",
@@ -320,7 +360,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 41,
+        "code": "25",
+"id": 41,
         "name": "Phú Thọ",
         "priority": 99,
         "map_name": "[\"phu-tho\",\"tinh-phu-tho\",\"tphu-tho\",\"t-phu-tho\",\"phutho\"]",
@@ -328,7 +369,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 42,
+        "code": "54",
+"id": 42,
         "name": "Phú Yên",
         "priority": 99,
         "map_name": "[\"phu-yen\",\"tinh-phu-yen\",\"tphu-yen\",\"t-phu-yen\",\"phuyen\"]",
@@ -336,7 +378,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 43,
+        "code": "44",
+"id": 43,
         "name": "Quảng Bình",
         "priority": 99,
         "map_name": "[\"quang-binh\",\"tinh-quang-binh\",\"tquang-binh\",\"t-quang-binh\",\"quangbinh\"]",
@@ -344,7 +387,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 44,
+        "code": "49",
+"id": 44,
         "name": "Quảng Nam",
         "priority": 99,
         "map_name": "[\"quang-nam\",\"tinh-quang-nam\",\"tquang-nam\",\"t-quang-nam\",\"quangnam\"]",
@@ -352,7 +396,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 45,
+        "code": "51",
+"id": 45,
         "name": "Quảng Ngãi",
         "priority": 99,
         "map_name": "[\"quang-ngai\",\"tinh-quang-ngai\",\"tquang-ngai\",\"t-quang-ngai\",\"quangngai\"]",
@@ -360,7 +405,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 46,
+        "code": "45",
+"id": 46,
         "name": "Quảng Trị",
         "priority": 99,
         "map_name": "[\"quang-tri\",\"tinh-quang-tri\",\"tquang-tri\",\"t-quang-tri\",\"quangtri\"]",
@@ -368,7 +414,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 47,
+        "code": "94",
+"id": 47,
         "name": "Sóc Trăng",
         "priority": 99,
         "map_name": "[\"soc-trang\",\"tinh-soc-trang\",\"tsoc-trang\",\"t-soc-trang\",\"soctrang\"]",
@@ -376,7 +423,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 48,
+        "code": "14",
+"id": 48,
         "name": "Sơn La",
         "priority": 99,
         "map_name": "[\"son-la\",\"tinh-son-la\",\"tson-la\",\"t-son-la\",\"sonla\"]",
@@ -384,7 +432,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 49,
+        "code": "72",
+"id": 49,
         "name": "Tây Ninh",
         "priority": 99,
         "map_name": "[\"tay-ninh\",\"tinh-tay-ninh\",\"ttay-ninh\",\"t-tay-ninh\",\"tayninh\"]",
@@ -392,7 +441,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 50,
+        "code": "34",
+"id": 50,
         "name": "Thái Bình",
         "priority": 99,
         "map_name": "[\"thai-binh\",\"tinh-thai-binh\",\"tthai-binh\",\"t-thai-binh\",\"thaibinh\"]",
@@ -400,7 +450,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 51,
+        "code": "19",
+"id": 51,
         "name": "Thái Nguyên",
         "priority": 99,
         "map_name": "[\"thai-nguyen\",\"tinh-thai-nguyen\",\"tthai-nguyen\",\"t-thai-nguyen\",\"thainguyen\"]",
@@ -408,7 +459,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 52,
+        "code": "38",
+"id": 52,
         "name": "Thanh Hóa",
         "priority": 99,
         "map_name": "[\"thanh-hoa\",\"tinh-thanh-hoa\",\"tthanh-hoa\",\"t-thanh-hoa\",\"thanhhoa\"]",
@@ -416,7 +468,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 53,
+        "code": "82",
+"id": 53,
         "name": "Tiền Giang",
         "priority": 99,
         "map_name": "[\"tien-giang\",\"tinh-tien-giang\",\"ttien-giang\",\"t-tien-giang\",\"tiengiang\"]",
@@ -424,7 +477,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 54,
+        "code": "84",
+"id": 54,
         "name": "Trà Vinh",
         "priority": 99,
         "map_name": "[\"tra-vinh\",\"tinh-tra-vinh\",\"ttra-vinh\",\"t-tra-vinh\",\"travinh\"]",
@@ -432,7 +486,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 55,
+        "code": "08",
+"id": 55,
         "name": "Tuyên Quang",
         "priority": 99,
         "map_name": "[\"tuyen-quang\",\"tinh-tuyen-quang\",\"ttuyen-quang\",\"t-tuyen-quang\",\"tuyenquang\"]",
@@ -440,7 +495,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 56,
+        "code": "86",
+"id": 56,
         "name": "Vĩnh Long",
         "priority": 99,
         "map_name": "[\"vinh-long\",\"tinh-vinh-long\",\"tvinh-long\",\"t-vinh-long\",\"vinhlong\"]",
@@ -448,7 +504,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 57,
+        "code": "26",
+"id": 57,
         "name": "Vĩnh Phúc",
         "priority": 99,
         "map_name": "[\"vinh-phuc\",\"tinh-vinh-phuc\",\"tvinh-phuc\",\"t-vinh-phuc\",\"vinhphuc\"]",
@@ -456,7 +513,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 58,
+        "code": "15",
+"id": 58,
         "name": "Yên Bái",
         "priority": 99,
         "map_name": "[\"yen-bai\",\"tinh-yen-bai\",\"tyen-bai\",\"t-yen-bai\",\"yenbai\"]",
@@ -464,7 +522,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 59,
+        "code": "66",
+"id": 59,
         "name": "Đắk Lắk",
         "priority": 99,
         "map_name": "[\"dak-lak\",\"tinh-dak-lak\",\"tdak-lak\",\"t-dak-lak\",\"daklak\",\"daclac\",\"daklac\",\"daclak\",\"dac-lac\",\"tinh-dac-lac\",\"t-dac-lac\",\"tdac-lac\"]",
@@ -472,7 +531,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 60,
+        "code": "87",
+"id": 60,
         "name": "Đồng Tháp",
         "priority": 99,
         "map_name": "[\"dong-thap\",\"tinh-dong-thap\",\"tdong-thap\",\"t-dong-thap\",\"dongthap\"]",
@@ -480,7 +540,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 61,
+        "code": "67",
+"id": 61,
         "name": "Đắk Nông",
         "priority": 99,
         "map_name": "[\"dak-nong\",\"tinh-dak-nong\",\"tdak-nong\",\"t-dak-nong\",\"daknong\",\"dacnong\",\"dac-nong\",\"t-dac-nong\",\"tdac-nong\"]",
@@ -488,7 +549,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 62,
+        "code": "93",
+"id": 62,
         "name": "Hậu Giang",
         "priority": 99,
         "map_name": "[\"hau-giang\",\"tinh-hau-giang\",\"thau-giang\",\"t-hau-giang\",\"haugiang\"]",
@@ -496,7 +558,8 @@
         "updated_at": "2024-05-23 17:57:40"
     },
     {
-        "id": 63,
+        "code": "11",
+"id": 63,
         "name": "Điện Biên",
         "priority": 99,
         "map_name": "[\"dien-bien\",\"tinh-dien-bien\",\"tdien-bien\",\"t-dien-bien\",\"dienbien\"]",

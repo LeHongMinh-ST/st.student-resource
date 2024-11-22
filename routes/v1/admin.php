@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\GeneralClassController;
 use App\Http\Controllers\Admin\GraduationController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ReflectController;
+use App\Http\Controllers\Admin\ReportSurveyController;
 use App\Http\Controllers\Admin\SchoolYearController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\StudentQuitController;
@@ -98,6 +99,11 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::get('/', [StudentUpdateRequestController::class, 'index']);
         Route::get('/{id}', [StudentUpdateRequestController::class, 'show']);
         Route::patch('/{id}', [StudentUpdateRequestController::class, 'updateStatus']);
+    });
+
+    Route::prefix('reports')->group(function (): void {
+        Route::get('/employment-survey', [ReportSurveyController::class, 'getReportById']);
+        Route::get('/employment-survey-template-three', [ReportSurveyController::class, 'getReportEmploymentSurveyTemplateThree']);
     });
 
     Route::prefix('reflects')->group(function (): void {
