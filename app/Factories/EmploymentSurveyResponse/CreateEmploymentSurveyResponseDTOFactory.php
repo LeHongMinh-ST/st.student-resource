@@ -22,6 +22,7 @@ class CreateEmploymentSurveyResponseDTOFactory
 {
     public static function make(StoreEmploymentSurveyResponseRequest $request): CreateEmploymentSurveyResponseDTO
     {
+        $studentInfo = Student::where('code', $request->input('code_student'))->first();
         $dto = new CreateEmploymentSurveyResponseDTO();
         $dto->setSurveyPeriodId($request->input('survey_period_id'));
         if ($request->has('student_id')) {
@@ -30,20 +31,41 @@ class CreateEmploymentSurveyResponseDTOFactory
             $studentId = Student::select('id')->where('code', $request->input('code_student'))->first()->id;
             $dto->setStudentId($studentId);
         }
-        $dto->setEmail($request->input('email'));
+        $dto->setEmail($request->input('email') ?? $studentInfo->info->person_email);
         $dto->setFullName($request->input('full_name'));
         $dto->setGender(Gender::from($request->input('gender')));
-        $dto->setDob(Carbon::createFromFormat('Y-m-d', $request->input('dob')));
-        $dto->setPhoneNumber($request->input('phone_number'));
+        if ($request->input('dob')) {
+            $dto->setDob(Carbon::createFromFormat('Y-m-d', $request->input('dob')));
+        }
+        if ($studentInfo->info->dob) {
+            $dto->setDob($studentInfo->info->dob);
+        }
+        $dto->setPhoneNumber($request->input('phone_number') ?? $studentInfo->info->phone);
         $dto->setCodeStudent($request->input('code_student'));
-        $dto->setIdentificationCardNumber($request->input('identification_card_number'));
+        if ($request->input('identification_card_number')) {
+            $dto->setIdentificationCardNumber($request->input('identification_card_number'));
+        } else {
+            $dto->setIdentificationCardNumber($studentInfo->info->citizen_identification);
+        }
+
         if ($request->has('identification_card_number_update')) {
             $dto->setIdentificationCardNumberUpdate($request->input('identification_card_number_update'));
         }
         $dto->setIdentificationIssuancePlace($request->input('identification_issuance_place'));
-        $dto->setIdentificationIssuanceDate(Carbon::createFromFormat('Y-m-d', $request->input('identification_issuance_date')));
-        $dto->setTrainingIndustryId((int) $request->input('training_industry_id'));
-        $dto->setCourse($request->input('course'));
+
+        if ($request->input('identification_issuance_date')) {
+            $dto->setIdentificationIssuanceDate(Carbon::createFromFormat('Y-m-d', $request->input('identification_issuance_date')));
+        }
+        if ($request->input('training_industry_id')) {
+            $dto->setTrainingIndustryId((int) $request->input('training_industry_id'));
+        } else {
+            $dto->setTrainingIndustryId($studentInfo->training_industry_id);
+        }
+        if ($request->input('course')) {
+            $dto->setCourse($request->input('course'));
+        } else {
+            $dto->setCourse(mb_substr($studentInfo->code, 0, 2));
+        }
         $dto->setEmploymentStatus(EmploymentStatus::from((int) $request->input('employment_status')));
         if (EmploymentStatus::Employed === $dto->getEmploymentStatus()) {
             if ($request->has('recruit_partner_name')) {
