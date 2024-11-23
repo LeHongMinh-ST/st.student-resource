@@ -42,6 +42,6 @@ class SurveyPeriodController extends Controller
     ])]
     public function show(SurveyPeriod $surveyPeriod, Request $request): ExternalSurveyPeriodResource
     {
-        return new ExternalSurveyPeriodResource($this->surveyPeriodService->show($surveyPeriod));
+        return new ExternalSurveyPeriodResource($this->surveyPeriodService->show($surveyPeriod->id));
     }
 }
