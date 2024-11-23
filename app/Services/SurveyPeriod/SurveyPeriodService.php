@@ -7,6 +7,7 @@ namespace App\Services\SurveyPeriod;
 use App\DTO\SurveyPeriod\CreateSurveyPeriodDTO;
 use App\DTO\SurveyPeriod\ListSurveyPeriodDTO;
 use App\DTO\SurveyPeriod\UpdateSurveyPeriodDTO;
+use App\Enums\Status;
 use App\Jobs\SendMailForm;
 use App\Models\SurveyPeriod;
 use App\Models\SurveyPeriodStudent;
@@ -107,6 +108,10 @@ class SurveyPeriodService
     public function delete(mixed $id): bool
     {
         $surveyPeriod = SurveyPeriod::where('id', $id)->first();
+        if (Status::Enable === $surveyPeriod->status) {
+            throw new Exception('Không thể xóa khảo sát đang hoạt động');
+        }
+
         $surveyPeriod->graduationCeremonies()->detach();
         $surveyPeriod->students()->detach();
 
