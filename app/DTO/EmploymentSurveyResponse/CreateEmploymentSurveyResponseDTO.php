@@ -22,9 +22,9 @@ class CreateEmploymentSurveyResponseDTO
 
     private ?int $studentId;
 
-    private string $email;
+    private ?string $email;
 
-    private DateTime $dob;
+    private ?DateTime $dob;
 
     private ?int $cityWorkId;
 
@@ -32,19 +32,19 @@ class CreateEmploymentSurveyResponseDTO
 
     private string $codeStudent;
 
-    private string $identificationCardNumber;
+    private ?string $identificationCardNumber;
 
     private ?string $identificationCardNumberUpdate;
 
-    private string $identificationIssuancePlace;
+    private ?string $identificationIssuancePlace;
 
-    private DateTime $identificationIssuanceDate;
+    private ?DateTime $identificationIssuanceDate;
 
-    private int $trainingIndustryId;
+    private ?int $trainingIndustryId;
 
-    private string $phoneNumber;
+    private ?string $phoneNumber;
 
-    private string $course;
+    private ?string $course;
 
     private EmploymentStatus $employmentStatus;
 
@@ -82,6 +82,14 @@ class CreateEmploymentSurveyResponseDTO
 
     public function __construct()
     {
+        $this->dob = null;
+        $this->email = null;
+        $this->identificationCardNumber = null;
+        $this->identificationIssuancePlace = null;
+        $this->identificationIssuanceDate = null;
+        $this->trainingIndustryId = null;
+        $this->phoneNumber = null;
+        $this->course = null;
         $this->studentId = null;
         $this->recruitPartnerName = null;
         $this->recruitPartnerAddress = null;
@@ -113,12 +121,12 @@ class CreateEmploymentSurveyResponseDTO
         $this->cityWorkId = $cityWorkId;
     }
 
-    public function getCourse(): string
+    public function getCourse(): ?string
     {
         return $this->course;
     }
 
-    public function setCourse(string $course): void
+    public function setCourse(?string $course): void
     {
         $this->course = $course;
     }
@@ -163,22 +171,22 @@ class CreateEmploymentSurveyResponseDTO
         $this->studentId = $studentId;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): void
+    public function setEmail(?string $email): void
     {
         $this->email = $email;
     }
 
-    public function getDob(): DateTime
+    public function getDob(): ?DateTime
     {
         return $this->dob;
     }
 
-    public function setDob(DateTime $dob): void
+    public function setDob(?DateTime $dob): void
     {
         $this->dob = $dob;
     }
@@ -203,52 +211,52 @@ class CreateEmploymentSurveyResponseDTO
         $this->codeStudent = $codeStudent;
     }
 
-    public function getIdentificationCardNumber(): string
+    public function getIdentificationCardNumber(): ?string
     {
         return $this->identificationCardNumber;
     }
 
-    public function setIdentificationCardNumber(string $identificationCardNumber): void
+    public function setIdentificationCardNumber(?string $identificationCardNumber): void
     {
         $this->identificationCardNumber = $identificationCardNumber;
     }
 
-    public function getIdentificationIssuancePlace(): string
+    public function getIdentificationIssuancePlace(): ?string
     {
         return $this->identificationIssuancePlace;
     }
 
-    public function setIdentificationIssuancePlace(string $identificationIssuancePlace): void
+    public function setIdentificationIssuancePlace(?string $identificationIssuancePlace): void
     {
         $this->identificationIssuancePlace = $identificationIssuancePlace;
     }
 
-    public function getIdentificationIssuanceDate(): DateTime
+    public function getIdentificationIssuanceDate(): ?DateTime
     {
         return $this->identificationIssuanceDate;
     }
 
-    public function setIdentificationIssuanceDate(DateTime $identificationIssuanceDate): void
+    public function setIdentificationIssuanceDate(?DateTime $identificationIssuanceDate): void
     {
         $this->identificationIssuanceDate = $identificationIssuanceDate;
     }
 
-    public function getTrainingIndustryId(): int
+    public function getTrainingIndustryId(): ?int
     {
         return $this->trainingIndustryId;
     }
 
-    public function setTrainingIndustryId(int $trainingIndustryId): void
+    public function setTrainingIndustryId(?int $trainingIndustryId): void
     {
         $this->trainingIndustryId = $trainingIndustryId;
     }
 
-    public function getPhoneNumber(): string
+    public function getPhoneNumber(): ?string
     {
         return $this->phoneNumber;
     }
 
-    public function setPhoneNumber(string $phoneNumber): void
+    public function setPhoneNumber(?string $phoneNumber): void
     {
         $this->phoneNumber = $phoneNumber;
     }

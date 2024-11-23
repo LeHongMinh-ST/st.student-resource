@@ -27,9 +27,9 @@ class UpdateEmploymentSurveyResponseDTO
 
     private ?string $identificationCardNumberUpdate;
 
-    private int $trainingIndustryId;
+    private ?int $trainingIndustryId;
 
-    private string $course;
+    private ?string $course;
 
     private EmploymentStatus $employmentStatus;
 
@@ -67,6 +67,8 @@ class UpdateEmploymentSurveyResponseDTO
 
     public function __construct()
     {
+        $this->trainingIndustryId = null;
+        $this->course = null;
         $this->studentId = null;
         $this->recruitPartnerName = null;
         $this->recruitPartnerAddress = null;
@@ -98,12 +100,12 @@ class UpdateEmploymentSurveyResponseDTO
         $this->cityWorkId = $cityWorkId;
     }
 
-    public function getCourse(): string
+    public function getCourse(): ?string
     {
         return $this->course;
     }
 
-    public function setCourse(string $course): void
+    public function setCourse(?string $course): void
     {
         $this->course = $course;
     }
@@ -158,12 +160,12 @@ class UpdateEmploymentSurveyResponseDTO
         $this->codeStudent = $codeStudent;
     }
 
-    public function getTrainingIndustryId(): int
+    public function getTrainingIndustryId(): ?int
     {
         return $this->trainingIndustryId;
     }
 
-    public function setTrainingIndustryId(int $trainingIndustryId): void
+    public function setTrainingIndustryId(?int $trainingIndustryId): void
     {
         $this->trainingIndustryId = $trainingIndustryId;
     }

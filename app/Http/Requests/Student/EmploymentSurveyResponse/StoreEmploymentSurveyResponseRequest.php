@@ -68,7 +68,7 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
                 'exists:students,id',
             ],
             'email' => [
-                'required',
+                'nullable',
                 'email',
                 'max:255',
             ],
@@ -78,7 +78,7 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
                 'max:255',
             ],
             'dob' => [
-                'required',
+                'nullable',
                 'date_format:Y-m-d',
             ],
             'gender' => [
@@ -101,7 +101,7 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
                 'max:255',
             ],
             'identification_card_number' => [
-                'required',
+                'nullable',
                 'string',
                 'max:30',
             ],
@@ -111,26 +111,26 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
                 'max:30',
             ],
             'identification_issuance_place' => [
-                'required',
+                'nullable',
                 'string',
                 'max:255',
             ],
             'identification_issuance_date' => [
-                'required',
+                'nullable',
                 'date_format:Y-m-d',
             ],
             'training_industry_id' => [
-                'required',
+                'nullable',
                 'integer',
                 'exists:training_industries,id',
             ],
             'phone_number' => [
-                'required',
+                'nullable',
                 'string',
                 new PhoneNumberRule(),
             ],
             'course' => [
-                'required',
+                'nullable',
             ],
             'employment_status' => [
                 'required',
@@ -287,6 +287,7 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
     public function attributes(): array
     {
         return [
+            'city_work_id' => 'Thành phố làm việc',
             'code_student' => 'Mã sinh viên',
             'phone_number' => 'Số điện thoại',
             'dob' => 'Ngày sinh',

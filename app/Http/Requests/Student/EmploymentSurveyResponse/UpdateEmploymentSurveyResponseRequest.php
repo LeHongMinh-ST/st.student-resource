@@ -94,12 +94,12 @@ class UpdateEmploymentSurveyResponseRequest extends FormRequest
                 'max:30',
             ],
             'training_industry_id' => [
-                'required',
+                'nullable',
                 'integer',
                 'exists:training_industries,id',
             ],
             'course' => [
-                'required',
+                'nullable',
             ],
             'employment_status' => [
                 'required',

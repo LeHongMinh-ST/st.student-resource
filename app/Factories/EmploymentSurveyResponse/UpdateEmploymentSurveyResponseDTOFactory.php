@@ -37,8 +37,12 @@ class UpdateEmploymentSurveyResponseDTOFactory
         } else {
             $dto->setIdentificationCardNumberUpdate($employmentSurveyResponse->identification_card_number_update);
         }
-        $dto->setTrainingIndustryId((int) $request->input('training_industry_id'));
-        $dto->setCourse($request->input('course'));
+        if ($request->input('training_industry_id')) {
+            $dto->setTrainingIndustryId((int) $request->input('training_industry_id'));
+        }
+        if ($request->input('course')) {
+            $dto->setCourse($request->input('course'));
+        }
         $dto->setEmploymentStatus(EmploymentStatus::from((int) $request->input('employment_status')));
         if (EmploymentStatus::Employed === $dto->getEmploymentStatus()) {
             if ($request->has('recruit_partner_name')) {
