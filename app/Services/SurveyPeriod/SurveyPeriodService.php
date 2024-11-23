@@ -32,6 +32,10 @@ class SurveyPeriodService
             ->when($listSurveyPeriodDTO->getEndDate(), fn ($q) => $q->where('end_date', '<=', $listSurveyPeriodDTO->getEndDate()))
             ->when($listSurveyPeriodDTO->getFacultyId(), fn ($q) => $q->where('faculty_id', $listSurveyPeriodDTO->getFacultyId()))
             ->with('createdBy')
+            ->withCount([
+                'employmentSurveyResponses as total_student_responses',
+                'students as total_student',
+            ])
             ->orderBy($listSurveyPeriodDTO->getOrderBy(), $listSurveyPeriodDTO->getOrder()->value);
 
         return $listSurveyPeriodDTO->getPage() ? $query->paginate($listSurveyPeriodDTO->getLimit()) : $query->get();
