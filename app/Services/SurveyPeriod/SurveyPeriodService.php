@@ -101,7 +101,7 @@ class SurveyPeriodService
                         $q->where('survey_periods.id', $id);
                     });
                 },
-            ])
+            ])->with(['graduationCeremonies'])
             ->first();
     }
 
