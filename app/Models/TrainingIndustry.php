@@ -8,6 +8,7 @@ use App\Enums\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TrainingIndustry extends Model
 {
@@ -31,6 +32,11 @@ class TrainingIndustry extends Model
     public function faculty(): BelongsTo
     {
         return $this->belongsTo(Faculty::class);
+    }
+
+    public function students(): HasMany
+    {
+        return $this->hasMany(Student::class);
     }
 
     // ------------------------ CASTS -------------------------//
