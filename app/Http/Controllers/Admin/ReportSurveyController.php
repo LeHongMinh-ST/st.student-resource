@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Admin;
 
-use App\DTO\ReportSurvey\ReportSurveyByYearDTO;
 use App\Http\Controllers\Controller;
 use App\Services\ReportSurvey\ReportSurveyService;
 use Illuminate\Http\Request;
@@ -34,15 +33,11 @@ class ReportSurveyController extends Controller
      *
      * @param  Request  $request  The HTTP request object containing the role ID.
      */
-    public function getReportById(Request $request)
+    public function getReportEmploymentSurveyTemplateOne(Request $request): StreamedResponse
     {
         // Create a ListReportSurveyDTOFactory object using the provided request
-        $command = new ReportSurveyByYearDTO((int) ($request->year));
 
-        $this->reportSurveyService->reportEmploymentSurveyByYear($command);
-
-        // The ReportSurveyCollection may format the data as needed before sending it as a response
-        return $this->noContent();
+        return $this->reportSurveyService->getReportEmploymentSurveyTemplateOne($request->survey_id);
     }
 
     /**

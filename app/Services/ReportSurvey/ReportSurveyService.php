@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\ReportSurvey;
 
-use App\DTO\ReportSurvey\ReportSurveyByYearDTO;
 use App\Enums\EmploymentSurvey\AverageIncome;
 use App\Enums\EmploymentSurvey\EmployedSince;
 use App\Enums\EmploymentSurvey\EmploymentStatus;
@@ -17,10 +16,10 @@ use App\Enums\EmploymentSurvey\SolutionsGetJob;
 use App\Enums\EmploymentSurvey\TrainedField;
 use App\Enums\EmploymentSurvey\WorkArea;
 use App\Enums\Gender;
-use App\Enums\Status;
+use App\Models\Cities;
 use App\Models\EmploymentSurveyResponse;
 use App\Models\Faculty;
-use App\Models\SurveyPeriod;
+use App\Models\TrainingIndustry;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -32,35 +31,82 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ReportSurveyService
 {
-    public function reportEmploymentSurveyByYear(ReportSurveyByYearDTO $dto): void
+    public function getReportEmploymentSurveyTemplateOne(mixed $surveyId): StreamedResponse
     {
-        $year = $dto->getYear();
-        $surveys = SurveyPeriod::select('id')
-            ->where('id', '<>', 1)
-            ->where('status', Status::Enable->value)
-            ->withCount([
-                'students as total_students',
-                'students as total_female' => fn ($query) => $query->whereHas('info', fn ($q) => $q->where('gender', Gender::Female->value)),
-            ])
-            ->where('year', $year)->get()->toArray();
-
         $data = EmploymentSurveyResponse::selectRaw('
         training_industry_id' .
-            ", SUM(if (gender = '" . Gender::Female->value . "', 1, 0)) as 'total_female', COUNT(*) as 'total_gender',
-        sum(if (employment_status = " . EmploymentStatus::Unemployed->value . ", 1, 0)) as 'total_unemployment',
-        sum(if (employment_status = " . EmploymentStatus::ContinuingEducation->value . ", 1, 0)) as 'continue_education',
-        sum(if (employment_status = " . EmploymentStatus::Employed->value . ", 1, 0)) as 'total_employment',
+            ", COUNT(*) as 'total_gender', SUM(if (gender = '" . Gender::Female->value . "', 1, 0)) as 'total_female',
         sum(if (trained_field = " . TrainedField::RightTraining->value . ", 1, 0)) as 'right_training',
         sum(if (trained_field = " . TrainedField::RelatedTraining->value . ", 1, 0)) as 'relation_training',
         sum(if (trained_field = " . TrainedField::NotRelatedTraining->value . ", 1, 0)) as 'not_relation_training',
+        sum(if (employment_status = " . EmploymentStatus::Unemployed->value . ", 1, 0)) as 'total_unemployment',
+        sum(if (employment_status = " . EmploymentStatus::ContinuingEducation->value . ", 1, 0)) as 'continue_education',
         sum(if (work_area = " . WorkArea::StateSector->value . ", 1, 0)) as 'total_work_area_state',
         sum(if (work_area = " . WorkArea::PrivateSector->value . ", 1, 0)) as 'total_work_area_private',
         sum(if (work_area = " . WorkArea::SelfEmployment->value . ", 1, 0)) as 'total_work_area_self',
         sum(if (work_area = " . WorkArea::ElementForeignSector->value . ", 1, 0)) as 'total_work_are_foreign',
-        GROUP_CONCAT(city_work_id SEPARATOR ',') AS 'work_cities'
-    ")->whereIn('survey_period_id', Arr::pluck($surveys, 'id'))->groupBy('training_industry_id')->get();
+            GROUP_CONCAT(DISTINCT city_work_id SEPARATOR ',') AS 'work_cities'
+        ")->where('survey_period_id', $surveyId)->groupBy('training_industry_id')->get();
 
-        dd($data);
+        $citiesId = collect($data->whereNotNull('work_cities')->pluck('work_cities')->toArray())->map(fn ($item) => explode(',', $item ?? ''))->flatten()->unique()->toArray();
+        $citiesCode = Cities::select(['id', 'code'])->whereIn('id', $citiesId)->get();
+
+        $trainingIndustrySurveys = TrainingIndustry::select([
+            'id',
+            'code',
+            'name',
+        ])->whereHas('students', fn ($q) => $q->whereHas('surveyPeriods', fn ($q) => $q->where('survey_period_id', $surveyId)))->withCount([
+            'students as total_student' => fn ($q) => $q->whereHas('surveyPeriods', fn ($q) => $q->where('survey_period_id', $surveyId)),
+            'students as total_student_female' => fn ($q) => $q->whereHas('info', fn ($q) => $q->where('gender', Gender::Female->value))
+                ->whereHas('surveyPeriods', fn ($q) => $q->where('survey_period_id', $surveyId)),
+        ])->get();
+
+        $faculty = Faculty::whereHas('trainingIndustries', function ($q) use ($trainingIndustrySurveys): void {
+            $q->whereIn('id', $trainingIndustrySurveys->pluck('id'));
+        })->first();
+
+        $dataTransfer = $trainingIndustrySurveys->map(function ($item) use ($data, $citiesCode): array {
+            $trainingIndustrySurveyData = $data->where('training_industry_id', $item->id)->first();
+            $cities = collect(explode(',', $trainingIndustrySurveyData->work_cities ?? ''))->map(fn ($item) => $citiesCode->where('id', $item)->first()?->code)->filter()->toArray();
+
+            $dataTransform = $item->toArray();
+
+            $rateTotalEmploymentWithTotalResponse = $trainingIndustrySurveyData->total_gender ? (
+                (int) $trainingIndustrySurveyData->right_training + (int) $trainingIndustrySurveyData->relation_training + (int) $trainingIndustrySurveyData->not_relation_training
+            ) / (int) $trainingIndustrySurveyData->total_gender : 0;
+
+            $rateTotalEmploymentWithTotalStudent = $item->total_student ? (
+                (int) $trainingIndustrySurveyData->right_training + (int) $trainingIndustrySurveyData->relation_training + (int) $trainingIndustrySurveyData->not_relation_training
+            ) / (int) $item->total_student : 0;
+
+            $dataTransform = [
+                ...$dataTransform,
+                ...Arr::except($trainingIndustrySurveyData->toArray(), [
+                    'total_work_area_state',
+                    'total_work_area_private',
+                    'total_work_area_self',
+                    'total_work_are_foreign',
+                ]),
+                'rate_total_employment_with_total_response' => round($rateTotalEmploymentWithTotalResponse * 100, 2) . '%',
+                'rate_total_employment_with_total_student' => round($rateTotalEmploymentWithTotalStudent * 100, 2) . '%',
+                ...Arr::only($trainingIndustrySurveyData->toArray(), [
+                    'total_work_area_state',
+                    'total_work_area_private',
+                    'total_work_area_self',
+                    'total_work_are_foreign',
+                ]),
+                'work_code_cities' => implode(', ', $cities),
+            ];
+
+            $dataTransform['total_female'] = (string) $dataTransform['total_female'];
+            $dataTransform['total_student_female'] = (string) $dataTransform['total_student_female'];
+
+            unset($dataTransform['id'], $dataTransform['training_industry_id'], $dataTransform['work_cities']);
+
+            return $dataTransform;
+        });
+
+        return $this->exportTemplateOne($dataTransfer->toArray(), $faculty);
     }
 
     public function getReportEmploymentSurveyTemplateThree(mixed $surveyId): StreamedResponse
@@ -136,10 +182,10 @@ class ReportSurveyService
             ];
         })->toArray();
 
-        return $this->exportErrorRecord($dataTransfer, $employmentSurveyResponses->first()?->trainingIndustry->faculty);
+        return $this->exportTemplateThree($dataTransfer, $employmentSurveyResponses->first()?->trainingIndustry->faculty);
     }
 
-    public function exportErrorRecord(array $data, ?Faculty $faculty, $filename = 'error_record.xlsx'): StreamedResponse
+    public function exportTemplateThree(array $data, ?Faculty $faculty, $filename = 'error_record.xlsx'): StreamedResponse
     {
         // Load from xlsx template
         $reader = IOFactory::createReader('Xlsx');
@@ -176,6 +222,64 @@ class ReportSurveyService
         $sheet->getStyle('A9:BK' . ($row - 1))->applyFromArray($styleArray);
         $sheet->getStyle('A9:BK' . ($row - 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
+        return new StreamedResponse(function () use ($spreadsheet): void {
+            $writer = new Xlsx($spreadsheet);
+            $writer->save('php://output');
+        });
+    }
+
+    public function exportTemplateOne(array $data, ?Faculty $faculty, $filename = 'mau_01_danh_sach_sinh_vien_phan_hoi.xlsx'): StreamedResponse
+    {
+        // Load from xlsx template
+        $reader = IOFactory::createReader('Xlsx');
+        $spreadsheet = $reader->load(public_path() . '/template/reports/mau_01_danh_sach_sinh_vien_phan_hoi.xlsx');
+
+        $spreadsheet->getDefaultStyle()->getFont()->setName('Times New Roman');
+        // loop data to fill in the template
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A2', Str::upper($faculty?->name ?? ''));
+
+        $row = 9;
+        foreach ($data as $dataRow) {
+            $sheet->fromArray([
+                'index' => $row - 8,
+                ...$dataRow,
+            ], null, 'A' . $row);
+            $row++;
+        }
+        $sheet->getColumnDimension('S')->setAutoSize(true);
+
+        // Đặt viền cho tiêu đề
+        $styleArray = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                    'color' => ['argb' => Color::COLOR_BLACK],
+                ],
+            ],
+        ];
+
+        // Áp dụng viền cho tiêu đề
+        $sheet->getStyle('A9:S9')->applyFromArray($styleArray);
+
+        // Áp dụng viền cho toàn bộ bảng
+        $sheet->getStyle('A9:S' . ($row - 1))->applyFromArray($styleArray);
+        $sheet->getStyle('A9:S' . ($row - 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+        // Kết hợp ô từ P13 đến S13
+        $sheet->mergeCells('P' . ($row + 2) . ':S' . ($row + 2));
+        $sheet->mergeCells('P' . ($row + 3) . ':S' . ($row + 3));
+
+        // Đặt giá trị cho ô đã merge
+        $sheet->setCellValue('P' . ($row + 2), 'Hà Nội, ngày ….. tháng …. năm 2024');
+        $sheet->setCellValue('P' . ($row + 3), 'Trưởng khoa');
+
+        // Căn giữa nội dung
+        $sheet->getStyle('P' . ($row + 2))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('P' . ($row + 3))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+        // Đặt chữ in đậm
+        $sheet->getStyle('P' . ($row + 3))->getFont()->setBold(true);
 
         return new StreamedResponse(function () use ($spreadsheet): void {
             $writer = new Xlsx($spreadsheet);
