@@ -35,7 +35,7 @@ class EmploymentSurveyResponseResource extends JsonResource
             'student_id' => $this->student_id,
             'dob' => $this->dob,
             'gender' => $this->gender,
-            'gender_txt' => $this->gender->getName(),
+            'gender_txt' => $this->gender?->getName(),
             'code_student' => $this->code_student,
             'phone_number' => $this->phone_number,
             'identification_card_number' => $this->identification_card_number,
