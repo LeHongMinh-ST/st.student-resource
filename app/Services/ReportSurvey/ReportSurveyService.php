@@ -239,23 +239,8 @@ class ReportSurveyService
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setCellValue('A2', Str::upper($faculty?->name ?? ''));
 
-        $row = 9; //Start row data = 2
+        $row = 9;
         foreach ($data as $dataRow) {
-            $sheet->fromArray([
-                'index' => $row - 8,
-                ...$dataRow,
-            ], null, 'A' . $row);
-            $row++;
-            $sheet->fromArray([
-                'index' => $row - 8,
-                ...$dataRow,
-            ], null, 'A' . $row);
-            $row++;
-            $sheet->fromArray([
-                'index' => $row - 8,
-                ...$dataRow,
-            ], null, 'A' . $row);
-            $row++;
             $sheet->fromArray([
                 'index' => $row - 8,
                 ...$dataRow,
