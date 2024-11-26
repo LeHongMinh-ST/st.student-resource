@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Enums\AuthApiSection;
 use App\Http\Controllers\Admin\AdmissionYearController;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\EmploymentSurveyResponseController;
 use App\Http\Controllers\Admin\ExcelImportFileController;
@@ -32,6 +33,10 @@ Route::prefix('auth')->group(function (): void {
 Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): void {
     Route::prefix('auth')->group(function (): void {
         Route::get('profile', [AuthController::class, 'profile']);
+    });
+
+    Route::prefix('dashboard')->group(function (): void {
+        Route::get('get-dashboard-statistical', [DashboardController::class, 'getStudentStatistical']);
     });
 
     Route::prefix('classes')->group(function (): void {
