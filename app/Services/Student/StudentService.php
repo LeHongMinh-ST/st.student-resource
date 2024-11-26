@@ -12,6 +12,8 @@ use App\DTO\Student\ListStudentSurveyDTO;
 use App\DTO\Student\UpdateStudentDTO;
 use App\Enums\AuthApiSection;
 use App\Enums\ExcelImportType;
+use App\Enums\StudentStatus;
+use App\Enums\UserRole;
 use App\Exceptions\CreateResourceFailedException;
 use App\Exceptions\UpdateResourceFailedException;
 use App\Jobs\CreateStudentByFileCsvJob;
@@ -275,5 +277,18 @@ class StudentService
             })
             ->with(['info', 'graduationCeremonies'])
             ->first();
+    }
+
+    public function getTotalStudentStudy(): int
+    {
+        $auth = auth(AuthApiSection::Admin->value) ->user();
+
+        $studentsCount = Student::query()
+            ->where('status', StudentStatus::CurrentlyStudying)
+            ->where('faculty_id', $auth->faculty_id)
+            ->when(UserRole::Teacher === $auth->role, fn ($q) => $q->whereHas('generalClass', fn ($q) => $q->where('teacher_id', auth(AuthApiSection::Admin->value)->id())))
+            ->count();
+
+        return $studentsCount;
     }
 }
