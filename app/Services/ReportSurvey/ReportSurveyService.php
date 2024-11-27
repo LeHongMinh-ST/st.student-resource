@@ -19,6 +19,7 @@ use App\Enums\Gender;
 use App\Models\Cities;
 use App\Models\EmploymentSurveyResponse;
 use App\Models\Faculty;
+use App\Models\Student;
 use App\Models\TrainingIndustry;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -107,6 +108,36 @@ class ReportSurveyService
         });
 
         return $this->exportTemplateOne($dataTransfer->toArray(), $faculty);
+    }
+
+    public function getReportEmploymentSurveyTemplateTwo(mixed $surveyId): StreamedResponse
+    {
+        $studentList = Student::with(['info', 'trainingIndustry.faculty', 'currentGraduationCeremony', 'employmentSurveyResponses'])
+            ->whereHas('surveyPeriods', fn ($q) => $q->where('survey_period_id', $surveyId))
+            ->get();
+
+        // transfer data
+        $dataTransfer = $studentList->map(function ($item) use ($surveyId) {
+            $employmentSurveyResponse = $item->employmentSurveyResponses->where('survey_period_id', $surveyId)->first();
+
+            return [
+                'student_code' => $item->code,
+                'full_name' => $item->full_name,
+                'gender_female' => Gender::Female->value === $item->info->gender ? '1' : '',
+                'identification_card_number' => $item->info->citizen_identification,
+                'training_industry_code' => $item->trainingIndustry->code,
+                'certification' => $item->currentGraduationCeremony->certification,
+                'certification_date' => $item->currentGraduationCeremony->certification_date?->format('d/m/Y'),
+                'phone_number' => $item->info->phone,
+                'email' => $item->info->person_email,
+                'type_survey' => null !== $employmentSurveyResponse ? 'Online' : '',
+                'status_survey' => null !== $employmentSurveyResponse ? 'x' : '',
+                'training_industry_name' => $item->trainingIndustry->name,
+                'faculty_name' => $item->trainingIndustry->faculty->name,
+            ];
+        })->toArray();
+
+        return $this->exportTemplateTwo($dataTransfer, $studentList->first()?->trainingIndustry->faculty);
     }
 
     public function getReportEmploymentSurveyTemplateThree(mixed $surveyId): StreamedResponse
@@ -234,7 +265,7 @@ class ReportSurveyService
         $reader = IOFactory::createReader('Xlsx');
         $spreadsheet = $reader->load(public_path() . '/template/reports/mau_01_danh_sach_sinh_vien_phan_hoi.xlsx');
 
-        $spreadsheet->getDefaultStyle()->getFont()->setName('Times New Roman');
+        $spreadsheet->getDefaultStyle()->getFont()->setName('Times New Roman')->setSize(12);
         // loop data to fill in the template
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setCellValue('A2', Str::upper($faculty?->name ?? ''));
@@ -280,6 +311,52 @@ class ReportSurveyService
 
         // Đặt chữ in đậm
         $sheet->getStyle('P' . ($row + 3))->getFont()->setBold(true);
+
+        return new StreamedResponse(function () use ($spreadsheet): void {
+            $writer = new Xlsx($spreadsheet);
+            $writer->save('php://output');
+        });
+    }
+
+    public function exportTemplateTwo(array $data, ?Faculty $faculty, $filename = 'mau_02_danh_sach_sinh_vien_phan_hoi.xlsx'): StreamedResponse
+    {
+        // Load from xlsx template
+        $reader = IOFactory::createReader('Xlsx');
+        $spreadsheet = $reader->load(public_path() . '/template/reports/mau_02_danh_sach_sinh_vien_tot_nghiep.xlsx');
+
+        $spreadsheet->getDefaultStyle()->getFont()->setName('Times New Roman');
+        // loop data to fill in the template
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $row = 5;
+        foreach ($data as $dataRow) {
+            $sheet->fromArray([
+                'index' => $row - 4,
+                ...$dataRow,
+            ], null, 'A' . $row);
+            $row++;
+        }
+        $sheet->getColumnDimension('M')->setAutoSize(true);
+        $sheet->getColumnDimension('N')->setAutoSize(true);
+        $sheet->getColumnDimension('J')->setAutoSize(true);
+
+        // Đặt viền cho tiêu đề
+        $styleArray = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                    'color' => ['argb' => Color::COLOR_BLACK],
+                ],
+            ],
+        ];
+
+        // Áp dụng viền cho tiêu đề
+        $sheet->getStyle('A5:N5')->applyFromArray($styleArray);
+
+        // Áp dụng viền cho toàn bộ bảng
+        $sheet->getStyle('A5:N' . ($row - 1))->applyFromArray($styleArray);
+        $sheet->getStyle('A5:N' . ($row - 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('C5:C' . ($row - 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 
         return new StreamedResponse(function () use ($spreadsheet): void {
             $writer = new Xlsx($spreadsheet);

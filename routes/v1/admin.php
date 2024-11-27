@@ -108,6 +108,7 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
 
     Route::prefix('reports')->group(function (): void {
         Route::get('/employment-survey-template-one', [ReportSurveyController::class, 'getReportEmploymentSurveyTemplateOne']);
+        Route::get('/employment-survey-template-two', [ReportSurveyController::class, 'getReportEmploymentSurveyTemplateTwo']);
         Route::get('/employment-survey-template-three', [ReportSurveyController::class, 'getReportEmploymentSurveyTemplateThree']);
     });
 
