@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Enums\ClassType;
 use App\Enums\Status;
 use App\Enums\StudentStatus;
+use App\Enums\WarningStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -134,6 +135,11 @@ class Student extends Authenticatable implements JWTSubject
         return $this->hasMany(EmploymentSurveyResponse::class, 'student_id');
     }
 
+    public function warnings(): BelongsToMany
+    {
+        return $this->belongsToMany(Warning::class);
+    }
+
     // ---------------------- ACCESSORS AND MUTATORS --------------------//
     public function getFullNameAttribute(): string
     {
@@ -143,6 +149,32 @@ class Student extends Authenticatable implements JWTSubject
     public function getAvatarPathAttribute(): string
     {
         return $this->info->thumbnail ? asset(Storage::url($this->info->thumbnail)) : asset('assets/images/avatar_default.png');
+    }
+
+
+    public function getWarningStatusAttribute(): WarningStatus
+    {
+        $latestWarningIds = Warning::orderBy('semester_id', 'desc')
+            ->take(2)
+            ->pluck('id')
+            ->toArray();
+
+        if (!$latestWarningIds) {
+            return WarningStatus::NoWarning;
+        }
+
+        $warningCount = $this->warnings()
+            ->whereIn('warnings.id', $latestWarningIds)
+            ->count();
+
+        if ($warningCount >= 2) {
+            return WarningStatus::AtRisk;
+        }
+        if (1 === $warningCount) {
+            return WarningStatus::UnderObservation;
+        }
+
+        return WarningStatus::NoWarning;
     }
 
     //----------------------- SCOPES ----------------------------------//

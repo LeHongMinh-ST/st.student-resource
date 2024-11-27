@@ -8,6 +8,7 @@ use App\DTO\GeneralClass\CreateGeneralClassDTO;
 use App\DTO\GeneralClass\ListGeneralClassDTO;
 use App\DTO\GeneralClass\UpdateGeneralClassDTO;
 use App\Enums\AuthApiSection;
+use App\Enums\Status;
 use App\Enums\UserRole;
 use App\Models\GeneralClass;
 use Illuminate\Validation\ValidationException;
@@ -65,4 +66,18 @@ class GeneralClassService
     {
         return GeneralClass::where('code', $code)->first();
     }
+
+    public function getGeneralClassCount(): int
+    {
+        $auth = auth(AuthApiSection::Admin->value)->user();
+
+        $classCount = GeneralClass::query()
+            ->where('faculty_id', $auth->faculty_id)
+            ->where('status', Status::Enable)
+            ->when(UserRole::Teacher === $auth->role, fn ($q) => $q->where('teacher_id', $auth->id))
+            ->count();
+
+        return $classCount;
+    }
+
 }
