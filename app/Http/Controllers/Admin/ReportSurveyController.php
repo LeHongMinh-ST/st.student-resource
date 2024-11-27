@@ -25,7 +25,7 @@ class ReportSurveyController extends Controller
     }
 
     /**
-     * Report Survey by year
+     * getReportEmploymentSurveyTemplateOne
      *
      * This endpoint lets you views list a ReportSurvey
      *
@@ -38,6 +38,22 @@ class ReportSurveyController extends Controller
         // Create a ListReportSurveyDTOFactory object using the provided request
 
         return $this->reportSurveyService->getReportEmploymentSurveyTemplateOne($request->survey_id);
+    }
+
+    /**
+     * getReportEmploymentSurveyTemplateTwo
+     *
+     * This endpoint lets you views list a ReportSurvey
+     *
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @param  Request  $request  The HTTP request object containing the role ID.
+     */
+    public function getReportEmploymentSurveyTemplateTwo(Request $request): StreamedResponse
+    {
+        // Create a ListReportSurveyDTOFactory object using the provided request
+
+        return $this->reportSurveyService->getReportEmploymentSurveyTemplateTwo($request->survey_id);
     }
 
     /**
@@ -54,8 +70,5 @@ class ReportSurveyController extends Controller
         // Create a ListReportSurveyDTOFactory object using the provided request
 
         return $this->reportSurveyService->getReportEmploymentSurveyTemplateThree($request->survey_id);
-
-        // The ReportSurveyCollection may format the data as needed before sending it as a response
-        //        return $this->noContent();
     }
 }

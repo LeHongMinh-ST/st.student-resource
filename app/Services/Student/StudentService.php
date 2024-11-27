@@ -60,7 +60,9 @@ class StudentService
 
     public function getBySurveyPeriod(ListStudentSurveyDTO $listStudentDTO): Collection|LengthAwarePaginator|array
     {
-        $query = Student::query()
+        $query = Student::query()->select(['students.*', 'employment_survey_responses.created_at as response_created_at'])
+            ->with(['info', 'currentSurvey', 'currentClass', 'activeResponseSurvey.trainingIndustry', 'activeResponseSurvey.cityWork'])
+            ->leftJoin('employment_survey_responses', 'students.id', '=', 'employment_survey_responses.student_id')
             ->when(
                 $listStudentDTO->getSurveyPeriodId(),
                 fn ($q) => $q->whereHas('surveyPeriods', fn ($q) => $q->where('survey_period_student.survey_period_id', $listStudentDTO->getSurveyPeriodId()))
@@ -69,6 +71,7 @@ class StudentService
                 if (1 === $listStudentDTO->getIsResponse()) {
                     return $q->whereHas('employmentSurveyResponses', fn ($q) => $q->where('employment_survey_responses.survey_period_id', $listStudentDTO->getSurveyPeriodId()));
                 }
+
                 return $q->whereDoesntHave('employmentSurveyResponses', fn ($q) => $q->where('employment_survey_responses.survey_period_id', $listStudentDTO->getSurveyPeriodId()));
             })
             ->when($listStudentDTO->getStatus(), fn ($q) => $q->where('status', $listStudentDTO->getStatus()))
@@ -80,8 +83,8 @@ class StudentService
                         ->orWhere('code', 'like', '%' . $listStudentDTO->getQ() . '%');
                 })
             )
-            ->with(['info', 'currentSurvey', 'currentClass', 'activeResponseSurvey.trainingIndustry', 'activeResponseSurvey.cityWork'])
-            ->orderBy($listStudentDTO->getOrderBy(), $listStudentDTO->getOrder()->value);
+
+            ->orderBy('response_created_at', $listStudentDTO->getOrder()->value);
 
         return $listStudentDTO->getPage() ? $query->paginate($listStudentDTO->getLimit()) : $query->get();
     }
@@ -281,7 +284,7 @@ class StudentService
 
     public function getTotalStudentStudy(): int
     {
-        $auth = auth(AuthApiSection::Admin->value) ->user();
+        $auth = auth(AuthApiSection::Admin->value)->user();
 
         $studentsCount = Student::query()
             ->where('status', StudentStatus::CurrentlyStudying)
@@ -294,7 +297,7 @@ class StudentService
 
     public function getTotalStudentGraduated(): int
     {
-        $auth = auth(AuthApiSection::Admin->value) ->user();
+        $auth = auth(AuthApiSection::Admin->value)->user();
 
         $studentsCount = Student::query()
             ->where('status', StudentStatus::Graduated)
@@ -307,7 +310,7 @@ class StudentService
 
     public function getTotalStudentWarning(): int
     {
-        $auth = auth(AuthApiSection::Admin->value) ->user();
+        $auth = auth(AuthApiSection::Admin->value)->user();
 
         $latestWarningIds = DB::table('warnings')
             ->orderBy('semester_id', 'desc')
@@ -317,6 +320,7 @@ class StudentService
         if (count($latestWarningIds) < 2) {
             return 0;
         }
+
         return DB::table('students')
             ->join('student_warnings', 'students.id', '=', 'student_warnings.student_id')
             ->whereIn('student_warnings.warning_id', $latestWarningIds)

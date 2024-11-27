@@ -109,6 +109,12 @@ class Student extends Authenticatable implements JWTSubject
             ->using(GraduationCeremonyStudent::class);
     }
 
+    public function currentGraduationCeremony(): HasOneThrough
+    {
+        return $this->hasOneThrough(GraduationCeremony::class, GraduationCeremonyStudent::class, 'student_id', 'id', 'id', 'graduation_ceremony_id')
+            ->select('graduation_ceremonies.*', 'graduation_ceremony_students.gpa', 'graduation_ceremony_students.rank', 'graduation_ceremony_students.email');
+    }
+
     public function surveyPeriods(): BelongsToMany
     {
         return $this->belongsToMany(SurveyPeriod::class, 'survey_period_student', 'student_id', 'survey_period_id')
@@ -151,7 +157,6 @@ class Student extends Authenticatable implements JWTSubject
         return $this->info->thumbnail ? asset(Storage::url($this->info->thumbnail)) : asset('assets/images/avatar_default.png');
     }
 
-
     public function getWarningStatusAttribute(): WarningStatus
     {
         $latestWarningIds = Warning::orderBy('semester_id', 'desc')
@@ -159,7 +164,7 @@ class Student extends Authenticatable implements JWTSubject
             ->pluck('id')
             ->toArray();
 
-        if (!$latestWarningIds) {
+        if (! $latestWarningIds) {
             return WarningStatus::NoWarning;
         }
 
