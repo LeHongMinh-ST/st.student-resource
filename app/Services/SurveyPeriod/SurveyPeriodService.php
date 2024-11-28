@@ -122,22 +122,23 @@ class SurveyPeriodService
     {
         try {
             if (Arr::get($data, 'is_all_mail_student')) {
-                $mails = $surveyPeriod->graduationCeremonies()->with('students')->get()->pluck('students')->flatten();
+                $students = $surveyPeriod->students->load('info');
             } else {
-                $mails = $surveyPeriod->graduationCeremonies()->with('students')->first()->students->whereIn('email', $data['list_student_mail']);
+                $students = $surveyPeriod->students->load('info')->whereIn('id', $data['student_ids'])->values();
             }
 
             $open_time = $surveyPeriod->start_time?->format('d/m/Y');
             $close_time = $surveyPeriod->end_time?->format('d/m/Y');
 
-            foreach ($mails as $mail) {
-                if (! (bool) ($mail->pivot->email)) {
+            foreach ($students as $student) {
+                if (null === $student?->info?->person_email) {
                     continue;
                 }
-                $codeVerify = $this->generateCodeVerifySendMail($mail->id, $surveyPeriod->id);
+
+                $codeVerify = $this->generateCodeVerifySendMail($student->id, $surveyPeriod->id);
                 $url = config('vnua.app_student_url') . '/form-job-survey/' . $surveyPeriod->id . '?code=' . $codeVerify;
 
-                SurveyPeriodStudent::where('student_id', $mail->id)
+                SurveyPeriodStudent::where('student_id', $student->id)
                     ->where('survey_period_id', $surveyPeriod->id)
                     ->update([
                         'code_verify' => $codeVerify,
@@ -145,7 +146,7 @@ class SurveyPeriodService
                     ]);
 
                 SendMailForm::dispatch(
-                    $mail->pivot->email,
+                    $student->info->person_email,
                     $surveyPeriod->title,
                     $surveyPeriod->faculty->name,
                     $open_time . ' đến ' . $close_time,

@@ -26,12 +26,12 @@ class SendMailSurveyPeriodRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'list_student_mail' => [
+            'student_ids' => [
                 'array',
                 Rule::requiredIf(null === $this->is_all_mail_student),
             ],
             'is_all_mail_student' => [
-                Rule::requiredIf(null === $this->list_student_mail),
+                Rule::requiredIf(null === $this->student_ids),
                 'boolean',
             ],
         ];
