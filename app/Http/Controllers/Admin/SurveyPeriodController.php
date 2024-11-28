@@ -121,7 +121,7 @@ class SurveyPeriodController extends Controller
      */
     public function sendMails(SurveyPeriod $surveyPeriod, SendMailSurveyPeriodRequest $request): JsonResponse
     {
-        $this->surveyPeriodService->sendMail($surveyPeriod, $request->only('list_student_mail', 'is_all_mail_student'));
+        $this->surveyPeriodService->sendMail($surveyPeriod, $request->only('student_ids', 'is_all_mail_student'));
 
         return $this->noContent();
     }
