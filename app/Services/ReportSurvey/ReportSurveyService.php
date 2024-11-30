@@ -72,12 +72,20 @@ class ReportSurveyService
 
             $dataTransform = $item->toArray();
 
+            // tỉ lệ sinh viên có việc làm / phản hồi
             $rateTotalEmploymentWithTotalResponse = $trainingIndustrySurveyData->total_gender ? (
-                (int) $trainingIndustrySurveyData->right_training + (int) $trainingIndustrySurveyData->relation_training + (int) $trainingIndustrySurveyData->not_relation_training
+                (int) $trainingIndustrySurveyData->right_training
+                + (int) $trainingIndustrySurveyData->relation_training
+                + (int) $trainingIndustrySurveyData->not_relation_training
+                + (int) $trainingIndustrySurveyData->continue_education
             ) / (int) $trainingIndustrySurveyData->total_gender : 0;
 
+            // tỉ lệ sinh viên có việc làm / tổng sinh viên
             $rateTotalEmploymentWithTotalStudent = $item->total_student ? (
-                (int) $trainingIndustrySurveyData->right_training + (int) $trainingIndustrySurveyData->relation_training + (int) $trainingIndustrySurveyData->not_relation_training
+                (int) $trainingIndustrySurveyData->right_training
+                + (int) $trainingIndustrySurveyData->relation_training
+                + (int) $trainingIndustrySurveyData->not_relation_training
+                + (int) $trainingIndustrySurveyData->continue_education
             ) / (int) $item->total_student : 0;
 
             $dataTransform = [
