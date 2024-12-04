@@ -12,6 +12,7 @@ use App\Factories\Student\ListStudentDTOFactory;
 use App\Factories\Student\ListStudentSurveyDTOFactory;
 use App\Factories\Student\UpdateStudentDTOFactory;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Student\ChangeStatusStudentRequest;
 use App\Http\Requests\Admin\Student\CreateStudentRequest;
 use App\Http\Requests\Admin\Student\ImportCourseStudentRequest;
 use App\Http\Requests\Admin\Student\ListStudentRequest;
@@ -273,5 +274,20 @@ class StudentController extends Controller
         $this->authorize('admin.student.import');
 
         return $this->excelImportFileService->exportErrorRecord($excelImportFileError->id);
+    }
+
+    /**
+     * Change status student
+     *
+     * This endpoint allows student to change status
+     *
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @response 202
+     * */
+    public function changeStatusStudent(ChangeStatusStudentRequest $request, Student $student): JsonResponse
+    {
+        $this->studentService->changeStatus($student->id, $request->get('status'));
+        return $this->accepted();
     }
 }

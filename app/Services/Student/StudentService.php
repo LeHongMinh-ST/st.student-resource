@@ -329,4 +329,9 @@ class StudentService
             ->count();
 
     }
+
+    public function changeStatus($studentId, $status): bool|int
+    {
+        return Student::query()->findOrFail($studentId)->update(['status' => $status]);
+    }
 }
