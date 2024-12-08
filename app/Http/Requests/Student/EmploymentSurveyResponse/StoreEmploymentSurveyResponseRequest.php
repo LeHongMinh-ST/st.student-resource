@@ -48,7 +48,7 @@ class StoreEmploymentSurveyResponseRequest extends FormRequest
                 function ($attribute, $value, $fail): void {
                     $surveyPeriod = SurveyPeriod::where('id', $value)->first();
                     if (! $surveyPeriod) {
-                        $fail('Không tìm thấy kỳ đợt khảo sát');
+                        $fail('Không tìm thấy đợt khảo sát');
                     } else {
                         if (now()->gt($surveyPeriod->end_time)) {
                             $fail('Đợt khảo sát đã kết thúc');

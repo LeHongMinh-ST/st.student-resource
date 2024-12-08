@@ -12,11 +12,23 @@ class ListGraduationDTO extends BaseListDTO implements BaseDTO
     private ?int $year;
     private ?string $certification;
     private ?bool $isGraduationDoesntHaveSurveyPeriod;
+    private ?int $withIdSurveyPeriod;
 
     public function __construct()
     {
         parent::__construct();
         $this->isGraduationDoesntHaveSurveyPeriod = null;
+        $this->withIdSurveyPeriod = null;
+    }
+
+    public function getWithIdSurveyPeriod(): ?int
+    {
+        return $this->withIdSurveyPeriod;
+    }
+
+    public function setWithIdSurveyPeriod(?int $withIdSurveyPeriod): void
+    {
+        $this->withIdSurveyPeriod = $withIdSurveyPeriod;
     }
 
     public function getIsGraduationDoesntHaveSurveyPeriod(): ?bool

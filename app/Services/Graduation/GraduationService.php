@@ -25,10 +25,21 @@ class GraduationService
         $query = GraduationCeremony::query()
             ->when($graduationDTO->getYear(), fn ($query) => $query->where('year', $graduationDTO->getYear()))
             ->when($graduationDTO->getCertification(), fn ($query) => $query->where('certification', $graduationDTO->getCertification()))
+            ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
             ->when($graduationDTO->getIsGraduationDoesntHaveSurveyPeriod(), fn ($query) => $query->whereDoesntHave('surveyPeriods', function ($query): void {
                 $query->where('status', Status::Enable->value);
             }))
-            ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
+            ->when(
+                $graduationDTO->getWithIdSurveyPeriod(),
+                fn ($query) => $query
+                    ->where(function ($query) use ($graduationDTO): void {
+                        $query->whereDoesntHave('surveyPeriods', function ($query): void {
+                            $query->where('status', Status::Enable->value);
+                        })->orWhereHas('surveyPeriods', function ($query) use ($graduationDTO): void {
+                            $query->where('survey_period_graduation.survey_period_id', $graduationDTO->getWithIdSurveyPeriod());
+                        });
+                    })
+            )
             ->withCount('students')
             ->orderBy($graduationDTO->getOrderBy(), $graduationDTO->getOrder()->value);
 

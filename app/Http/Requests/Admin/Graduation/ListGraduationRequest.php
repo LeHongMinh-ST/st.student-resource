@@ -28,6 +28,7 @@ class ListGraduationRequest extends ListRequest
         return [
             ...parent::rules(),
             'is_graduation_doesnt_have_survey_period' => ['nullable', 'numeric'],
+            'year' => ['nullable', 'numeric'],
         ];
     }
 

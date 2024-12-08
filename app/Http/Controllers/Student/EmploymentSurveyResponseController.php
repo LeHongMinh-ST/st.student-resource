@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Student;
 
 use App\Factories\EmploymentSurveyResponse\CreateEmploymentSurveyResponseDTOFactory;
+use App\Factories\EmploymentSurveyResponse\CreateEmploymentSurveyResponseFromLinkPublicDTOFactory;
 use App\Factories\EmploymentSurveyResponse\UpdateEmploymentSurveyResponseDTOFactory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Student\EmploymentSurveyResponse\ExternalSearchEmploymentResponseRequest;
@@ -67,7 +68,9 @@ class EmploymentSurveyResponseController extends Controller
     ])]
     public function store(StoreEmploymentSurveyResponseRequest $request): EmploymentSurveyResponseResource
     {
-        $createEmploymentSurveyResponseDTO = CreateEmploymentSurveyResponseDTOFactory::make($request);
+        $createEmploymentSurveyResponseDTO = $request->from_link_mail
+            ? CreateEmploymentSurveyResponseDTOFactory::make($request)
+            : CreateEmploymentSurveyResponseFromLinkPublicDTOFactory::make($request);
 
         $employmentSurveyResponse = $this->employmentSurveyResponseService->createOrUpdate($createEmploymentSurveyResponseDTO);
 
