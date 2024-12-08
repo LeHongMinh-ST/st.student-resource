@@ -15,7 +15,12 @@ class ListGraduationDTOFactory
         $command = new ListGraduationDTO();
         $command = MakeDataHelper::makeListData($request, $command);
         $command->setCertification($request->get('certification'));
-        $command->setYear($request->get('year'));
+        if ($request->has('year')) {
+            $command->setYear((int) $request->get('year'));
+        }
+        if ($request->has('with_id_survey_period')) {
+            $command->setWithIdSurveyPeriod((int) $request->get('with_id_survey_period'));
+        }
         if ($request->has('is_graduation_doesnt_have_survey_period')) {
             $command->setIsGraduationDoesntHaveSurveyPeriod((bool) $request->get('is_graduation_doesnt_have_survey_period'));
         }

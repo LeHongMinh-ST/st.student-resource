@@ -42,11 +42,13 @@ class EmploymentSurveyResponseService
 
         return $employmentSurveyResponse;
     }
+
     public function update(UpdateEmploymentSurveyResponseDTO $createEmploymentSurveyResponseDTO, mixed $id): EmploymentSurveyResponse
     {
         $this->validateData($createEmploymentSurveyResponseDTO);
         $employmentSurveyResponse = EmploymentSurveyResponse::where('id', $id)->first();
         $employmentSurveyResponse->update($createEmploymentSurveyResponseDTO->toArray());
+
         return $employmentSurveyResponse;
     }
 
@@ -85,14 +87,40 @@ class EmploymentSurveyResponseService
             throw ValidationException::withMessages(['code_student' => 'Sinh viên không thuộc đợt khảo sát này']);
         }
 
-        // data student is correct
-        //        if (
-        //            $student->info->dob->format('Y-m-d') !== $createEmploymentSurveyResponseDTO->getDob()->format('Y-m-d')
-        //            // || $student->info->citizen_identification !== $createEmploymentSurveyResponseDTO->getIdentificationCardNumber()
-        //        ) {
-        //            throw ValidationException::withMessages([
-        //                'message' => 'Dữ liệu sinh viên không chính xác',
-        //            ]);
-        //        }
+        if ($createEmploymentSurveyResponseDTO instanceof CreateEmploymentSurveyResponseDTO) {
+            // data student is correct
+            $isValidate = true;
+            if (
+                $student->info->dob->format('Y-m-d') === $createEmploymentSurveyResponseDTO->getDob()->format('Y-m-d')
+                || $student->info->citizen_identification === $createEmploymentSurveyResponseDTO->getIdentificationCardNumber()
+                || ($student->info->phone === $createEmploymentSurveyResponseDTO->getPhoneNumber() && null !== $student->info->phone)
+                || $student->training_industry_id === $createEmploymentSurveyResponseDTO->getTrainingIndustryId()
+                || ($student->info->person_email === $createEmploymentSurveyResponseDTO->getEmail() && null !== $student->info->person_email)
+            ) {
+                $isValidate = false;
+            }
+            if (
+                $isValidate
+            ) {
+                throw ValidationException::withMessages([
+                    'message' => 'Để xác nhận thông tin vui lòng nhập đúng một trong các thông tin: ngày sinh, số CCCD, ngành đào tạo, số điện thoại, email. ',
+                ]);
+            }
+        } else {
+            // data student is correct
+            $isValidate = true;
+            if (
+                $student->training_industry_id === $createEmploymentSurveyResponseDTO->getTrainingIndustryId()
+            ) {
+                $isValidate = false;
+            }
+            if (
+                $isValidate
+            ) {
+                throw ValidationException::withMessages([
+                    'message' => 'Để xác nhận thông tin vui lòng nhập đúng: ngành đào tạo.',
+                ]);
+            }
+        }
     }
 }

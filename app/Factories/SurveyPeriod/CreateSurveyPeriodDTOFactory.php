@@ -20,7 +20,7 @@ class CreateSurveyPeriodDTOFactory
         $dto->setEndDate(Carbon::createFromFormat('Y-m-d H:i', $request->get('end_date')));
         $dto->setStatus($request->has('status') ? Status::from($request->get('status')) : Status::Enable);
         $dto->setDescription($request->get('description'));
-        $dto->setYear((string) ($dto->getStartDate()->year));
+        $dto->setYear((string) $request->get('year'));
         $dto->setType(SurveyPeriodType::EmploymentSurvey);
         $dto->setFacultyId((int) auth()->user()->faculty_id);
         $dto->setGraduationCeremonyIds($request->get('graduation_ceremony_ids'));
