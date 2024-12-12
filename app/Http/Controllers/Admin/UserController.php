@@ -10,6 +10,7 @@ use App\Factories\User\UpdateUserDTOFactory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\ListUserRequest;
 use App\Http\Requests\Admin\User\StoreUserRequest;
+use App\Http\Requests\Admin\User\UpdateUserPasswordRequest;
 use App\Http\Requests\Admin\User\UpdateUserRequest;
 use App\Http\Resources\User\UserCollection;
 use App\Http\Resources\User\UserResource;
@@ -19,6 +20,7 @@ use App\Supports\Constants;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Knuckles\Scribe\Attributes\ResponseFromApiResource;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -88,6 +90,7 @@ class UserController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
+     * @param User $user The user entity to be updated.
      * @param  UpdateUserRequest  $request  The HTTP request object containing student data.
      * @return UserResource Returns the newly UserResource as a resource.
      */
@@ -111,6 +114,7 @@ class UserController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
+     * @param User $user The user entity to be show.
      * @param  Request  $request  The HTTP request object containing student data.
      * @return UserResource Returns the newly UserResource as a resource.
      *
@@ -150,4 +154,23 @@ class UserController extends Controller
         // Return a JSON response with no content (HTTP 204 status)
         return $this->noContent();
     }
+
+    /**
+     * Update password user
+     *
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @param User $user The user entity to be updated.
+     * @param  UpdateUserPasswordRequest  $request  The HTTP request object containing student data.
+     *
+     * @response 202
+     */
+    public function updatePassword(User $user, UpdateUserPasswordRequest $request): JsonResponse
+    {
+        $this->userService->updatePassword($user->id, $request->get('password'));
+
+        // Return a JSON response with the generated token and the admin API section
+        return $this->accepted();
+    }
+
 }

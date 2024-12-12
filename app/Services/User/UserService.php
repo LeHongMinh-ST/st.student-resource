@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
@@ -56,5 +57,10 @@ class UserService
     public function getUserById(mixed $id): User
     {
         return $id instanceof User ? $id : User::find($id);
+    }
+
+    public function updatePassword($id, $password): bool
+    {
+        User::where('id', $id)->update(['password' => $password]);
     }
 }

@@ -45,6 +45,7 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'status' => Status::class,
         'role' => UserRole::class,
+        'password' => 'hashed'
     ];
 
     /**

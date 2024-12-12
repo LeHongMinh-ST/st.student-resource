@@ -60,6 +60,7 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::post('/{user}', [UserController::class, 'update']);
         Route::delete('/{user}', [UserController::class, 'destroy']);
         Route::get('/{user}', [UserController::class, 'show']);
+        Route::patch('/{user}/password', [UserController::class, 'updatePassword']);
     });
 
     Route::prefix('admission-year')->group(function (): void {
