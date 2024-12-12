@@ -167,7 +167,8 @@ class UserController extends Controller
      */
     public function updatePassword(User $user, UpdateUserPasswordRequest $request): JsonResponse
     {
-        $this->userService->updatePassword($user->id, $request->get('password'));
+        $user->password = $request->get('password');
+        $user->save();
 
         // Return a JSON response with the generated token and the admin API section
         return $this->accepted();
