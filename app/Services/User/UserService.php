@@ -59,7 +59,7 @@ class UserService
         return $id instanceof User ? $id : User::find($id);
     }
 
-    public function updatePassword($id, $password): bool
+    public function updatePassword($id, $password)
     {
         User::where('id', $id)->update(['password' => $password]);
     }
