@@ -11,7 +11,6 @@ use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
@@ -59,7 +58,7 @@ class UserService
         return $id instanceof User ? $id : User::find($id);
     }
 
-    public function updatePassword($id, $password)
+    public function updatePassword($id, $password): void
     {
         User::where('id', $id)->update(['password' => $password]);
     }

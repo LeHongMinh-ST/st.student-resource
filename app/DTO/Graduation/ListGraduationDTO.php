@@ -19,6 +19,7 @@ class ListGraduationDTO extends BaseListDTO implements BaseDTO
         parent::__construct();
         $this->isGraduationDoesntHaveSurveyPeriod = null;
         $this->withIdSurveyPeriod = null;
+        $this->year = null;
     }
 
     public function getWithIdSurveyPeriod(): ?int

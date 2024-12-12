@@ -20,7 +20,6 @@ use App\Supports\Constants;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Knuckles\Scribe\Attributes\ResponseFromApiResource;
 use Symfony\Component\HttpFoundation\Response;
 
