@@ -8,6 +8,9 @@ enum StudentStatus: string
 {
     case CurrentlyStudying = 'currently_studying';
     case Graduated = 'graduated';
+
+    case ToDropOut = 'to_drop_out';
+
     case TemporarilySuspended = 'temporarily_suspended';
     case Expelled = 'expelled';
     case Deferred = 'deferred';
