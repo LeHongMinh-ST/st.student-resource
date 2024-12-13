@@ -92,7 +92,7 @@ class CreateUserDTO
 
     public function setPassword(string $password): void
     {
-        $this->password = password_hash($password, PASSWORD_BCRYPT);
+        $this->password = $password;
     }
 
     // Getter and Setter for facultyId

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\AdmissionYear;
 
 use App\DTO\AdmissionYear\ListAdmissionYearDTO;
+use App\Enums\StudentStatus;
 use App\Models\AdmissionYear;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
@@ -19,9 +20,14 @@ class AdmissionYearService
                     $q->where('faculty_id', auth('api')->user()->faculty_id);
                 }
             })
-            ->withCount(['students' => function ($query): void {
-                $query->where('faculty_id', auth('api')->user()->faculty_id);
-            }])
+            ->withCount([
+                'students' => function ($query): void {
+                    $query->where('faculty_id', auth('api')->user()->faculty_id);
+                },
+                'students as currently_studying_count' => function ($query): void {
+                    $query->where('faculty_id', auth('api')->user()->faculty_id)
+                        ->where('status', StudentStatus::CurrentlyStudying);
+                }])
             ->orderBy($admissionYearDTO->getOrderBy(), $admissionYearDTO->getOrder()->value);
         return $admissionYearDTO->getPage() ? $query->paginate($admissionYearDTO->getLimit()) : $query->get();
     }
