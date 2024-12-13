@@ -88,7 +88,7 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::get('/import-course/{excelImportFileError}/download-error', [StudentController::class, 'downloadErrorImportCourse']);
         Route::get('/import-course/download-template', [StudentController::class, 'downloadTemplateImportCourse']);
         Route::get('/{student}', [StudentController::class, 'show']);
-        Route::get('/{student}/classes', [StudentController::class, 'getClasses']);
+        Route::get('/{student}/classes', [StudentController::class, 'showClasses']);
         Route::post('/{student}', [StudentController::class, 'update']);
         Route::put('/{student}/change-status', [StudentController::class, 'changeStatusStudent']);
         Route::delete('/{student}', [StudentController::class, 'destroy']);
