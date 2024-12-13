@@ -18,10 +18,12 @@ use App\Http\Requests\Admin\Student\ImportCourseStudentRequest;
 use App\Http\Requests\Admin\Student\ListStudentRequest;
 use App\Http\Requests\Admin\Student\ShowStudentRequest;
 use App\Http\Requests\Admin\Student\UpdateStudentRequest;
+use App\Http\Resources\GeneralClass\GeneralClassCollection;
 use App\Http\Resources\Student\StudentCollection;
 use App\Http\Resources\Student\StudentResource;
 use App\Http\Resources\Student\StudentSurveyCollection;
 use App\Models\ExcelImportFile;
+use App\Models\GeneralClass;
 use App\Models\Student;
 use App\Services\ExcelImportFile\ExcelImportFileService;
 use App\Services\Student\StudentService;
@@ -151,7 +153,7 @@ class StudentController extends Controller
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
      * @param  ShowStudentRequest  $request  The HTTP request object containing student data.
-     * @return StudentResource Returns the newly UserResource as a resource.
+     * @return StudentResource
      */
     #[ResponseFromApiResource(StudentResource::class, Student::class, Response::HTTP_OK, with: [
         'info', 'faculty', 'families', 'currentClass'
@@ -163,6 +165,24 @@ class StudentController extends Controller
         // Return a JSON response with the generated token and the admin API section
         return new StudentResource($student);
     }
+
+    /**
+     * Show class of student
+     *
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @param  ShowStudentRequest  $request  The HTTP request object containing student data.
+     * @return GeneralClassCollection
+     */
+    #[ResponseFromApiResource(GeneralClassCollection::class, GeneralClass::class, Response::HTTP_OK)]
+    public function showClasses(Student $student, ShowStudentRequest $request): GeneralClassCollection
+    {
+        $generalClasses = $student->load('generalClasses')->generalClasses;
+
+        // Return a JSON response with the generated token and the admin API section
+        return new GeneralClassCollection($generalClasses);
+    }
+
 
     /**
      * Update student
