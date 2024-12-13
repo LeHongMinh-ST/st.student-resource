@@ -177,7 +177,8 @@ class StudentController extends Controller
     #[ResponseFromApiResource(GeneralClassCollection::class, GeneralClass::class, Response::HTTP_OK)]
     public function showClasses(Student $student, ShowStudentRequest $request): GeneralClassCollection
     {
-        $generalClasses = $student->load('generalClasses')->generalClasses;
+        $student->load('generalClass');
+        $generalClasses = $student->generalClass;
 
         // Return a JSON response with the generated token and the admin API section
         return new GeneralClassCollection($generalClasses);
