@@ -1,17 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::table('classes', function (Blueprint $table) {
+        Schema::table('classes', function (Blueprint $table): void {
             if (!Schema::hasColumn('classes', 'sub_teacher_id')) {
                 $table->integer('sub_teacher_id')->nullable()->after('teacher_id');
             }
@@ -23,7 +24,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('classes', function (Blueprint $table) {
+        Schema::table('classes', function (Blueprint $table): void {
             if (Schema::hasColumn('classes', 'sub_teacher_id')) {
                 $table->dropColumn('sub_teacher_id');
             }

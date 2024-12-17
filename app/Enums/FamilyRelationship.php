@@ -11,4 +11,8 @@ enum FamilyRelationship: string
     case Mother = 'mother';
 
     case Siblings = 'siblings';
+
+    case Grandparent = 'grandparent';
+
+    case Other = 'other';
 }

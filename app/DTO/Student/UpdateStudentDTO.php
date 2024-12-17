@@ -24,6 +24,7 @@ class UpdateStudentDTO implements BaseDTO
 
     private ?StudentStatus $status;
     private UpdateStudentInfoDTO $infoDTO;
+    private array $familyStudentDTOArray;
 
     public function __construct()
     {
@@ -138,5 +139,15 @@ class UpdateStudentDTO implements BaseDTO
     public function toInfoArray(): array
     {
         return $this->getInfoCommand()->toArray();
+    }
+
+    public function getFamilyStudentDTOArray(): array
+    {
+        return $this->familyStudentDTOArray;
+    }
+
+    public function setFamilyStudentDTOArray(array $familyStudentDTOArray): void
+    {
+        $this->familyStudentDTOArray = $familyStudentDTOArray;
     }
 }

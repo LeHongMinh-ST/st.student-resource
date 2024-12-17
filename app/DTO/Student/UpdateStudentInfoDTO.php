@@ -206,7 +206,7 @@ class UpdateStudentInfoDTO implements BaseDTO
             'person_email' => $this->getPersonEmail(),
             'gender' => $this->getGender(),
             'permanent_residence' => $this->getPermanentResidence(),
-            'dob' => $this->getDob() ? Carbon::createFromFormat('d-m-Y', $this->getDob()) : null,
+            'dob' => $this->getDob() ? Carbon::make($this->getDob()) : null,
             'pob' => $this->getPob(),
             'countryside' => $this->getCountryside(),
             'address' => $this->getAddress(),
@@ -216,7 +216,6 @@ class UpdateStudentInfoDTO implements BaseDTO
             'citizen_identification' => $this->getCitizenIdentification(),
             'ethnic' => $this->getEthnic(),
             'religion' => $this->getReligion(),
-            'thumbnail' => $this->getThumbnail(),
             'social_policy_object' => $this->getSocialPolicyObject(),
             'note' => $this->getNote(),
         ], fn ($value) => null !== $value);

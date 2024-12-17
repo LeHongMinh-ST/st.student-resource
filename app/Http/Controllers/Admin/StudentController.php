@@ -202,7 +202,6 @@ class StudentController extends Controller
     {
         // Create an UpdateUserDTOFactory object using the request data
         $updateStudentDTO = UpdateStudentDTOFactory::make($request, $student);
-
         // Update a user
         $user = $this->studentService->updateWithInfoStudent($updateStudentDTO);
 

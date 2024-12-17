@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,10 +13,10 @@ class ClassAssign extends Model
 
     protected $table = 'class_assigns';
     protected $fillable = [
-      'class_id',
-      'teacher_id',
-      'sub_teacher_id',
-      'number',
-      'year'
+        'class_id',
+        'teacher_id',
+        'sub_teacher_id',
+        'number',
+        'year'
     ];
 }

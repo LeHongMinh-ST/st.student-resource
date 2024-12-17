@@ -184,10 +184,15 @@ class StudentService
         try {
             // update student using the CreateStudentAction
             $student = Student::where('id', $command->getId())->first();
-            $student->update($command->toArray());
 
+            $student->update($command->toArray());
             // Create additional student information
             $this->studentInfoService->update($command->getInfoDTO());
+            $student->families()->delete();
+            foreach ($command->getFamilyStudentDTOArray() as $family) {
+                $student->families()->create($family->toArray());
+            }
+
 
             // Load additional information into the student object
             DB::commit();
