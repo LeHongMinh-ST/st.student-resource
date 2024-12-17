@@ -47,7 +47,7 @@ class UpdatePasswordStudentJob implements ShouldQueue
                     ];
                 });
 
-                DB::table('students')->upsert($data->toArray(), ['id'], ['password']);
+                DB::table('students')->upsert($data->toArray(), ['id'], ['password', 'email']);
                 Log::info('Update password student success 100 record');
             });
             DB::commit();
