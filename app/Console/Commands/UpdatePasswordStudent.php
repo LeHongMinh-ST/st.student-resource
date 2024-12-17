@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Models\Student;
 use App\Supports\StudentHelper;
 use Exception;
 use Illuminate\Console\Command;
@@ -30,28 +31,26 @@ class UpdatePasswordStudent extends Command
     /**
      * Execute the console command.
      */
-    public function handle(): void
+    public function handle(): int
     {
         DB::beginTransaction();
         try {
 
-            DB::table('students')->orderBy('id')->chunk(100, function ($students): void {
-                $data = $students->map(function ($student) {
-                    return [
-                        'code' => $student->code,
-                        'password' => Hash::make($student->code),
-                        'email' => StudentHelper::makeEmailStudent($student->code)
-                    ];
-                });
-
-                DB::table('students')->upsert($data->toArray(), ['code'], ['password', 'email']);
+            Student::chunkById(100, function ($students): void {
+                foreach ($students as $student) {
+                    $student->password = Hash::make($student->code);
+                    $student->email = StudentHelper::makeEmailStudent($student->code);
+                    $student->save();
+                }
             });
             DB::commit();
+            return 0;
         } catch (Exception $e) {
             Log::error('Error job reply contact', [
                 'error' => $e->getMessage()
             ]);
             DB::rollBack();
+            return 1;
         }
     }
 }
