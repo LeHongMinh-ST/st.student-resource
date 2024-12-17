@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
+use App\Supports\StudentHelper;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -42,6 +43,7 @@ class UpdatePasswordStudentJob implements ShouldQueue
                     return [
                         'id' => $student->id,
                         'password' => Hash::make($student->code),
+                        'email' => StudentHelper::makeEmailStudent($student->code)
                     ];
                 });
 
