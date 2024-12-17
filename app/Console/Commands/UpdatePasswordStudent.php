@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Jobs\UpdatePasswordStudentJob;
 use App\Models\Student;
 use App\Supports\StudentHelper;
 use Exception;
@@ -33,24 +34,15 @@ class UpdatePasswordStudent extends Command
      */
     public function handle(): int
     {
-        DB::beginTransaction();
-        try {
+        $this->info('Dispatching jobs to update student passwords and emails...');
 
-            Student::chunkById(100, function ($students): void {
-                foreach ($students as $student) {
-                    $student->password = Hash::make($student->code);
-                    $student->email = StudentHelper::makeEmailStudent($student->code);
-                    $student->save();
-                }
-            });
-            DB::commit();
-            return 0;
-        } catch (Exception $e) {
-            Log::error('Error job reply contact', [
-                'error' => $e->getMessage()
-            ]);
-            DB::rollBack();
-            return 1;
-        }
+        // Chia nhỏ dữ liệu thành từng chunk 100 bản ghi
+        Student::chunkById(100, function ($students) {
+            // Đẩy mỗi chunk vào một job
+            dispatch(new UpdatePasswordStudentJob($students));
+            $this->info('Dispatched a job for 100 students.');
+        });
+
+        $this->info('All jobs have been dispatched successfully!');
     }
 }

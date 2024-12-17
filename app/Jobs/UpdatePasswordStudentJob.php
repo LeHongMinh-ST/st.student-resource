@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
+use App\Models\Student;
 use App\Supports\StudentHelper;
 use Exception;
 use Illuminate\Bus\Queueable;
@@ -21,13 +22,13 @@ class UpdatePasswordStudentJob implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
-
+    protected $students;
     /**
      * Create a new job instance.
      */
-    public function __construct()
+    public function __construct($students)
     {
-
+        $this->students = $students;
     }
 
     /**
@@ -38,18 +39,14 @@ class UpdatePasswordStudentJob implements ShouldQueue
         DB::beginTransaction();
         try {
 
-            DB::table('students')->orderBy('id')->chunk(100, function ($students): void {
-                $data = $students->map(function ($student) {
-                    return [
-                        'id' => $student->id,
-                        'password' => Hash::make($student->code),
-                        'email' => StudentHelper::makeEmailStudent($student->code)
-                    ];
-                });
-
-                DB::table('students')->upsert($data->toArray(), ['id'], ['password', 'email']);
-                Log::info('Update password student success 100 record');
-            });
+            foreach ($this->students as $student) {
+                $studentModel = Student::find($student->id);
+                if ($studentModel) {
+                    $studentModel->password = Hash::make($student->code);
+                    $studentModel->email = StudentHelper::makeEmailStudent($student->code);
+                    $studentModel->save();
+                }
+            }
             DB::commit();
             Log::info('Update password student success');
         } catch (Exception $e) {
