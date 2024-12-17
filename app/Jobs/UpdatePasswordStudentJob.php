@@ -42,7 +42,7 @@ class UpdatePasswordStudentJob implements ShouldQueue
             foreach ($this->students as $student) {
                 $studentModel = Student::find($student->id);
                 if ($studentModel) {
-                    $studentModel->password = Hash::make($student->code);
+                    $studentModel->password = $student->code;
                     $studentModel->email = StudentHelper::makeEmailStudent($student->code);
                     $studentModel->save();
                 }
