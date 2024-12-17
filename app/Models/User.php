@@ -92,16 +92,23 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Post::class);
     }
 
+    public function ownsClass()
+    {
+        return $this->hasMany(GeneralClass::class, 'teacher_id', 'id');
+    }
+
+    public function ownsSubClass()
+    {
+        return $this->hasMany(GeneralClass::class, 'sub_teacher_id', 'id');
+    }
+
     // ---------------------- ACCESSORS AND MUTATORS --------------------//
     public function getThumbnailPathAttribute(): string
     {
         return isset($this->thumbnail) ? asset(Storage::url($this->thumbnail)) : '';
     }
 
-    public function ()
-    {
 
-    }
 
     // ------------------------ CASTS -------------------------//
 
