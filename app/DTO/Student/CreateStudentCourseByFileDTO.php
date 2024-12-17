@@ -6,7 +6,6 @@ namespace App\DTO\Student;
 
 use App\DTO\BaseDTO;
 use App\Enums\StudentStatus;
-use App\Supports\PasswordHelper;
 use App\Supports\StudentHelper;
 use InvalidArgumentException;
 
@@ -36,7 +35,6 @@ class CreateStudentCourseByFileDTO implements BaseDTO
     {
         $user = auth()->user();
         $this->setFacultyId($user->faculty_id ?? null);
-        $this->setPassword(PasswordHelper::makePassword());
         $this->setStatus(StudentStatus::CurrentlyStudying);
         $this->setFamily([]);
         $this->setTrainingIndustryId(null);
@@ -122,6 +120,7 @@ class CreateStudentCourseByFileDTO implements BaseDTO
     {
         $this->code = $code;
         $this->email = StudentHelper::makeEmailStudent($code);
+        $this->setPassword($code);
     }
 
     public function getEmail(): string
