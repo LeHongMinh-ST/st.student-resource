@@ -98,6 +98,11 @@ class User extends Authenticatable implements JWTSubject
         return isset($this->thumbnail) ? asset(Storage::url($this->thumbnail)) : '';
     }
 
+    public function ()
+    {
+
+    }
+
     // ------------------------ CASTS -------------------------//
 
     /**

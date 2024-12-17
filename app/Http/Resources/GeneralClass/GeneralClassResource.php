@@ -31,6 +31,7 @@ class GeneralClassResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'teacher' => new UserForLoadResource($this->whenLoaded('teacher')),
+            'sub_teacher' => new UserForLoadResource($this->whenLoaded('subTeacher')),
             'faculty' => new FacultyForLoadResource($this->whenLoaded('faculty')),
             'officer' => [
                 'student_president' => new StudentResource($this->whenLoaded('studentPresident')),

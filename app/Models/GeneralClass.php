@@ -25,6 +25,7 @@ class GeneralClass extends Model
         'faculty_id',
         'major_id',
         'teacher_id',
+        'sub_teacher_id',
         'type',
     ];
 
@@ -64,6 +65,12 @@ class GeneralClass extends Model
     {
         return $this->belongsTo(User::class, 'teacher_id', 'id');
     }
+
+    public function subTeacher(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'sub_teacher_id', 'id');
+    }
+
 
     // ------------------------ CASTS -------------------------//
     protected function casts(): array
