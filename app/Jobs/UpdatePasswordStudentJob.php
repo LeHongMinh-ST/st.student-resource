@@ -48,11 +48,7 @@ class UpdatePasswordStudentJob implements ShouldQueue
                 }
             }
             DB::commit();
-            Log::info('Update password student success');
         } catch (Exception $e) {
-            Log::error('Error job reply contact', [
-                'error' => $e->getMessage()
-            ]);
             DB::rollBack();
         }
     }
