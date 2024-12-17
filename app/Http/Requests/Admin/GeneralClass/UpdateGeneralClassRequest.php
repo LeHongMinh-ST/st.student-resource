@@ -39,6 +39,7 @@ class UpdateGeneralClassRequest extends FormRequest
             ],
             'status' => 'nullable',
             'teacher_id' => 'nullable|integer',
+            'sub_teacher_id' => 'nullable|integer',
         ];
     }
 }
