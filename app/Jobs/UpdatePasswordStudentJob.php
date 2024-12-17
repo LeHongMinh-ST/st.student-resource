@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Models\Student;
 use App\Supports\StudentHelper;
 use Exception;
 use Illuminate\Bus\Queueable;
@@ -39,12 +38,17 @@ class UpdatePasswordStudentJob implements ShouldQueue
         DB::beginTransaction();
         try {
 
-            Student::chunkById(100, function ($students): void {
-                foreach ($students as $student) {
-                    $student->password = Hash::make($student->code);
-                    $student->email = StudentHelper::makeEmailStudent($student->code);
-                    $student->save();
-                }
+            DB::table('students')->orderBy('id')->chunk(100, function ($students): void {
+                $data = $students->map(function ($student) {
+                    return [
+                        'id' => $student->id,
+                        'password' => Hash::make($student->code),
+                        'email' => StudentHelper::makeEmailStudent($student->code)
+                    ];
+                });
+
+                DB::table('students')->upsert($data->toArray(), ['id'], ['password', 'email']);
+                Log::info('Update password student success 100 record');
             });
             DB::commit();
             Log::info('Update password student success');
