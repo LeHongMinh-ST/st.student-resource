@@ -38,17 +38,15 @@ class UpdatePasswordStudent extends Command
             DB::table('students')->orderBy('id')->chunk(100, function ($students): void {
                 $data = $students->map(function ($student) {
                     return [
-                        'id' => $student->id,
+                        'code' => $student->code,
                         'password' => Hash::make($student->code),
                         'email' => StudentHelper::makeEmailStudent($student->code)
                     ];
                 });
 
-                DB::table('students')->upsert($data->toArray(), ['id'], ['password', 'email']);
-                Log::info('Update password student success 100 record');
+                DB::table('students')->upsert($data->toArray(), ['code'], ['password', 'email']);
             });
             DB::commit();
-            Log::info('Update password student success');
         } catch (Exception $e) {
             Log::error('Error job reply contact', [
                 'error' => $e->getMessage()
