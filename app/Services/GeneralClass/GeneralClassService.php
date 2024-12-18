@@ -20,7 +20,13 @@ class GeneralClassService
         $auth = auth(AuthApiSection::Admin->value)->user();
 
         $query = GeneralClass::query()
-            ->when(UserRole::Teacher === $auth->role, fn ($q) => $q->where('teacher_id', $auth->id))
+            ->when(UserRole::Teacher === $auth->role, function ($q) use ($auth, $listFacultyDTO) {
+                if ('teacher' === $listFacultyDTO->getType()) {
+                    return $q->where('teacher_id', $auth->id);
+                }
+                return $q->where('sub_teacher_id', $auth->id);
+
+            })
             ->when($listFacultyDTO->getTeacherId(), fn ($q) => $q->where('teacher_id', $listFacultyDTO->getTeacherId()))
             ->when($listFacultyDTO->getQ(), fn ($q) => $q->where('name', 'like', $listFacultyDTO->getQ()))
             ->when($listFacultyDTO->getCode(), fn ($q) => $q->where('code', $listFacultyDTO->getCode()))

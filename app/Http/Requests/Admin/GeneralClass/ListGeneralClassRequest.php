@@ -26,6 +26,7 @@ class ListGeneralClassRequest extends ListRequest
             'q' => 'nullable',
             'status' => 'nullable',
             'teacher_id' => 'nullable',
+            'type' => 'nullable',
             ...parent::rules(),
         ];
     }
