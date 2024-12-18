@@ -32,7 +32,7 @@ class GeneralClassService
             ->when($listFacultyDTO->getCode(), fn ($q) => $q->where('code', $listFacultyDTO->getCode()))
             ->when($listFacultyDTO->getFacultyId(), fn ($q) => $q->where('faculty_id', $listFacultyDTO->getFacultyId()))
             ->when($listFacultyDTO->getStatus(), fn ($q) => $q->where('status', $listFacultyDTO->getStatus()))
-            ->with(['teacher'])
+            ->with(['teacher', 'subTeacher'])
             ->orderBy($listFacultyDTO->getOrderBy(), $listFacultyDTO->getOrder()->value);
 
         return $listFacultyDTO->getPage() ? $query->paginate($listFacultyDTO->getLimit()) : $query->get();

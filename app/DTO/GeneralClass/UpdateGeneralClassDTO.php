@@ -124,6 +124,7 @@ class UpdateGeneralClassDTO
             'major_id' => $this->majorId,
             'type' => $this->type,
             'teacher_id' => $this->teacherId,
+            'sub_teacher_id' => $this->subTeacherId,
         ];
 
         return array_filter($generalClassArray, fn ($value) => null !== $value);

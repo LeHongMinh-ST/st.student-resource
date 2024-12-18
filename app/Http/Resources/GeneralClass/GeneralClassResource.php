@@ -26,6 +26,7 @@ class GeneralClassResource extends JsonResource
             'type' => $this->type,
             'status' => $this->status,
             'teacher_id' => $this->teacher_id,
+            'sub_teacher_id' => $this->sub_teacher_id,
             'faculty_id' => $this->faculty_id,
             'major_id' => $this->major_id,
             'created_at' => $this->created_at,

@@ -22,8 +22,8 @@ class UpdateGeneralClassDTOFactory
         $command->setStatus($request->get('status'));
         $command->setMajorId($request->get('major_id'));
         $command->setType($request->get('type'));
-        $command->setTeacherId($request->get('teacher_id'));
-        $command->setSubTeacherId($request->get('sub_teacher_id'));
+        $command->setTeacherId((int)$request->get('teacher_id'));
+        $command->setSubTeacherId((int)$request->get('sub_teacher_id'));
 
         return $command;
     }

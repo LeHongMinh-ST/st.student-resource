@@ -50,7 +50,7 @@ class GeneralClassController extends Controller
      * @return GeneralClassCollection Returns the list of GeneralClass.
      */
     #[ResponseFromApiResource(GeneralClassCollection::class, GeneralClass::class, Response::HTTP_OK, with: [
-        'teacher', 'faculty',
+        'teacher', 'faculty', 'subTeacher'
     ], paginate: Constants::PAGE_LIMIT)]
     public function index(ListGeneralClassRequest $request): GeneralClassCollection
     {
@@ -146,7 +146,7 @@ class GeneralClassController extends Controller
     ])]
     public function show(GeneralClass $generalClass, ShowGeneralClassRequest $request): GeneralClassResource
     {
-        $generalClass->load('teacher', 'faculty', 'studentPresident', 'studentSecretary');
+        $generalClass->load('teacher', 'faculty', 'studentPresident', 'studentSecretary', 'subTeacher');
         // Return a JSON response with the generated token and the admin API section
         return new GeneralClassResource($generalClass);
     }
