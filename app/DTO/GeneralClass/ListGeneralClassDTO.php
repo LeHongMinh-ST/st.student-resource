@@ -15,6 +15,8 @@ class ListGeneralClassDTO extends BaseListDTO implements BaseDTO
 
     private ?int $teacherId;
 
+    private ?int $subTeacherId;
+
     private ?string $code;
     private ?int $facultyId;
 
@@ -58,7 +60,7 @@ class ListGeneralClassDTO extends BaseListDTO implements BaseDTO
         return $this->teacherId;
     }
 
-    public function setTeacherId(?int $teacherId): void
+    public function setTeacherId(int|string|null $teacherId): void
     {
         $this->teacherId = $teacherId;
     }
@@ -92,6 +94,17 @@ class ListGeneralClassDTO extends BaseListDTO implements BaseDTO
     {
         $this->status = $status;
     }
+
+    public function getSubTeacherId(): ?int
+    {
+        return $this->subTeacherId;
+    }
+
+    public function setSubTeacherId(int|string|null $subTeacherId): void
+    {
+        $this->subTeacherId = $subTeacherId;
+    }
+
 
     public function toArray(): array
     {

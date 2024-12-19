@@ -27,14 +27,15 @@ class GeneralClassService
                 return $q->where('sub_teacher_id', $auth->id);
 
             })
-            ->when($listFacultyDTO->getTeacherId(), fn ($q) => $q->where('teacher_id', $listFacultyDTO->getTeacherId()))
+            ->when($listFacultyDTO->getTeacherId(), fn($q) => $q->where('teacher_id', $listFacultyDTO->getTeacherId()))
+            ->when($listFacultyDTO->getSubTeacherId(), fn($q) => $q->where('sub_teacher_id', $listFacultyDTO->getSubTeacherId()))
             ->when($listFacultyDTO->getQ(), function ($q) use ($listFacultyDTO) {
-                return $q->where('name', 'like', "%{$listFacultyDTO->getQ()}%")
-                    ->orWhere('code', 'like', "%{$listFacultyDTO->getQ()}%");
+                return $q->where('code', 'like', "%{$listFacultyDTO->getQ()}%")
+                    ->orWhere('name', 'like', "%{$listFacultyDTO->getQ()}%");
             })
-            ->when($listFacultyDTO->getCode(), fn ($q) => $q->where('code', $listFacultyDTO->getCode()))
-            ->when($listFacultyDTO->getFacultyId(), fn ($q) => $q->where('faculty_id', $listFacultyDTO->getFacultyId()))
-            ->when($listFacultyDTO->getStatus(), fn ($q) => $q->where('status', $listFacultyDTO->getStatus()))
+            ->when($listFacultyDTO->getCode(), fn($q) => $q->where('code', $listFacultyDTO->getCode()))
+            ->when($listFacultyDTO->getFacultyId(), fn($q) => $q->where('faculty_id', $listFacultyDTO->getFacultyId()))
+            ->when($listFacultyDTO->getStatus(), fn($q) => $q->where('status', $listFacultyDTO->getStatus()))
             ->with(['teacher', 'subTeacher'])
             ->orderBy($listFacultyDTO->getOrderBy(), $listFacultyDTO->getOrder()->value);
 
@@ -83,7 +84,7 @@ class GeneralClassService
         $classCount = GeneralClass::query()
             ->where('faculty_id', $auth->faculty_id)
             ->where('status', Status::Enable)
-            ->when(UserRole::Teacher === $auth->role, fn ($q) => $q->where('teacher_id', $auth->id))
+            ->when(UserRole::Teacher === $auth->role, fn($q) => $q->where('teacher_id', $auth->id))
             ->count();
 
         return $classCount;
