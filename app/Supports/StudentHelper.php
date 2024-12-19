@@ -35,7 +35,7 @@ class StudentHelper
         }
 
         if (UserRole::Teacher === $auth->role) {
-            return $student->currentClass->id === $auth->id;
+            return $student->currentClass->teache_id === $auth->id || $student->currentClass->sub_teache_id === $auth->id;
         }
 
         return $auth->faculty_id === $student->faculty_id;
