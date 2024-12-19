@@ -14,6 +14,7 @@ class ListGeneralClassDTOFactory
     {
         // Create a new ListFacultyCommand object
         $command = new ListGeneralClassDTO();
+        $command->setQ($request->q);
         $command->setStatus($request->status);
         $command->setFacultyId(auth()->user()->faculty_id);
         $command->setType($request->type);
