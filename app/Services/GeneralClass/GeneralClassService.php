@@ -28,7 +28,10 @@ class GeneralClassService
 
             })
             ->when($listFacultyDTO->getTeacherId(), fn ($q) => $q->where('teacher_id', $listFacultyDTO->getTeacherId()))
-            ->when($listFacultyDTO->getQ(), fn ($q) => $q->where('name', 'like', $listFacultyDTO->getQ()))
+            ->when($listFacultyDTO->getQ(), function ($q) use ($listFacultyDTO) {
+                return $q->where('name', 'like', "%{$listFacultyDTO->getQ()}%")
+                    ->orWhere('code', 'like', "%{$listFacultyDTO->getQ()}%");
+            })
             ->when($listFacultyDTO->getCode(), fn ($q) => $q->where('code', $listFacultyDTO->getCode()))
             ->when($listFacultyDTO->getFacultyId(), fn ($q) => $q->where('faculty_id', $listFacultyDTO->getFacultyId()))
             ->when($listFacultyDTO->getStatus(), fn ($q) => $q->where('status', $listFacultyDTO->getStatus()))
