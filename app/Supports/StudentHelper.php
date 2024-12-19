@@ -41,7 +41,7 @@ class StudentHelper
         return $auth->faculty_id === $student->faculty_id;
     }
 
-    private static function isTeacher(int|string $id, array $classes): bool
+    private static function isTeacher(int|string $id, $classes): bool
     {
         foreach ($classes as $class) {
             if ($class->teacher_id === $id || $class->sub_teacher_id === $id) {
