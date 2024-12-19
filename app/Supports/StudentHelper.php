@@ -16,7 +16,7 @@ class StudentHelper
      * This function appends the student's unique code to a predefined email domain
      * specified in the configuration file under 'vnua.mail_student'.
      *
-     * @param  string  $code  The unique code assigned to the student.
+     * @param string $code The unique code assigned to the student.
      * @return string The generated email address for the student.
      */
     public static function makeEmailStudent(string $code): string
@@ -35,9 +35,21 @@ class StudentHelper
         }
 
         if (UserRole::Teacher === $auth->role) {
-            return $student->currentClass->teache_id === $auth->id || $student->currentClass->sub_teache_id === $auth->id;
-        }
+            return static::isTeacher($auth->id, $student->generalClass)
+;        }
 
         return $auth->faculty_id === $student->faculty_id;
     }
+
+    private static function isTeacher(int|string $id, array $classes): bool
+    {
+        foreach ($classes as $class) {
+            if ($class->teacher_id === $id || $class->sub_teacher_id === $id) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }
