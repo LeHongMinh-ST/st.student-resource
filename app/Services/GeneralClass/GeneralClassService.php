@@ -18,7 +18,6 @@ class GeneralClassService
     public function getList(ListGeneralClassDTO $listFacultyDTO): \Illuminate\Database\Eloquent\Collection|\Illuminate\Contracts\Pagination\LengthAwarePaginator|array
     {
         $auth = auth(AuthApiSection::Admin->value)->user();
-
         $query = GeneralClass::query()
             ->when(UserRole::Teacher === $auth->role, function ($q) use ($auth, $listFacultyDTO) {
                 if ('teacher' === $listFacultyDTO->getType()) {
@@ -27,17 +26,16 @@ class GeneralClassService
                 return $q->where('sub_teacher_id', $auth->id);
 
             })
-            ->when($listFacultyDTO->getTeacherId(), fn($q) => $q->where('teacher_id', $listFacultyDTO->getTeacherId()))
-            ->when($listFacultyDTO->getSubTeacherId(), fn($q) => $q->where('sub_teacher_id', $listFacultyDTO->getSubTeacherId()))
             ->when($listFacultyDTO->getQ(), function ($q) use ($listFacultyDTO) {
                 return $q->where('code', 'like', "%{$listFacultyDTO->getQ()}%");
             })
-            ->when($listFacultyDTO->getCode(), fn($q) => $q->where('code', $listFacultyDTO->getCode()))
+            ->when($listFacultyDTO->getTeacherId(), fn($q) => $q->where('teacher_id', $listFacultyDTO->getTeacherId()))
+            ->when($listFacultyDTO->getSubTeacherId(), fn($q) => $q->where('sub_teacher_id', $listFacultyDTO->getSubTeacherId()))
+//            ->when($listFacultyDTO->getCode(), fn($q) => $q->where('code', $listFacultyDTO->getCode()))
             ->when($listFacultyDTO->getFacultyId(), fn($q) => $q->where('faculty_id', $listFacultyDTO->getFacultyId()))
             ->when($listFacultyDTO->getStatus(), fn($q) => $q->where('status', $listFacultyDTO->getStatus()))
             ->with(['teacher', 'subTeacher'])
             ->orderBy($listFacultyDTO->getOrderBy(), $listFacultyDTO->getOrder()->value);
-
         return $listFacultyDTO->getPage() ? $query->paginate($listFacultyDTO->getLimit()) : $query->get();
     }
 
