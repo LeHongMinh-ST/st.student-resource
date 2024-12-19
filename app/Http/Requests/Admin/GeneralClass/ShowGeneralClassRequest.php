@@ -20,7 +20,7 @@ class ShowGeneralClassRequest extends FormRequest
         $auth = auth(AuthApiSection::Admin->value)->user();
         $class = $this->route('generalClass');
         if (UserRole::Teacher === $auth->role) {
-            return Gate::allows('admin.class.index') && $class->teacher_id === $auth->id;
+            return Gate::allows('admin.class.index') && ($class->teacher_id === $auth->id || $class->sub_teacher_id === $auth->id);
         }
 
         return Gate::allows('admin.class.index');
