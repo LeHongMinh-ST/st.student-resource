@@ -81,7 +81,7 @@ class GeneralClassService
         $classCount = GeneralClass::query()
             ->where('faculty_id', $auth->faculty_id)
             ->where('status', Status::Enable)
-            ->when(UserRole::Teacher === $auth->role, fn($q) => $q->where('teacher_id', $auth->id))
+            ->when(UserRole::Teacher === $auth->role, fn($q) => $q->where('teacher_id', $auth->id)->orWhere('sub_teacher_id', $auth->id))
             ->count();
 
         return $classCount;

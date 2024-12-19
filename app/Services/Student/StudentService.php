@@ -294,7 +294,10 @@ class StudentService
         $studentsCount = Student::query()
             ->where('status', StudentStatus::CurrentlyStudying)
             ->where('faculty_id', $auth->faculty_id)
-            ->when(UserRole::Teacher === $auth->role, fn ($q) => $q->whereHas('generalClass', fn ($q) => $q->where('teacher_id', auth(AuthApiSection::Admin->value)->id())))
+            ->when(UserRole::Teacher === $auth->role, fn ($q) => $q->whereHas('generalClass', function ($q) {
+                return $q->where('teacher_id', auth(AuthApiSection::Admin->value)->id())
+                    ->orWhere('sub_teacher_id', auth(AuthApiSection::Admin->value)->id());
+            }))
             ->count();
 
         return $studentsCount;
@@ -307,7 +310,10 @@ class StudentService
         $studentsCount = Student::query()
             ->where('status', StudentStatus::Graduated)
             ->where('faculty_id', $auth->faculty_id)
-            ->when(UserRole::Teacher === $auth->role, fn ($q) => $q->whereHas('generalClass', fn ($q) => $q->where('teacher_id', auth(AuthApiSection::Admin->value)->id())))
+            ->when(UserRole::Teacher === $auth->role, fn ($q) => $q->whereHas('generalClass', function ($q) {
+                return $q->where('teacher_id', auth(AuthApiSection::Admin->value)->id())
+                    ->orWhere('sub_teacher_id', auth(AuthApiSection::Admin->value)->id());
+            }))
             ->count();
 
         return $studentsCount;
@@ -329,7 +335,10 @@ class StudentService
         return DB::table('students')
             ->join('student_warnings', 'students.id', '=', 'student_warnings.student_id')
             ->whereIn('student_warnings.warning_id', $latestWarningIds)
-            ->when(UserRole::Teacher === $auth->role, fn ($q) => $q->whereHas('generalClass', fn ($q) => $q->where('teacher_id', auth(AuthApiSection::Admin->value)->id())))
+            ->when(UserRole::Teacher === $auth->role, fn ($q) => $q->whereHas('generalClass', function ($q) {
+                return $q->where('teacher_id', auth(AuthApiSection::Admin->value)->id())
+                    ->orWhere('sub_teacher_id', auth(AuthApiSection::Admin->value)->id());
+            }))
             ->distinct('students.id')
             ->count();
 
