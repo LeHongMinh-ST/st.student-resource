@@ -35,7 +35,7 @@ class StudentHelper
         }
 
         if (UserRole::Teacher === $auth->role) {
-            return static::isTeacher($auth->id, $student->generalClass)
+            return static::isTeacher($auth->id, $student->generalClass ?? [])
 ;        }
 
         return $auth->faculty_id === $student->faculty_id;
