@@ -43,6 +43,7 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::get('/', [GeneralClassController::class, 'index']);
         Route::post('/', [GeneralClassController::class, 'store']);
         Route::get('/{generalClass}', [GeneralClassController::class, 'show']);
+        Route::get('/{generalClass}/student-statistical', [GeneralClassController::class, 'getStatisticalClass']);
         Route::patch('/{generalClass}', [GeneralClassController::class, 'update']);
         Route::delete('/{generalClass}', [GeneralClassController::class, 'destroy']);
     });

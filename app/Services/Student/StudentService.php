@@ -344,6 +344,50 @@ class StudentService
 
     }
 
+    public function getTotalStudentGraduatedByClassId($classId): int
+    {
+
+        $studentsCount = Student::query()
+            ->whereHas('generalClass', fn ($query) => $query->where('classes.id', $classId))
+            ->where('status', StudentStatus::Graduated)
+            ->count();
+
+        return $studentsCount;
+    }
+
+    public function getTotalStudentToDropOutByClassId($classId): int
+    {
+        $studentsCount = Student::query()
+            ->whereHas('generalClass', fn ($query) => $query->where('classes.id', $classId))
+            ->where('status', StudentStatus::ToDropOut)
+            ->orWhere('status', StudentStatus::Expelled)
+            ->count();
+
+        return $studentsCount;
+    }
+
+    public function getTotalStudentStudyByClassId($classId): int
+    {
+
+        $studentsCount = Student::query()
+            ->whereHas('generalClass', fn ($query) => $query->where('classes.id', $classId))
+            ->where('status', StudentStatus::CurrentlyStudying)
+            ->count();
+
+        return $studentsCount;
+    }
+
+
+    public function getTotalStudentQuitByClassId($classId): int
+    {
+        $studentsCount = Student::query()
+            ->whereHas('generalClass', fn ($query) => $query->where('classes.id', $classId))
+            ->where('status', StudentStatus::Expelled)
+            ->count();
+
+        return $studentsCount;
+    }
+
     public function changeStatus($studentId, $status): bool|int
     {
         return Student::query()->findOrFail($studentId)->update(['status' => $status]);
