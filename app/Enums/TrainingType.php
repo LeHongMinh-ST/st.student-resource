@@ -8,4 +8,5 @@ enum TrainingType: string
 {
     case FormalUniversity = 'formal_university';
     case College = 'college';
+    case StudyAndWork = 'study_and_work';
 }
