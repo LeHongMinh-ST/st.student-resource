@@ -161,6 +161,8 @@ class GeneralClassController extends Controller
             'to_drop_out' => $this->studentService->getTotalStudentToDropOutByClassId($generalClass->id),
             'quit' => $this->studentService->getTotalStudentQuitByClassId($generalClass->id),
             'study' => $this->studentService->getTotalStudentStudyByClassId($generalClass->id),
+            'transfer_study' => $this->studentService->getTotalStudentTransferStudyByClassId($generalClass->id),
+            'deferred' => $this->studentService->getTotalStudentDeferredByClassId($generalClass->id),
         ]);
     }
 }

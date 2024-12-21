@@ -377,6 +377,29 @@ class StudentService
         return $studentsCount;
     }
 
+    public function getTotalStudentTransferStudyByClassId($classId): int
+    {
+
+        $studentsCount = Student::query()
+            ->whereHas('generalClass', fn ($query) => $query->where('classes.id', $classId))
+            ->where('status', StudentStatus::TransferStudy)
+            ->count();
+
+        return $studentsCount;
+    }
+
+
+    public function getTotalStudentDeferredByClassId($classId): int
+    {
+
+        $studentsCount = Student::query()
+            ->whereHas('generalClass', fn ($query) => $query->where('classes.id', $classId))
+            ->where('status', StudentStatus::Deferred)
+            ->count();
+
+        return $studentsCount;
+    }
+
 
     public function getTotalStudentQuitByClassId($classId): int
     {
