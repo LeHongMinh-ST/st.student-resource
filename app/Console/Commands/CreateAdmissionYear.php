@@ -32,10 +32,11 @@ class CreateAdmissionYear extends Command
     {
         $schoolYear = Carbon::now()->year;
         $admissionYear = SchoolHelper::calculateAdmissionYear($schoolYear);
-        AdmissionYear::create([
+        $admissionYear =  AdmissionYear::create([
             'admission_year' => $admissionYear,
             'school_year' => $schoolYear,
         ]);
+
         return 0;
     }
 }

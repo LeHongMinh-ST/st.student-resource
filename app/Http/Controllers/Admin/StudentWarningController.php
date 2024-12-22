@@ -94,7 +94,7 @@ class StudentWarningController extends Controller
     #[ResponseFromApiResource(StudentWarningResource::class, Warning::class, Response::HTTP_OK)]
     public function show(StudentWarning $studentWarning, ShowStudentWarningRequest $request): StudentWarningResource
     {
-        return new StudentWarningResource($studentWarning);
+        return new StudentWarningResource($studentWarning->load('semester'));
     }
 
     /**

@@ -45,6 +45,7 @@ class StudentResource extends JsonResource
                     'rank' => $graduate->pivot->rank,
                 ];
             }),
+            'warning_status' => $this->warning_status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

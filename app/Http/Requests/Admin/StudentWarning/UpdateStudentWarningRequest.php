@@ -14,7 +14,7 @@ class UpdateStudentWarningRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.waring.update');
+        return Gate::allows('admin.warning.update');
     }
 
     /**

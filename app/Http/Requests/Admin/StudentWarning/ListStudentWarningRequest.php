@@ -6,6 +6,7 @@ namespace App\Http\Requests\Admin\StudentWarning;
 
 use App\Http\Requests\ListRequest;
 use App\Models\Warning;
+use Illuminate\Support\Facades\Gate;
 
 class ListStudentWarningRequest extends ListRequest
 {
@@ -14,7 +15,7 @@ class ListStudentWarningRequest extends ListRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Gate::allows('admin.warning.index');
     }
 
     /**
@@ -25,7 +26,8 @@ class ListStudentWarningRequest extends ListRequest
     public function rules(): array
     {
         return [
-            'semester_id' => 'required|integer|exists:semesters,id',
+            'semester_id' => 'nullable|integer',
+            'school_id' => 'nullable|integer',
             ...parent::rules(),
         ];
     }

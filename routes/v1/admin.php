@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\StudentWarningController;
 use App\Http\Controllers\Admin\SurveyPeriodController;
 use App\Http\Controllers\Admin\TrainingIndustryController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\SemesterController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function (): void {
@@ -151,4 +152,8 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::patch('/{studentQuit}', [StudentQuitController::class, 'update']);
         Route::delete('/{studentQuit}', [StudentQuitController::class, 'destroy']);
     });
+
+
 });
+
+Route::get('semesters', [SemesterController::class, 'index']);

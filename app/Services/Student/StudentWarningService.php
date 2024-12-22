@@ -29,9 +29,8 @@ class StudentWarningService
     {
         $query = Warning::query()
             ->when($dto->getSemesterId(), fn ($query) => $query->where('semester_id', $dto->getSemesterId()))
-            ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
+            ->where('faculty_id', auth()->user()->faculty_id ?? null)
             ->orderBy($dto->getOrderBy(), $dto->getOrder()->value);
-
 
         return $dto->getPage() ? $query->paginate($dto->getLimit()) : $query->get();
     }
@@ -106,7 +105,7 @@ class StudentWarningService
                 'faculty_id' => auth(AuthApiSection::Admin->value)->user()?->faculty_id,
                 'user_id' => auth(AuthApiSection::Admin->value)->id(),
                 'type_id' => $dto->getWarningId(),
-                'total_job' => count($data['file_names'])
+                'total_job' => count($data['file_names']),
             ]);
             foreach ($data['file_names'] as $fileName) {
                 CreateStudentWarningByFileCsvJob::dispatch(

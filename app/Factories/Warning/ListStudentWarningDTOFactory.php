@@ -14,7 +14,10 @@ class ListStudentWarningDTOFactory
     {
         $command = new ListStudentWarningDTO();
         $command = MakeDataHelper::makeListData($request, $command);
-        $command->setSemesterId($request->get('semester_id'));
+        if ($request->has('semester_id')) {
+            $command->setSemesterId((int) $request->get('semester_id'));
+        }
+
         return $command;
     }
 }

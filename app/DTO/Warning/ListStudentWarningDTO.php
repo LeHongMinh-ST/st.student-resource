@@ -9,14 +9,20 @@ use App\DTO\BaseListDTO;
 
 class ListStudentWarningDTO extends BaseListDTO implements BaseDTO
 {
-    private int $semesterId;
+    private ?int $semesterId;
 
-    public function getSemesterId(): int
+    public function __construct()
+    {
+        parent::__construct();
+        $this->semesterId = null;
+    }
+
+    public function getSemesterId(): ?int
     {
         return $this->semesterId;
     }
 
-    public function setSemesterId(int $semesterId): void
+    public function setSemesterId(?int $semesterId): void
     {
         $this->semesterId = $semesterId;
     }
