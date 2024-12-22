@@ -33,9 +33,7 @@ use Illuminate\Support\Facades\Log;
 
 class StudentService
 {
-    public function __construct(private readonly StudentInfoService $studentInfoService)
-    {
-    }
+    public function __construct(private readonly StudentInfoService $studentInfoService) {}
 
     public function getList(ListStudentDTO $listStudentDTO): Collection|LengthAwarePaginator|array
     {
@@ -192,7 +190,6 @@ class StudentService
             foreach ($command->getFamilyStudentDTOArray() as $family) {
                 $student->families()->create($family->toArray());
             }
-
 
             // Load additional information into the student object
             DB::commit();
@@ -358,9 +355,14 @@ class StudentService
     public function getTotalStudentToDropOutByClassId($classId): int
     {
         $studentsCount = Student::query()
-            ->whereHas('generalClass', fn ($query) => $query->where('classes.id', $classId))
-            ->where('status', StudentStatus::ToDropOut)
-            ->orWhere('status', StudentStatus::Expelled)
+            ->where(function ($query) use ($classId): void {
+                $query->whereHas('generalClass', fn ($q) => $q->where('classes.id', $classId))
+                    ->where(function ($q): void {
+                        $q->where('status', StudentStatus::ToDropOut)
+                            ->orWhere('status', StudentStatus::Expelled)
+                            ->orWhere('status', StudentStatus::TransferStudy);
+                    });
+            })
             ->count();
 
         return $studentsCount;
@@ -388,7 +390,6 @@ class StudentService
         return $studentsCount;
     }
 
-
     public function getTotalStudentDeferredByClassId($classId): int
     {
 
@@ -399,7 +400,6 @@ class StudentService
 
         return $studentsCount;
     }
-
 
     public function getTotalStudentQuitByClassId($classId): int
     {
