@@ -39,12 +39,12 @@ class CreateSchoolYear extends Command
             'end_year' => $endYear,
         ]);
 
-        Semester::create([
+        Semester::updateOrCreate([
             'semester' => 1,
             'school_year_id' => $schoolYear->id,
         ]);
 
-        Semester::create([
+        Semester::updateOrCreate([
             'semester' => 2,
             'school_year_id' => $schoolYear->id,
         ]);
