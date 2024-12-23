@@ -143,7 +143,7 @@ class Student extends Authenticatable implements JWTSubject
 
     public function warnings(): BelongsToMany
     {
-        return $this->belongsToMany(Warning::class);
+        return $this->belongsToMany(Warning::class, 'student_warnings');
     }
 
     // ---------------------- ACCESSORS AND MUTATORS --------------------//

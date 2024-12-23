@@ -15,17 +15,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StudentWarning\DeleteStudentWarningRequest;
 use App\Http\Requests\Admin\StudentWarning\ImportStudentWarningRequest;
 use App\Http\Requests\Admin\StudentWarning\ListStudentWarningRequest;
+use App\Http\Requests\Admin\StudentWarning\ShowListStudentWarningRequest;
 use App\Http\Requests\Admin\StudentWarning\ShowStudentWarningRequest;
 use App\Http\Requests\Admin\StudentWarning\StoreStudentWarningRequest;
 use App\Http\Requests\Admin\StudentWarning\UpdateStudentWarningRequest;
+use App\Http\Resources\Student\StudentCollection;
 use App\Http\Resources\StudentWarning\StudentWarningCollection;
 use App\Http\Resources\StudentWarning\StudentWarningResource;
-use App\Models\StudentWarning;
+use App\Models\Student;
 use App\Models\Warning;
 use App\Services\Student\StudentWarningService;
 use App\Supports\Constants;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Knuckles\Scribe\Attributes\ResponseFromApiResource;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -87,14 +90,14 @@ class StudentWarningController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param StudentWarning $studentWarning
+     * @param Warning $warning
      * @param ShowStudentWarningRequest $request
      * @return StudentWarningResource
      */
     #[ResponseFromApiResource(StudentWarningResource::class, Warning::class, Response::HTTP_OK)]
-    public function show(StudentWarning $studentWarning, ShowStudentWarningRequest $request): StudentWarningResource
+    public function show(Warning $warning, ShowStudentWarningRequest $request): StudentWarningResource
     {
-        return new StudentWarningResource($studentWarning->load('semester'));
+        return new StudentWarningResource($warning->load('semester'));
     }
 
     /**
@@ -103,16 +106,16 @@ class StudentWarningController extends Controller
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
      * @param UpdateStudentWarningRequest $request
-     * @param StudentWarning $studentWarning
+     * @param Warning $warning
      *
      * @return StudentWarningResource
      *
      * @throws UpdateResourceFailedException
      */
     #[ResponseFromApiResource(StudentWarningResource::class, Warning::class, Response::HTTP_OK)]
-    public function update(StudentWarning $studentWarning, UpdateStudentWarningRequest $request): StudentWarningResource
+    public function update(Warning $warning, UpdateStudentWarningRequest $request): StudentWarningResource
     {
-        $command = UpdateStudentWarningDTOFactory::make($request, $studentWarning->id);
+        $command = UpdateStudentWarningDTOFactory::make($request, $warning->id);
 
         return new StudentWarningResource($this->studentWarningService->update($command));
     }
@@ -124,7 +127,7 @@ class StudentWarningController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param StudentWarning $studentWarning
+     * @param Warning $warning
      * @param DeleteStudentWarningRequest $request
      * @return JsonResponse Returns a response with no content upon successful deletion.
      *
@@ -132,9 +135,9 @@ class StudentWarningController extends Controller
      * @response 204 Indicates that the response will be a 204 No Content status.
      *
      */
-    public function destroy(StudentWarning $studentWarning, DeleteStudentWarningRequest $request): JsonResponse
+    public function destroy(Warning $warning, DeleteStudentWarningRequest $request): JsonResponse
     {
-        $this->studentWarningService->delete($studentWarning->id);
+        $this->studentWarningService->delete($warning->id);
 
         return $this->noContent();
     }
@@ -179,5 +182,29 @@ class StudentWarningController extends Controller
         $file = public_path() . '/template/template_student_warning.xlsx';
 
         return response()->download($file, 'template-student-warning.xlsx');
+    }
+
+    /**
+     * Show student warning session
+     *
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @param Warning $warning
+     * @param ShowListStudentWarningRequest $request
+     * @return StudentCollection
+     */
+    #[ResponseFromApiResource(StudentCollection::class, Student::class, Response::HTTP_OK)]
+    public function getStudents(Warning $warning, ShowListStudentWarningRequest $request): StudentCollection
+    {
+        $students = $warning->students()
+            ->when($request->has('q'), function ($q) use ($request) {
+                return $q->where(DB::raw("CONCAT(last_name, ' ', first_name)"), 'like', '%' . $request->get('q') . '%')
+                    ->orWhere('email', 'like', '%' . $request->get('q') . '%')
+                    ->orWhere('code', 'like', '%' . $request->get('q') . '%');
+            })
+            ->with(['info', 'currentClass', 'families'])
+            ->paginate(Constants::PAGE_LIMIT);
+
+        return new StudentCollection($students);
     }
 }
