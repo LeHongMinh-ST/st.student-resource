@@ -8,9 +8,11 @@ class UpdateStudentQuitDTO
 {
     private int|string $id;
     private string $name;
-    private int $semesterId;
+    private int $year;
+    private string $certification;
+    private string $certificationDate;
 
-    public function getId(): int|string
+    public function getId(): int
     {
         return $this->id;
     }
@@ -19,6 +21,7 @@ class UpdateStudentQuitDTO
     {
         $this->id = $id;
     }
+
 
     public function getName(): string
     {
@@ -30,21 +33,44 @@ class UpdateStudentQuitDTO
         $this->name = $name;
     }
 
-    public function getSemesterId(): int
+    public function getYear(): int
     {
-        return $this->semesterId;
+        return $this->year;
     }
 
-    public function setSemesterId(int $semesterId): void
+    public function setYear(int $year): void
     {
-        $this->semesterId = $semesterId;
+        $this->year = $year;
+    }
+
+    public function getCertification(): string
+    {
+        return $this->certification;
+    }
+
+    public function setCertification(string $certification): void
+    {
+        $this->certification = $certification;
+    }
+
+    public function getCertificationDate(): string
+    {
+        return $this->certificationDate;
+    }
+
+    public function setCertificationDate(string $certificationDate): void
+    {
+        $this->certificationDate = $certificationDate;
     }
 
     public function toArray(): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
-            'semester_id' => $this->semesterId,
+            'year' => $this->year,
+            'certification' => $this->certification,
+            'certification_date' => $this->certificationDate,
         ];
     }
 

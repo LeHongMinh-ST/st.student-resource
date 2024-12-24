@@ -152,6 +152,7 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::post('/import-student', [StudentQuitController::class, 'importStudent']);
         Route::post('/import-student/{excelImportFileError}/download', [StudentQuitController::class, 'importStudent']);
         Route::get('/import-student/download-template', [StudentQuitController::class, 'downloadTemplateImport']);
+        Route::get('/{quit}/students', [StudentQuitController::class, 'getStudents']);
         Route::get('/{quit}', [StudentQuitController::class, 'show']);
         Route::patch('/{quit}', [StudentQuitController::class, 'update']);
         Route::delete('/{studentQuit}', [StudentQuitController::class, 'destroy']);

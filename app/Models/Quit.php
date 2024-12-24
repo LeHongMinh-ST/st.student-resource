@@ -16,8 +16,14 @@ class Quit extends Model
 
     protected $fillable = [
         'name',
-        'semester_id',
+        'year',
+        'certification',
+        'certification_date',
         'faculty_id',
+    ];
+
+    protected $casts = [
+        'certification_date' => 'datetime',
     ];
 
     // ------------------------ RELATIONS -------------------------//

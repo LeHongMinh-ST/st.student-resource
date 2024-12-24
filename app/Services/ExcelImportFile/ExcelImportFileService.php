@@ -13,6 +13,7 @@ use App\Enums\UserRole;
 use App\Exceptions\CreateResourceFailedException;
 use App\Jobs\CreateStudentByFileCsvJob;
 use App\Jobs\CreateStudentGraduateByFileCsvJob;
+use App\Jobs\CreateStudentQuitByFileCsvJob;
 use App\Jobs\CreateStudentWarningByFileCsvJob;
 use App\Models\ExcelImportFile;
 use App\Models\ExcelImportFileError;
@@ -181,6 +182,14 @@ class ExcelImportFileService
                 userId: $userId,
                 warningId: $entityId,
             )->onQueue('import'),
+            ExcelImportType::Quit => CreateStudentQuitByFileCsvJob::dispatch(
+                fileName: $fileName,
+                excelImportFileId: $excelImportFileId,
+                faculty: $faculty,
+                userId: $userId,
+                quitId: $entityId,
+            )->onQueue('import'),
+
             default => throw new Exception('Can not found job with type'),
         };
     }

@@ -7,7 +7,9 @@ namespace App\DTO\Quit;
 class CreateStudentQuitDTO
 {
     private string $name;
-    private int $semesterId;
+    private int $year;
+    private string $certification;
+    private string $certificationDate;
 
     public function getName(): string
     {
@@ -19,21 +21,44 @@ class CreateStudentQuitDTO
         $this->name = $name;
     }
 
-    public function getSemesterId(): int
+    public function getYear(): int
     {
-        return $this->semesterId;
+        return $this->year;
     }
 
-    public function setSemesterId(int $semesterId): void
+    public function setYear(int $year): void
     {
-        $this->semesterId = $semesterId;
+        $this->year = $year;
+    }
+
+    public function getCertification(): string
+    {
+        return $this->certification;
+    }
+
+    public function setCertification(string $certification): void
+    {
+        $this->certification = $certification;
+    }
+
+    public function getCertificationDate(): string
+    {
+        return $this->certificationDate;
+    }
+
+
+    public function setCertificationDate(string $certificationDate): void
+    {
+        $this->certificationDate = $certificationDate;
     }
 
     public function toArray(): array
     {
         return [
             'name' => $this->name,
-            'semester_id' => $this->semesterId,
+            'year' => $this->year,
+            'certification' => $this->certification,
+            'certification_date' => $this->certificationDate,
         ];
     }
 
