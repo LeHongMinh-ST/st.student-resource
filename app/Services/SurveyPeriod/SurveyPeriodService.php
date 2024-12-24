@@ -183,11 +183,9 @@ class SurveyPeriodService
                 'process_total' => 0,
             ]);
 
-            $listSurveyResponse->chunk(10, function ($listSurveyResponseChunk) use ($surveyPeriod, $zipExportFile) {
+            $listSurveyResponse->chunk(10, function ($listSurveyResponseChunk) use ($surveyPeriod, $zipExportFile): void {
                 dispatch(new CreateFilePDFAndSaveJob($surveyPeriod, $zipExportFile, auth()->user()->id, $listSurveyResponseChunk))
                     ->onQueue('import');
-
-                return false;
             });
 
             return $zipExportFile;
