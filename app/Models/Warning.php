@@ -39,6 +39,11 @@ class Warning extends Model
 
     // ---------------------- ACCESSORS AND MUTATORS --------------------//
 
+    public function getStudentsCountAttribute()
+    {
+        return $this->students()->count();
+    }
+
     public function getSchoolYearAttribute()
     {
         return $this->semester?->schoolYear?->start_year . ' - ' . $this->semester?->schoolYear?->end_year;

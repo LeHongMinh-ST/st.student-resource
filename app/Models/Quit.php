@@ -45,7 +45,10 @@ class Quit extends Model
     }
 
     // ---------------------- ACCESSORS AND MUTATORS --------------------//
-
+    public function getStudentsCountAttribute()
+    {
+        return $this->students()->count();
+    }
 
     //----------------------- SCOPES ----------------------------------//
 }
