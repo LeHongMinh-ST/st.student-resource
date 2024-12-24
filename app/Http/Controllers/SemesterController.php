@@ -19,7 +19,8 @@ class SemesterController extends Controller
                     ->whereColumn('school_years.id', 'semesters.school_year_id'),
                 'desc'
             )
-            ->orderBy('semester', 'asc')
+            ->orderBy('semester', 'desc')
+            ->limit(6)
             ->get();
 
 

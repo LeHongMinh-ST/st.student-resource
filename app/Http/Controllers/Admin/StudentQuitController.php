@@ -24,7 +24,6 @@ use App\Http\Resources\StudentQuit\StudentQuitCollection;
 use App\Http\Resources\StudentQuit\StudentQuitResource;
 use App\Models\Quit;
 use App\Models\Student;
-use App\Models\StudentQuit;
 use App\Services\Student\StudentQuitService;
 use App\Supports\Constants;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -91,14 +90,14 @@ class StudentQuitController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param StudentQuit $studentQuit
+     * @param Quit $quit
      * @param ShowStudentQuitRequest $request
      * @return StudentQuitResource
      */
     #[ResponseFromApiResource(StudentQuitResource::class, Quit::class, Response::HTTP_OK)]
-    public function show(StudentQuit $studentQuit, ShowStudentQuitRequest $request): StudentQuitResource
+    public function show(Quit $quit, ShowStudentQuitRequest $request): StudentQuitResource
     {
-        return new StudentQuitResource($studentQuit);
+        return new StudentQuitResource($quit);
     }
 
     /**
@@ -107,16 +106,16 @@ class StudentQuitController extends Controller
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
      * @param UpdateStudentQuitRequest $request
-     * @param StudentQuit $studentQuit
+     * @param Quit $quit
      *
      * @return StudentQuitResource
      *
      * @throws UpdateResourceFailedException
      */
     #[ResponseFromApiResource(StudentQuitResource::class, Quit::class, Response::HTTP_OK)]
-    public function update(StudentQuit $studentQuit, UpdateStudentQuitRequest $request): StudentQuitResource
+    public function update(Quit $quit, UpdateStudentQuitRequest $request): StudentQuitResource
     {
-        $command = UpdateStudentQuitDTOFactory::make($request, $studentQuit->id);
+        $command = UpdateStudentQuitDTOFactory::make($request, $quit->id);
 
         return new StudentQuitResource($this->studentQuitService->update($command));
     }
@@ -128,7 +127,7 @@ class StudentQuitController extends Controller
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
      *
-     * @param StudentQuit $studentQuit
+     * @param Quit $quit
      * @param DeleteStudentQuitRequest $request
      * @return JsonResponse Returns a response with no content upon successful deletion.
      *
@@ -136,9 +135,9 @@ class StudentQuitController extends Controller
      * @response 204 Indicates that the response will be a 204 No Content status.
      *
      */
-    public function destroy(StudentQuit $studentQuit, DeleteStudentQuitRequest $request): JsonResponse
+    public function destroy(Quit $quit, DeleteStudentQuitRequest $request): JsonResponse
     {
-        $this->studentQuitService->delete($studentQuit->id);
+        $this->studentQuitService->delete($quit->id);
 
         return $this->noContent();
     }

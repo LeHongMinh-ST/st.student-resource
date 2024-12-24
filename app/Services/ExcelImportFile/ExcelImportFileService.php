@@ -101,6 +101,7 @@ class ExcelImportFileService
             ExcelImportType::Graduate => public_path() . '/template/template_graduation_student.xlsx',
             ExcelImportType::Course => public_path() . '/template/template_student.xlsx',
             ExcelImportType::Warning => public_path() . '/template/template_student_warning.xlsx',
+            ExcelImportType::Quit => public_path() . '/template/template_student_warning.xlsx',
             default => throw new Exception('Type not found'),
         };
 
