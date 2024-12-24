@@ -148,7 +148,7 @@ class SurveyPeriodService
                 SurveyPeriodStudent::where('student_id', $student->id)
                     ->where('survey_period_id', $surveyPeriod->id)
                     ->update([
-                        'code_verify'      => $codeVerify,
+                        'code_verify' => $codeVerify,
                         'number_mail_send' => DB::raw('number_mail_send + 1'),
                     ]);
 
@@ -177,15 +177,16 @@ class SurveyPeriodService
             // Create file Zip
             $zipExportFile = ZipExportFile::create([
                 'survey_period_id' => $surveyPeriod->id,
-                'name'             => 'survey_response_' . Carbon::now()->microsecond . '.zip',
-                'faculty_id'       => $surveyPeriod->faculty_id,
-                'file_total'       => $listSurveyResponse->count(),
-                'process_total'    => 0,
+                'name' => 'survey_response_' . Carbon::now()->microsecond . '.zip',
+                'faculty_id' => $surveyPeriod->faculty_id,
+                'file_total' => $listSurveyResponse->count(),
+                'process_total' => 0,
             ]);
 
-            $listSurveyResponse->chunk(20, function ($listSurveyResponseChunk) use ($surveyPeriod, $zipExportFile) {
+            $listSurveyResponse->chunk(10, function ($listSurveyResponseChunk) use ($surveyPeriod, $zipExportFile) {
                 dispatch(new CreateFilePDFAndSaveJob($surveyPeriod, $zipExportFile, auth()->user()->id, $listSurveyResponseChunk))
                     ->onQueue('import');
+
                 return false;
             });
 
