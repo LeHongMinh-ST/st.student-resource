@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class StudentWarning extends Model
 {
@@ -28,6 +29,11 @@ class StudentWarning extends Model
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
+    }
+
+    public function excelImportFileRecord(): MorphOne
+    {
+        return $this->morphOne(ExcelImportFileRecord::class, 'tableable', 'table_type', 'table_id');
     }
 
     // ------------------------ CASTS -------------------------//

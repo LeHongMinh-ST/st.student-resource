@@ -37,8 +37,7 @@ class CreateStudentWarningByFileCsvJob implements ShouldQueue
         private readonly Faculty $faculty,
         private readonly int     $userId,
         private readonly int     $warningId,
-    )
-    {
+    ) {
 
     }
 
@@ -51,8 +50,7 @@ class CreateStudentWarningByFileCsvJob implements ShouldQueue
         ExcelImportFileError $excelImportFileErrorModel,
         ExcelImportFileJob   $excelImportFileJobModel,
         StudentService       $studentService
-    ): void
-    {
+    ): void {
 
 
         // Get file path and load CSV file content.
@@ -77,7 +75,11 @@ class CreateStudentWarningByFileCsvJob implements ShouldQueue
                     'student_id' => $student->id,
                 ];
 
-                StudentWarning::query()->updateOrCreate($studentWarningData);
+                $studentWarning = StudentWarning::query()->updateOrCreate($studentWarningData);
+                // create data excel import file record
+                $studentWarning->excelImportFileRecord()->create([
+                    'excel_import_files_id' => $this->excelImportFileId,
+                ]);
 
                 // Log successful process.
                 $excelImportFileModel->where('id', $this->excelImportFileId)

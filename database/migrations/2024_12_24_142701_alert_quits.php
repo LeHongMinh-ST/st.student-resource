@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -10,7 +12,7 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::table('quits', function (Blueprint $table) {
+        Schema::table('quits', function (Blueprint $table): void {
             if (Schema::hasColumn('quits', 'semester_id')) {
                 $table->dropColumn('semester_id');
             }
@@ -34,7 +36,7 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::table('quits', function (Blueprint $table) {
+        Schema::table('quits', function (Blueprint $table): void {
             if (!Schema::hasColumn('quits', 'semester_id')) {
                 $table->unsignedBigInteger('semester_id');
             }

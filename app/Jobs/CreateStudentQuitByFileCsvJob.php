@@ -86,10 +86,15 @@ class CreateStudentQuitByFileCsvJob implements ShouldQueue
                 $studentQuit->fill($studentQuitData);
                 $studentQuit->save();
 
+                $studentQuit->excelImportFileRecord()->create([
+                    'excel_import_files_id' => $this->excelImportFileId,
+                ]);
 
                 // Log successful process.
                 $excelImportFileModel->where('id', $this->excelImportFileId)
                     ->increment('process_record');
+
+
 
             } catch (Exception $exception) {
                 $hasError = true;
