@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('app:create-admission-year')->yearlyOn(9, 1, '00:00');
-        $schedule->command('app:create-school-year')->yearly();
+        $schedule->command('app:create-school-year')->yearlyOn(9, 1, '00:00');
     }
 
     /**

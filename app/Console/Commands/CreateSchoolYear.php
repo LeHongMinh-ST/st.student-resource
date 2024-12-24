@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Models\SchoolYear;
+use App\Models\Semester;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 
@@ -33,9 +34,19 @@ class CreateSchoolYear extends Command
 
         $endYear = (int) $startYear + 1;
 
-        SchoolYear::updateOrCreate([
+        $schoolYear = SchoolYear::updateOrCreate([
             'start_year' => $startYear,
             'end_year' => $endYear,
+        ]);
+
+        Semester::updateOrCreate([
+            'semester' => 1,
+            'school_year_id' => $schoolYear->id,
+        ]);
+
+        Semester::updateOrCreate([
+            'semester' => 2,
+            'school_year_id' => $schoolYear->id,
         ]);
     }
 }

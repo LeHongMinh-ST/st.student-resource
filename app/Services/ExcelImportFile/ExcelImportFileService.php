@@ -13,6 +13,7 @@ use App\Enums\UserRole;
 use App\Exceptions\CreateResourceFailedException;
 use App\Jobs\CreateStudentByFileCsvJob;
 use App\Jobs\CreateStudentGraduateByFileCsvJob;
+use App\Jobs\CreateStudentWarningByFileCsvJob;
 use App\Models\ExcelImportFile;
 use App\Models\ExcelImportFileError;
 use App\Models\Faculty;
@@ -98,6 +99,7 @@ class ExcelImportFileService
         $filePathTemplate = match ($type) {
             ExcelImportType::Graduate => public_path() . '/template/template_graduation_student.xlsx',
             ExcelImportType::Course => public_path() . '/template/template_student.xlsx',
+            ExcelImportType::Warning => public_path() . '/template/template_student_warning.xlsx',
             default => throw new Exception('Type not found'),
         };
 
@@ -171,6 +173,13 @@ class ExcelImportFileService
                 faculty: $faculty,
                 admissionYearId: $entityId,
                 userId: $userId,
+            )->onQueue('import'),
+            ExcelImportType::Warning => CreateStudentWarningByFileCsvJob::dispatch(
+                fileName: $fileName,
+                excelImportFileId: $excelImportFileId,
+                faculty: $faculty,
+                userId: $userId,
+                warningId: $entityId,
             )->onQueue('import'),
             default => throw new Exception('Can not found job with type'),
         };

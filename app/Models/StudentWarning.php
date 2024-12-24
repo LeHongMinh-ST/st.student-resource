@@ -17,6 +17,8 @@ class StudentWarning extends Model
         'student_id',
     ];
 
+    protected $table = 'student_warnings';
+
     // ------------------------ RELATIONS -------------------------//
     public function warning(): BelongsTo
     {

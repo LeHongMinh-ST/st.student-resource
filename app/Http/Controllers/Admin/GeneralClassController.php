@@ -16,6 +16,7 @@ use App\Http\Resources\GeneralClass\GeneralClassCollection;
 use App\Http\Resources\GeneralClass\GeneralClassResource;
 use App\Models\GeneralClass;
 use App\Services\GeneralClass\GeneralClassService;
+use App\Services\Student\StudentService;
 use App\Supports\Constants;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
@@ -35,6 +36,7 @@ use Symfony\Component\HttpFoundation\Response;
 class GeneralClassController extends Controller
 {
     public function __construct(
+        private readonly StudentService $studentService,
         private readonly GeneralClassService $generalClassService
     ) {
     }
@@ -50,7 +52,7 @@ class GeneralClassController extends Controller
      * @return GeneralClassCollection Returns the list of GeneralClass.
      */
     #[ResponseFromApiResource(GeneralClassCollection::class, GeneralClass::class, Response::HTTP_OK, with: [
-        'teacher', 'faculty', 'subTeacher'
+        'teacher', 'faculty', 'subTeacher',
     ], paginate: Constants::PAGE_LIMIT)]
     public function index(ListGeneralClassRequest $request): GeneralClassCollection
     {
@@ -139,7 +141,6 @@ class GeneralClassController extends Controller
      *
      * @param  ShowGeneralClassRequest  $request  The HTTP request object containing student data.
      * @return GeneralClassResource Returns the newly GeneralClassResource as a resource.
-     *
      */
     #[ResponseFromApiResource(GeneralClassResource::class, GeneralClass::class, Response::HTTP_OK, with: [
         'faculty', 'studentPresident', 'studentSecretary',
@@ -147,7 +148,21 @@ class GeneralClassController extends Controller
     public function show(GeneralClass $generalClass, ShowGeneralClassRequest $request): GeneralClassResource
     {
         $generalClass->load('teacher', 'faculty', 'studentPresident', 'studentSecretary', 'subTeacher');
+
         // Return a JSON response with the generated token and the admin API section
         return new GeneralClassResource($generalClass);
+    }
+
+    public function getStatisticalClass(GeneralClass $generalClass, ShowGeneralClassRequest $showGeneralClassRequest): JsonResponse
+    {
+        return $this->json([
+            'total' => $generalClass->students()->count(),
+            'graduated' => $this->studentService->getTotalStudentGraduatedByClassId($generalClass->id),
+            'to_drop_out' => $this->studentService->getTotalStudentToDropOutByClassId($generalClass->id),
+            'quit' => $this->studentService->getTotalStudentQuitByClassId($generalClass->id),
+            'study' => $this->studentService->getTotalStudentStudyByClassId($generalClass->id),
+            'transfer_study' => $this->studentService->getTotalStudentTransferStudyByClassId($generalClass->id),
+            'deferred' => $this->studentService->getTotalStudentDeferredByClassId($generalClass->id),
+        ]);
     }
 }

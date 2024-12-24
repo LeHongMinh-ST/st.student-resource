@@ -14,7 +14,7 @@ class ShowStudentWarningRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.waring.index');
+        return Gate::allows('admin.warning.index');
     }
 
     /**

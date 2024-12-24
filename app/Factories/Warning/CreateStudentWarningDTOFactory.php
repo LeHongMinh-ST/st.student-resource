@@ -13,7 +13,7 @@ class CreateStudentWarningDTOFactory
     {
         $command = new CreateStudentWarningDTO();
         $command->setName($request->get('name'));
-        $command->setSemesterId($request->get('semester_id'));
+        $command->setSemesterId((int)$request->get('semester_id'));
         return $command;
     }
 }

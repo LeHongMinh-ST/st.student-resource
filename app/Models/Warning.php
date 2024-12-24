@@ -32,12 +32,17 @@ class Warning extends Model
 
     public function students(): BelongsToMany
     {
-        return $this->belongsToMany(Student::class);
+        return $this->belongsToMany(Student::class, 'student_warnings');
     }
 
     // ------------------------ CASTS -------------------------//
 
     // ---------------------- ACCESSORS AND MUTATORS --------------------//
+
+    public function getSchoolYearAttribute()
+    {
+        return $this->semester->schoolYear->start_year . ' - ' . $this->semester->schoolYear->end_year;
+    }
 
     //----------------------- SCOPES ----------------------------------//
 }

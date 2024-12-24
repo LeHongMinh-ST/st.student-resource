@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Semester extends Model
 {
@@ -14,12 +15,16 @@ class Semester extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'start_year',
-        'end_year',
         'semester',
+        'school_year_id'
     ];
 
     // ------------------------ RELATIONS -------------------------//
+
+    public function schoolYear(): BelongsTo
+    {
+        return $this->belongsTo(SchoolYear::class);
+    }
 
     // ------------------------ CASTS -------------------------//
 
