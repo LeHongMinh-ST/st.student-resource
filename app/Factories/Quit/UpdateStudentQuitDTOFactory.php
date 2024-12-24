@@ -14,7 +14,7 @@ class UpdateStudentQuitDTOFactory
         $command = new UpdateStudentQuitDTO();
         $command->setId($id);
         $command->setCertification($request->get('certification'));
-        $command->setYear($request->get('year'));
+        $command->setYear((int)$request->get('year'));
         $command->setName($request->get('name'));
         $command->setCertificationDate($request->get('certification_date'));
         return $command;

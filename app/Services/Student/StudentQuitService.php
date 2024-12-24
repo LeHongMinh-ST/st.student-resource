@@ -28,10 +28,8 @@ class StudentQuitService
     public function getList(ListStudentQuitDTO $dto): Collection|LengthAwarePaginator|array
     {
         $query = Quit::query()
-            ->when($dto->getSemesterId(), fn ($query) => $query->where('semester_id', $dto->getSemesterId()))
             ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
             ->orderBy($dto->getOrderBy(), $dto->getOrder()->value);
-
 
         return $dto->getPage() ? $query->paginate($dto->getLimit()) : $query->get();
     }

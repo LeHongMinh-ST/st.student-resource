@@ -26,7 +26,6 @@ class ListStudentQuitRequest extends ListRequest
     public function rules(): array
     {
         return [
-            'semester_id' => 'required|integer|exists:semesters,id',
             ...parent::rules(),
         ];
     }
