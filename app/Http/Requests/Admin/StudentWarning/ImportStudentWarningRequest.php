@@ -14,7 +14,7 @@ class ImportStudentWarningRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.waring.import');
+        return Gate::allows('admin.warning.import');
     }
 
     /**

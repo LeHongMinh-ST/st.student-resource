@@ -9,7 +9,6 @@ use App\Models\ExcelImportFile;
 use App\Models\ExcelImportFileError;
 use App\Models\ExcelImportFileJob;
 use App\Models\Faculty;
-use App\Models\GraduationCeremonyStudent;
 use App\Models\StudentQuit;
 use App\Services\Student\StudentService;
 use App\Traits\HandlesCsvImportJob;
@@ -60,11 +59,12 @@ class CreateStudentQuitByFileCsvJob implements ShouldQueue
 
         // Get row header
         $rowHeader = Arr::first($worksheet);
+        $listRowMapKey = collect($worksheet)->map(fn ($item) => array_combine($rowHeader, $item))->toArray();
         $hasError = false;
 
         // Remove row header from worksheet
         array_shift($worksheet);
-        foreach ($worksheet as $row) {
+        foreach ($listRowMapKey as $row) {
             try {
                 $student = $studentService->getStudentByCode($row['code']);
 
@@ -86,10 +86,15 @@ class CreateStudentQuitByFileCsvJob implements ShouldQueue
                 $studentQuit->fill($studentQuitData);
                 $studentQuit->save();
 
+                $studentQuit->excelImportFileRecord()->create([
+                    'excel_import_files_id' => $this->excelImportFileId,
+                ]);
 
                 // Log successful process.
                 $excelImportFileModel->where('id', $this->excelImportFileId)
                     ->increment('process_record');
+
+
 
             } catch (Exception $exception) {
                 $hasError = true;

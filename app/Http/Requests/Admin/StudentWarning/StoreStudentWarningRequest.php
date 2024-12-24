@@ -14,7 +14,7 @@ class StoreStudentWarningRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.waring.create');
+        return Gate::allows('admin.warning.create');
     }
 
     /**

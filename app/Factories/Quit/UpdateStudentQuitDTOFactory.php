@@ -13,8 +13,10 @@ class UpdateStudentQuitDTOFactory
     {
         $command = new UpdateStudentQuitDTO();
         $command->setId($id);
+        $command->setCertification($request->get('certification'));
+        $command->setYear($request->get('year'));
         $command->setName($request->get('name'));
-        $command->setSemesterId($request->get('semester_id'));
+        $command->setCertificationDate($request->get('certification_date'));
         return $command;
     }
 }

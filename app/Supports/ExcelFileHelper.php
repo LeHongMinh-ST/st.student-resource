@@ -39,7 +39,7 @@ class ExcelFileHelper
         $pathStorage = storage_path('app/public/') . Constants::PATH_FILE_IMPORT_COURSE;
 
         // Check if the directory exists in the public disk, if not, create it
-        if (! Storage::disk('public')->exists(Constants::PATH_FILE_IMPORT_COURSE)) {
+        if (!Storage::disk('public')->exists(Constants::PATH_FILE_IMPORT_COURSE)) {
             Storage::disk('public')->makeDirectory(Constants::PATH_FILE_IMPORT_COURSE);
         }
 
@@ -60,7 +60,7 @@ class ExcelFileHelper
 
             foreach ($dataArray as $row) {
                 // Check for empty rows
-                if (! count(array_filter($row, fn ($value) => null !== $value))) {
+                if (!count(array_filter($row, fn ($value) => null !== $value))) {
                     // Ignore empty rows
                     continue;
                 }
@@ -147,6 +147,8 @@ class ExcelFileHelper
         $keys = [
             'STT' => 'index',
             'Mã SV' => 'code',
+            'Họ' => 'last_name',
+            'Tên' => 'first_name',
         ];
 
         return Arr::get($keys, trim($keyMap));

@@ -36,7 +36,7 @@ class CreateStudentWarningByFileCsvJob implements ShouldQueue
         private readonly int     $excelImportFileId,
         private readonly Faculty $faculty,
         private readonly int     $userId,
-        private readonly int     $quitId,
+        private readonly int     $warningId,
     ) {
 
     }
@@ -61,31 +61,25 @@ class CreateStudentWarningByFileCsvJob implements ShouldQueue
         // Get row header
         $rowHeader = Arr::first($worksheet);
         $hasError = false;
-
+        $listRowMapKey = collect($worksheet)->map(fn ($item) => array_combine($rowHeader, $item))->toArray();
         // Remove row header from worksheet
-        array_shift($worksheet);
-        foreach ($worksheet as $row) {
+        array_shift($listRowMapKey);
+
+        foreach ($listRowMapKey as $row) {
             try {
-                $student = $studentService->getStudentByCode($row['code']);
+                $student = $studentService->getStudentByCode((string)$row['code']);
 
                 // Prepare data for GraduationCeremonyStudent table.
                 $studentWarningData = [
-                    'quit_id' => $this->quitId,
+                    'warning_id' => $this->warningId,
                     'student_id' => $student->id,
                 ];
 
                 $studentWarning = StudentWarning::query()->updateOrCreate($studentWarningData);
-
-                foreach ($row as $index => $value) {
-                    if (null === $rowHeader[$index]) {
-                        continue;
-                    }
-                    $studentWarningData[$rowHeader[$index]] = $value;
-                }
-
-                $studentWarning->fill($studentWarningData);
-                $studentWarning->save();
-
+                // create data excel import file record
+                $studentWarning->excelImportFileRecord()->create([
+                    'excel_import_files_id' => $this->excelImportFileId,
+                ]);
 
                 // Log successful process.
                 $excelImportFileModel->where('id', $this->excelImportFileId)

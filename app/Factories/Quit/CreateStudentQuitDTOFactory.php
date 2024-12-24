@@ -12,8 +12,10 @@ class CreateStudentQuitDTOFactory
     public static function make(StoreStudentQuitRequest $request): CreateStudentQuitDTO
     {
         $command = new CreateStudentQuitDTO();
+        $command->setCertification($request->get('certification'));
+        $command->setYear($request->get('year'));
         $command->setName($request->get('name'));
-        $command->setSemesterId($request->get('semester_id'));
+        $command->setCertificationDate($request->get('certification_date'));
         return $command;
     }
 }

@@ -22,7 +22,10 @@ class StudentWarningResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'semester' => new SemesterResource($this->semester),
+            'semester_id' => $this->semester_id,
+            'school_year' => $this->school_year,
             'students' => StudentResource::collection($this->whenLoaded('students')),
+            'student_count' => $this->students_count ?? 0,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

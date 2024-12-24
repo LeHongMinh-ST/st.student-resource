@@ -14,7 +14,7 @@ class DeleteStudentWarningRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.waring.delete');
+        return Gate::allows('admin.warning.delete');
     }
 
     /**

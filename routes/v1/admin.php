@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\StudentWarningController;
 use App\Http\Controllers\Admin\SurveyPeriodController;
 use App\Http\Controllers\Admin\TrainingIndustryController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\SemesterController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function (): void {
@@ -43,6 +44,7 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::get('/', [GeneralClassController::class, 'index']);
         Route::post('/', [GeneralClassController::class, 'store']);
         Route::get('/{generalClass}', [GeneralClassController::class, 'show']);
+        Route::get('/{generalClass}/student-statistical', [GeneralClassController::class, 'getStatisticalClass']);
         Route::patch('/{generalClass}', [GeneralClassController::class, 'update']);
         Route::delete('/{generalClass}', [GeneralClassController::class, 'destroy']);
     });
@@ -138,9 +140,10 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::post('/import-student', [StudentWarningController::class, 'importStudent']);
         Route::get('/import-student/{excelImportFileError}/download-error', [StudentWarningController::class, 'importStudent']);
         Route::get('/import-student/download-template', [StudentWarningController::class, 'downloadTemplateImport']);
-        Route::get('/{studentWarning}', [StudentWarningController::class, 'show']);
-        Route::patch('/{studentWarning}', [StudentWarningController::class, 'update']);
-        Route::delete('/{studentWarning}', [StudentWarningController::class, 'destroy']);
+        Route::get('/{warning}', [StudentWarningController::class, 'show']);
+        Route::get('/{warning}/students', [StudentWarningController::class, 'getStudents']);
+        Route::patch('/{warning}', [StudentWarningController::class, 'update']);
+        Route::delete('/{warning}', [StudentWarningController::class, 'destroy']);
     });
 
     Route::prefix('quit')->group(function (): void {
@@ -149,8 +152,13 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::post('/import-student', [StudentQuitController::class, 'importStudent']);
         Route::post('/import-student/{excelImportFileError}/download', [StudentQuitController::class, 'importStudent']);
         Route::get('/import-student/download-template', [StudentQuitController::class, 'downloadTemplateImport']);
-        Route::get('/{studentQuit}', [StudentQuitController::class, 'show']);
-        Route::patch('/{studentQuit}', [StudentQuitController::class, 'update']);
+        Route::get('/{quit}/students', [StudentQuitController::class, 'getStudents']);
+        Route::get('/{quit}', [StudentQuitController::class, 'show']);
+        Route::patch('/{quit}', [StudentQuitController::class, 'update']);
         Route::delete('/{studentQuit}', [StudentQuitController::class, 'destroy']);
     });
+
+
 });
+
+Route::get('semesters', [SemesterController::class, 'index']);

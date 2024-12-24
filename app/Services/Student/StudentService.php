@@ -193,7 +193,6 @@ class StudentService
                 $student->families()->create($family->toArray());
             }
 
-
             // Load additional information into the student object
             DB::commit();
 
@@ -342,6 +341,76 @@ class StudentService
             ->distinct('students.id')
             ->count();
 
+    }
+
+    public function getTotalStudentGraduatedByClassId($classId): int
+    {
+
+        $studentsCount = Student::query()
+            ->whereHas('generalClass', fn ($query) => $query->where('classes.id', $classId))
+            ->where('status', StudentStatus::Graduated)
+            ->count();
+
+        return $studentsCount;
+    }
+
+    public function getTotalStudentToDropOutByClassId($classId): int
+    {
+        $studentsCount = Student::query()
+            ->where(function ($query) use ($classId): void {
+                $query->whereHas('generalClass', fn ($q) => $q->where('classes.id', $classId))
+                    ->where(function ($q): void {
+                        $q->where('status', StudentStatus::ToDropOut)
+                            ->orWhere('status', StudentStatus::Expelled)
+                            ->orWhere('status', StudentStatus::TransferStudy);
+                    });
+            })
+            ->count();
+
+        return $studentsCount;
+    }
+
+    public function getTotalStudentStudyByClassId($classId): int
+    {
+
+        $studentsCount = Student::query()
+            ->whereHas('generalClass', fn ($query) => $query->where('classes.id', $classId))
+            ->where('status', StudentStatus::CurrentlyStudying)
+            ->count();
+
+        return $studentsCount;
+    }
+
+    public function getTotalStudentTransferStudyByClassId($classId): int
+    {
+
+        $studentsCount = Student::query()
+            ->whereHas('generalClass', fn ($query) => $query->where('classes.id', $classId))
+            ->where('status', StudentStatus::TransferStudy)
+            ->count();
+
+        return $studentsCount;
+    }
+
+    public function getTotalStudentDeferredByClassId($classId): int
+    {
+
+        $studentsCount = Student::query()
+            ->whereHas('generalClass', fn ($query) => $query->where('classes.id', $classId))
+            ->where('status', StudentStatus::Deferred)
+            ->count();
+
+        return $studentsCount;
+    }
+
+    public function getTotalStudentQuitByClassId($classId): int
+    {
+        $studentsCount = Student::query()
+            ->whereHas('generalClass', fn ($query) => $query->where('classes.id', $classId))
+            ->where('status', StudentStatus::Expelled)
+            ->count();
+
+        return $studentsCount;
     }
 
     public function changeStatus($studentId, $status): bool|int

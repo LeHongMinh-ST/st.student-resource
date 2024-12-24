@@ -15,17 +15,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StudentQuit\DeleteStudentQuitRequest;
 use App\Http\Requests\Admin\StudentQuit\ImportStudentQuitRequest;
 use App\Http\Requests\Admin\StudentQuit\ListStudentQuitRequest;
+use App\Http\Requests\Admin\StudentQuit\ShowListStudentQuitRequest;
 use App\Http\Requests\Admin\StudentQuit\ShowStudentQuitRequest;
 use App\Http\Requests\Admin\StudentQuit\StoreStudentQuitRequest;
 use App\Http\Requests\Admin\StudentQuit\UpdateStudentQuitRequest;
+use App\Http\Resources\Student\StudentCollection;
 use App\Http\Resources\StudentQuit\StudentQuitCollection;
 use App\Http\Resources\StudentQuit\StudentQuitResource;
 use App\Models\Quit;
+use App\Models\Student;
 use App\Models\StudentQuit;
 use App\Services\Student\StudentQuitService;
 use App\Supports\Constants;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Knuckles\Scribe\Attributes\ResponseFromApiResource;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -179,5 +183,29 @@ class StudentQuitController extends Controller
         $file = public_path() . '/template/template_student_quit.xlsx';
 
         return response()->download($file, 'template-student-quit.xlsx');
+    }
+
+    /**
+     * Show student quit session
+     *
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @param Quit $quit
+     * @param ShowListStudentQuitRequest $request
+     * @return StudentCollection
+     */
+    #[ResponseFromApiResource(StudentCollection::class, Student::class, Response::HTTP_OK)]
+    public function getStudents(Quit $quit, ShowListStudentQuitRequest $request): StudentCollection
+    {
+        $students = $quit->students()
+            ->when($request->has('q'), function ($q) use ($request) {
+                return $q->where(DB::raw("CONCAT(last_name, ' ', first_name)"), 'like', '%' . $request->get('q') . '%')
+                    ->orWhere('email', 'like', '%' . $request->get('q') . '%')
+                    ->orWhere('code', 'like', '%' . $request->get('q') . '%');
+            })
+            ->with(['info', 'currentClass', 'families'])
+            ->paginate(Constants::PAGE_LIMIT);
+
+        return new StudentCollection($students);
     }
 }
