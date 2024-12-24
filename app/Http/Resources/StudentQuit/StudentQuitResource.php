@@ -25,6 +25,7 @@ class StudentQuitResource extends JsonResource
             'certification_date' => $this->certification_date,
             'students' => StudentResource::collection($this->whenLoaded('students')) ?? [],
             'student_count' => $this->students_count ?? 0,
+            'type' => $this->type,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

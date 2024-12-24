@@ -155,7 +155,7 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::get('/{quit}/students', [StudentQuitController::class, 'getStudents']);
         Route::get('/{quit}', [StudentQuitController::class, 'show']);
         Route::patch('/{quit}', [StudentQuitController::class, 'update']);
-        Route::delete('/{studentQuit}', [StudentQuitController::class, 'destroy']);
+        Route::delete('/{quit}', [StudentQuitController::class, 'destroy']);
     });
 
 

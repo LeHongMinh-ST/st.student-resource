@@ -13,9 +13,10 @@ class CreateStudentQuitDTOFactory
     {
         $command = new CreateStudentQuitDTO();
         $command->setCertification($request->get('certification'));
-        $command->setYear($request->get('year'));
+        $command->setYear((int)$request->get('year'));
         $command->setName($request->get('name'));
         $command->setCertificationDate($request->get('certification_date'));
+        $command->setType($request->get('type'));
         return $command;
     }
 }

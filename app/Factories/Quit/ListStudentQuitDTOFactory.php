@@ -14,7 +14,6 @@ class ListStudentQuitDTOFactory
     {
         $command = new ListStudentQuitDTO();
         $command = MakeDataHelper::makeListData($request, $command);
-        $command->setSemesterId($request->get('semester_id'));
         return $command;
     }
 }

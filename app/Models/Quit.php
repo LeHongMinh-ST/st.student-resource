@@ -41,7 +41,7 @@ class Quit extends Model
 
     public function students(): BelongsToMany
     {
-        return $this->belongsToMany(Student::class, 'student_warnings');
+        return $this->belongsToMany(Student::class, 'student_quits');
     }
 
     // ---------------------- ACCESSORS AND MUTATORS --------------------//
