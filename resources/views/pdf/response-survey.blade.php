@@ -31,19 +31,29 @@
             /*margin: 20px 0;*/
         }
 
-        h2, h1 {
+        h1 {
+            font-size: 14px;
+            margin: 0;
+        }
+
+        h2 {
             font-size: 13px;
             margin: 0;
         }
 
-        h6, h5, h4, h3 {
+         h3 {
             font-size: 12px;
+            margin: 0;
+        }
+
+        h6, h5, h4 {
+            font-size: 10.5px;
             margin: 0;
         }
 
         p {
             font-size: 10px;,
-        margin: 0;
+            margin: 0;
             padding: 0;
             margin-bottom: 0 !important;
         }
@@ -94,25 +104,26 @@
 <main class="container-survey">
     <div class="container content">
         <div class="header">
-{{--            <div class="row">--}}
-{{--                <div class="col-6">--}}
-{{--                    <img src="{{ public_path('assets/images/logo-vnua.png') }}" alt="logo" style="width: 100px; object-fit: cover">--}}
-{{--                    <img src="{{ public_path('images/logo-vnua.png') }}" alt="logo" style="width: 100px; object-fit: cover">--}}
-{{--                </div>--}}
-{{--                <div class="col-6">--}}
-{{--                    <p class="text-end fw-light pb-4">Ngày {{\Carbon\Carbon::now()->format('d/m/Y')}}</p>--}}
-{{--                    <h2 class="text-center">BỘ NÔNG NGHIỆP</h2>--}}
-{{--                    <h2 class="text-center">VÀ PHÁT TRIỂN NÔNG THÔN</h2>--}}
-{{--                    <h2 class="text-center">HỌC VIỆN NÔNG NGHIỆP VIỆT NAM</h2>--}}
-{{--                    <h2 class="text-center">Thị trấn Trâu Quỳ, huyện Gia Lâm, thành phố Hà Nội--}}
-{{--                        Điện thoại: 024.62617586 - Fax: 024.62617586--}}
-{{--                    </h2>--}}
-{{--                </div>--}}
-{{--            </div>--}}
+            <div class="row">
+                    <img src="data:image/png;base64,{{base64_encode(file_get_contents(asset('assets/images/logo-vnua.png'))) }}" alt="logo" style="width: 21%; object-fit: cover;
+                        padding-left: 20px;
+                    "/>
+                <div class="col-6" style="float: right; width: 50%;">
+                    <p class="text-end fw-light pb-4" style="text-align: right; opacity: 0.7; padding-bottom: 10px">Ngày {{\Carbon\Carbon::now()->format('d/m/Y')}}</p>
+                    <div style="text-align: center;">
+                        <h3 class="text-center">BỘ NÔNG NGHIỆP</h3>
+                        <h3 class="text-center">VÀ PHÁT TRIỂN NÔNG THÔN</h3>
+                        <h3 class="text-center" style="padding-bottom: 0;">HỌC VIỆN NÔNG NGHIỆP VIỆT NAM</h3>
+                        <p class="text-center">Thị trấn Trâu Quỳ, huyện Gia Lâm, thành phố Hà Nội
+                            Điện thoại: 024.62617586 - Fax: 024.62617586
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="container">
             <div class="row">
-                <h2 class="text-center mb-2" style="text-align: center !important;">{{$surveyPeriod->title}}</h2>
+                <h1 class="text-center mb-2" style="text-align: center !important;">{{$surveyPeriod->title}}</h1>
                 <p class="text-center mb-2">{{$surveyPeriod->description}}</p>
                 <p class="text-start mb-2">
                     Thời gian khảo sát từ ngày <span class="fw-bold">{{
@@ -181,6 +192,7 @@
                     <label>{{$surveyResponse->trainingIndustry?->name ?? '   '}}</label>
                 </div>
             </div>
+            <div class="page-break"></div>
             <div class="row">
                 <p class="fw-bold text-muted {{($surveyResponse->phone_number) ?? 'mb-2'}}">8. Điện thoại</p>
                 <div class="custom-input">
@@ -193,7 +205,6 @@
                     <label>{{$surveyResponse->email ?? '   '}}</label>
                 </div>
             </div>
-            <div class="page-break"></div>
             <div class="row">
                 <p class="fw-bold text-muted">10. Anh/chị vui lòng cho biết tình trạng việc làm hiện tại của Anh/Chị</p>
                 <div>
@@ -259,6 +270,7 @@
                     @endforeach
                 </div>
             </div>
+            <div class="page-break"></div>
             <div class="row">
                 <p class="fw-bold text-muted">16. Sau khi tốt nghiệp, Anh/Chị có việc làm từ khi nào?</p>
                 <div>
@@ -275,7 +287,6 @@
                     @endforeach
                 </div>
             </div>
-            <div class="page-break"></div>
             <div class="row">
                 <p class="fw-bold text-muted">17. Công việc Anh/Chị đang đảm nhận có phù hợp với ngành được đào tạo
                     không?</p>
@@ -349,6 +360,7 @@
                     @endforeach
                 </div>
             </div>
+            <div class="page-break"></div>
             <div class="row">
                 <p class="fw-bold text-muted">22. Anh/Chị tìm được việc làm thông qua những hình thức nào?</p>
                 <div>
@@ -380,7 +392,6 @@
                     @endforeach
                 </div>
             </div>
-            <div class="page-break"></div>
             <div class="row">
                 <p class="fw-bold text-muted">23. Anh/chị được tuyển dụng theo hình thức nào?</p>
                 <div>
@@ -442,6 +453,7 @@
                     @endforeach
                 </div>
             </div>
+            <div class="page-break"></div>
             <div class="row">
                 <p class="fw-bold text-muted">25. Sau khi được tuyển dụng, Anh/Chị có phải tham gia khóa học nâng cao
                     nào dưới đây

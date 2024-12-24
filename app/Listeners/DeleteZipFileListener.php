@@ -23,8 +23,8 @@ class DeleteZipFileListener implements ShouldQueue
     public function handle(DownloadSurveyResponseEvent $event): void
     {
         $zipExportFile = $event->zipExportFile;
-        Storage::delete('public/zip/' . $zipExportFile->name);
-        Storage::deleteDirectory('public/pdf/' . strtok($zipExportFile->name, '.') . '/');
+        $listFilePdfNames = $zipExportFile->pdfExportFiles->pluck('name')->map(fn ($name) => 'public/pdf/' . $name)->toArray();
+        Storage::delete($listFilePdfNames);
         $zipExportFile->pdfExportFiles()->delete();
         $zipExportFile->delete();
     }

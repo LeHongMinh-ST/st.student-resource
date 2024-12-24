@@ -94,12 +94,12 @@
 <main class="container-survey">
     <div class="container content">
         <div class="header">
-            <div class="row">
-                <div class="col-6">
-                    <img src="{{ asset('assets/images/logo-vnua.png') }}" alt="logo" style="width: 100px; object-fit: cover">
-                </div>
-                <div class="col-6">
-                    <p class="text-end fw-light pb-4">Ngày {{\Carbon\Carbon::now()->format('d/m/Y')}}</p>
+            <div class="col-6" style="float: left; width: 50%; text-align: center;">
+                <img src="data:image/png;base64,{{base64_encode(file_get_contents(asset('assets/images/logo-vnua.png'))) }}" alt="logo" style="width: 30%; object-fit: cover; filter: blur(0.2px);"/>
+            </div>
+            <div class="col-6" style="float: right; width: 50%;">
+                <p class="text-end fw-light pb-4" style="text-align: right; opacity: 0.6">Ngày {{\Carbon\Carbon::now()->format('d/m/Y')}}</p>
+                <div style="text-align: center;">
                     <h2 class="text-center">BỘ NÔNG NGHIỆP</h2>
                     <h2 class="text-center">VÀ PHÁT TRIỂN NÔNG THÔN</h2>
                     <h2 class="text-center">HỌC VIỆN NÔNG NGHIỆP VIỆT NAM</h2>
@@ -109,6 +109,24 @@
                 </div>
             </div>
         </div>
+{{--        <div class="header">--}}
+{{--            <div class="" style="display: flex; justify-content: space-between">--}}
+{{--                <div class="col-6" style="text-align: center">--}}
+{{--                    <img src="data:image/png;base64,{{base64_encode(file_get_contents(asset('assets/images/logo-vnua.png'))) }}" alt="logo" style="width: 100px; object-fit: cover"/>--}}
+{{--                </div>--}}
+{{--                <div class="col-6">--}}
+{{--                    <p class="" style="text-align: right; opacity: 0.5">Ngày {{\Carbon\Carbon::now()->format('d/m/Y')}}</p>--}}
+{{--                    <div style="display: flex; flex-direction: column; align-items: center;">--}}
+{{--                        <h2 class="text-center">BỘ NÔNG NGHIỆP</h2>--}}
+{{--                        <h2 class="text-center">VÀ PHÁT TRIỂN NÔNG THÔN</h2>--}}
+{{--                        <h2 class="text-center">HỌC VIỆN NÔNG NGHIỆP VIỆT NAM</h2>--}}
+{{--                        <h2 class="text-center">Thị trấn Trâu Quỳ, huyện Gia Lâm, thành phố Hà Nội--}}
+{{--                            Điện thoại: 024.62617586 - Fax: 024.62617586--}}
+{{--                        </h2>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
     </div>
 </main>
 </body>

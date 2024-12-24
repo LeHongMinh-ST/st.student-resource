@@ -18,7 +18,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Storage;
 
 class CreateFilePDFAndSaveJob implements ShouldQueue
 {
@@ -61,9 +60,7 @@ class CreateFilePDFAndSaveJob implements ShouldQueue
     {
         // Create PDF file
         $pdfResponse = Pdf::loadView('pdf.response-survey', ['surveyResponse' => $surveyResponse, 'surveyPeriod' => $surveyPeriod]);
-        $fileName = $surveyResponse->code_student . '.pdf';
-        //        $pdfResponse->getDomPDF()->set_option("isPhpEnabled", true);
-        //        $pdfResponse->getDomPDF()->set_option("isHtml5ParserEnabled", true);
+        $fileName = $surveyResponse->code_student . '_' . $this->zipExportFile->id . '.pdf';
 
         $pdfResponse->setOptions([
             'defaultFont' => 'DejaVu Sans', // Sử dụng font mặc định của DomPDF
@@ -72,11 +69,7 @@ class CreateFilePDFAndSaveJob implements ShouldQueue
         ]);
 
         // Tạo thư mục chưa danh sách file PDF
-        $directoryPath = 'public/pdf/' . strtok($this->zipExportFile->name, '.');
-        if (! Storage::exists($directoryPath)) {
-            Storage::makeDirectory($directoryPath);
-        }
-        $pdfResponse->save(storage_path('app/' . $directoryPath . '/' . $fileName));
+        $pdfResponse->save(storage_path('app/public/pdf/' . $fileName));
 
         // create pdf file record
         PdfExportFile::create([

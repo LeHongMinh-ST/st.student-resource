@@ -172,7 +172,6 @@ return [
         App\Providers\HorizonServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
-        ZanySoft\Zip\ZipServiceProvider::class,
     ])->toArray(),
 
     /*
