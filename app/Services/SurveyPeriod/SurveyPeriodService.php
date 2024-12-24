@@ -21,10 +21,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use ZanySoft\Zip\Facades\Zip;
+use ZipStream\ZipStream;
 
 class SurveyPeriodService
 {
@@ -150,7 +148,7 @@ class SurveyPeriodService
                 SurveyPeriodStudent::where('student_id', $student->id)
                     ->where('survey_period_id', $surveyPeriod->id)
                     ->update([
-                        'code_verify' => $codeVerify,
+                        'code_verify'      => $codeVerify,
                         'number_mail_send' => DB::raw('number_mail_send + 1'),
                     ]);
 
@@ -179,14 +177,16 @@ class SurveyPeriodService
             // Create file Zip
             $zipExportFile = ZipExportFile::create([
                 'survey_period_id' => $surveyPeriod->id,
-                'name' => 'survey_response_' . Carbon::now()->microsecond . '.zip',
-                'faculty_id' => $surveyPeriod->faculty_id,
-                'file_total' => $listSurveyResponse->count(),
-                'process_total' => 0,
+                'name'             => 'survey_response_' . Carbon::now()->microsecond . '.zip',
+                'faculty_id'       => $surveyPeriod->faculty_id,
+                'file_total'       => $listSurveyResponse->count(),
+                'process_total'    => 0,
             ]);
 
-            $listSurveyResponse->chunk(10, function ($listSurveyResponseChunk) use ($surveyPeriod, $zipExportFile): void {
-                dispatch(new CreateFilePDFAndSaveJob($surveyPeriod, $zipExportFile, auth()->user()->id, $listSurveyResponseChunk))->onQueue('import');
+            $listSurveyResponse->chunk(10, function ($listSurveyResponseChunk) use ($surveyPeriod, $zipExportFile) {
+                dispatch(new CreateFilePDFAndSaveJob($surveyPeriod, $zipExportFile, auth()->user()->id, $listSurveyResponseChunk))
+                    ->onQueue('import');
+                return false;
             });
 
             return $zipExportFile;
@@ -201,38 +201,23 @@ class SurveyPeriodService
     public function downloadZipSurveyResponse($zipFileId, array $data): StreamedResponse
     {
         $zipFile = ZipExportFile::where('id', $zipFileId)->first();
+        $response = new StreamedResponse(function () use ($zipFile): void {
+            $listFilePdfNames = $zipFile->pdfExportFiles->pluck('name')->toArray();
 
-        // Danh sách các file cần nén
-        $directoryPathPDF = 'public/pdf/' . strtok($zipFile->name, '.');
-        if (! Storage::exists($directoryPathPDF)) {
-            Storage::makeDirectory($directoryPathPDF);
-        }
-
-        // Tạo file ZIP
-        $zipFilePath = storage_path('app/public/zip/' . $zipFile->name);
-
-        // Đường dẫn thư mục
-        $directoryPath = storage_path('app/' . $directoryPathPDF);
-
-        // Lấy tất cả các file trong thư mục và thư mục con
-        $files = File::allFiles($directoryPath);
-        // Thêm từng file vào ZIP với tên mới
-        $zip = Zip::create(storage_path('app/public/zip/' . $zipFile->name));
-        foreach ($files as $file) {
-            $zip->add(storage_path('app/' . $directoryPathPDF . '/' . $file->getFilename()));
-        }
-        $zip->close();
-
-        $response = new StreamedResponse(function () use ($zipFilePath): void {
-            $stream = fopen($zipFilePath, 'rb');
-            fpassthru($stream);
-            fclose($stream);
+            // Tạo một đối tượng ZipStream
+            $zip = new ZipStream(outputName: 'Ket_quan_khao_sat_viec_lam_sv_tot_nghiep_' . $zipFile->surveyPeriod->year . '.zip');
+            // Lấy tất cả các file trong thư mục và thư mục con
+            foreach ($listFilePdfNames as $fileName) {
+                $zip->addFileFromPath(
+                    fileName: 'SV' . strtok($fileName, '_') . '.pdf',
+                    path: storage_path('app/public/pdf/' . $fileName)
+                );
+            }
         });
 
         $response->headers->set('Content-Type', 'application/zip');
         $response->headers->set('Content-Disposition', 'attachment; filename="' . $zipFile->name . '"');
         $response->headers->set('Cache-Control', 'max-age=0');
-
         event(new DownloadSurveyResponseEvent(
             $zipFile
         ));
