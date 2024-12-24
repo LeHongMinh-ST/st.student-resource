@@ -52,6 +52,9 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
     Route::Resource('survey-periods', SurveyPeriodController::class)->except('update');
     Route::patch('survey-periods/{surveyPeriod}', [SurveyPeriodController::class, 'update']);
     Route::post('survey-periods/{surveyPeriod}/send-mail', [SurveyPeriodController::class, 'sendMails']);
+    Route::post('survey-periods/{surveyPeriod}/create-response-survey-zip-file', [SurveyPeriodController::class, 'exportResponseSurveyToPDF']);
+    Route::get('survey-periods/{zipFileId}/download-zip-file', [SurveyPeriodController::class, 'downloadZipSurveyResponse']);
+    Route::get('survey-periods/zip-file/{zipFileId}', [SurveyPeriodController::class, 'getFileZipSurveyResponse']);
     Route::Resource('employment-survey-response', EmploymentSurveyResponseController::class)->only(['index', 'show']);
 
     Route::prefix('users')->group(function (): void {

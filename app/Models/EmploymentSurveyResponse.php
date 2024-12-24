@@ -66,6 +66,9 @@ class EmploymentSurveyResponse extends Model
         'average_income' => AverageIncome::class,
         'gender' => Gender::class,
         'dob' => 'date',
+        'recruit_partner_date' => 'date',
+        'identification_issuance_date' => 'date',
+
     ];
 
     public function getJobSearchMethodAttribute($value)

@@ -16,4 +16,15 @@ enum JobSearchMethod: int
     case Create = 4;
     // Hinh thức khác
     case Other = 0;
+
+    public function getName(): string
+    {
+        return match ($this) {
+            self::Academy => 'Do Học viện/Khoa giới thiệu',
+            self::Self => 'Tự tìm việc làm',
+            self::Friend_And_Relative => 'Bạn bè, người quen giới thiệu',
+            self::Create => 'Tự tạo việc làm',
+            self::Other => 'Hinh thức khác',
+        };
+    }
 }

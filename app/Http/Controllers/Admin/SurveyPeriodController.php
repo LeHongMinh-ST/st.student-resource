@@ -8,12 +8,14 @@ use App\Factories\SurveyPeriod\CreateSurveyPeriodDTOFactory;
 use App\Factories\SurveyPeriod\ListSurveyPeriodDTOFactory;
 use App\Factories\SurveyPeriod\UpdateSurveyPeriodDTOFactory;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\SurveyPeriod\ExportResponseSurveyPeriodRequest;
 use App\Http\Requests\Admin\SurveyPeriod\ListSurveyPeriodRequest;
 use App\Http\Requests\Admin\SurveyPeriod\SendMailSurveyPeriodRequest;
 use App\Http\Requests\Admin\SurveyPeriod\StoreSurveyPeriodRequest;
 use App\Http\Requests\Admin\SurveyPeriod\UpdateSurveyPeriodRequest;
 use App\Http\Resources\SurveyPeriod\SurveyPeriodCollection;
 use App\Http\Resources\SurveyPeriod\SurveyPeriodResource;
+use App\Http\Resources\ZipExportFile\ZipExportFileResource;
 use App\Models\SurveyPeriod;
 use App\Services\SurveyPeriod\SurveyPeriodService;
 use App\Supports\Constants;
@@ -23,6 +25,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Knuckles\Scribe\Attributes\ResponseFromApiResource;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * @group Admin API
@@ -124,6 +127,65 @@ class SurveyPeriodController extends Controller
         $this->surveyPeriodService->sendMail($surveyPeriod, $request->only('student_ids', 'is_all_mail_student'));
 
         return $this->noContent();
+    }
+
+    /**
+     * export Response Survey to PDF
+     *
+     * This endpoint allows generalClasses to delete a generalClass.
+     *
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @param  SurveyPeriod  $surveyPeriod  The generalClass entity to be deleted.
+     * @return ZipExportFileResource Returns a response with no content upon successful deletion.
+     *
+     * @throws AuthorizationException|Exception
+     *
+     * @response 204 Indicates that the response will be a 204 No Content status.
+     */
+    public function exportResponseSurveyToPDF(SurveyPeriod $surveyPeriod, ExportResponseSurveyPeriodRequest $request): ZipExportFileResource
+    {
+        $zipFile = $this->surveyPeriodService->exportResponseSurveyToPDF($surveyPeriod, $request->only('student_ids', 'is_all_student'));
+        $zipFile->load('surveyPeriod');
+
+        return new ZipExportFileResource($zipFile);
+    }
+
+    /**
+     * downloadZipSurveyResponse
+     *
+     * This endpoint allows generalClasses to delete a generalClass.
+     *
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @return StreamedResponse Returns a response with no content upon successful deletion.
+     *
+     * @throws Exception
+     *
+     * @response 204 Indicates that the response will be a 204 No Content status.
+     */
+    public function downloadZipSurveyResponse($zipFileId, Request $request): StreamedResponse
+    {
+        return $this->surveyPeriodService->downloadZipSurveyResponse($zipFileId, $request->only('student_ids', 'is_all_student'));
+    }
+
+    /**
+     * get Response Survey to PDF
+     *
+     * This endpoint allows generalClasses to delete a generalClass.
+     *
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @return ZipExportFileResource Returns a response with no content upon successful deletion.
+     *
+     * @response 204 Indicates that the response will be a 204 No Content status.
+     */
+    public function getFileZipSurveyResponse($zipFileId, Request $request): ZipExportFileResource
+    {
+        $zipFile = $this->surveyPeriodService->getFileZipSurveyResponse($zipFileId);
+        $zipFile->load('surveyPeriod');
+
+        return new ZipExportFileResource($zipFile);
     }
 
     /**

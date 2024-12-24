@@ -20,4 +20,17 @@ enum MustAttendedCourses: int
     case ContinueStudyingToHigherDegrees = 6;
     // Các khóa học khác
     case OtherCourses = 0;
+
+    public function getName(): string
+    {
+        return match ($this) {
+            self::ImproveProfessionalKnowledge => 'Nâng cao kiến thức chuyên môn',
+            self::ImproveProfessionalSkills => 'Nâng cao kỹ năng chuyên môn nghiệp vụ',
+            self::ImproveInformationTechnologySkills => 'Nâng cao kỹ năng về công nghệ thông tin',
+            self::ImproveForeignLanguageSkills => 'Nâng cao kỹ năng ngoại ngữ',
+            self::DevelopManagementSkills => 'Phát triển kỹ năng quản lý',
+            self::ContinueStudyingToHigherDegrees => 'Tiếp tục học lên cao',
+            self::OtherCourses => 'Các khóa học khác',
+        };
+    }
 }

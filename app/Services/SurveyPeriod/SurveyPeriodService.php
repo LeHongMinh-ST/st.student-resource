@@ -8,14 +8,23 @@ use App\DTO\SurveyPeriod\CreateSurveyPeriodDTO;
 use App\DTO\SurveyPeriod\ListSurveyPeriodDTO;
 use App\DTO\SurveyPeriod\UpdateSurveyPeriodDTO;
 use App\Enums\Status;
+use App\Events\DownloadSurveyResponseEvent;
+use App\Jobs\CreateFilePDFAndSaveJob;
 use App\Jobs\SendMailForm;
+use App\Models\EmploymentSurveyResponse;
 use App\Models\SurveyPeriod;
 use App\Models\SurveyPeriodStudent;
+use App\Models\ZipExportFile;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use ZanySoft\Zip\Facades\Zip;
 
 class SurveyPeriodService
 {
@@ -156,6 +165,85 @@ class SurveyPeriodService
         } catch (Exception $exception) {
             throw new Exception($exception->getMessage());
         }
+    }
+
+    public function exportResponseSurveyToPDF(SurveyPeriod $surveyPeriod, array $data): ZipExportFile
+    {
+        try {
+            if (Arr::get($data, 'is_all_student')) {
+                $listSurveyResponse = $surveyPeriod->employmentSurveyResponses()->limit(3);
+            } else {
+                $listSurveyResponse = EmploymentSurveyResponse::whereIn('id', $data['student_ids']);
+            }
+
+            // Create file Zip
+            $zipExportFile = ZipExportFile::create([
+                'survey_period_id' => $surveyPeriod->id,
+                'name' => 'survey_response_' . Carbon::now()->microsecond . '.zip',
+                'faculty_id' => $surveyPeriod->faculty_id,
+                'file_total' => $listSurveyResponse->count(),
+                'process_total' => 0,
+            ]);
+
+            $listSurveyResponse->chunk(10, function ($listSurveyResponseChunk) use ($surveyPeriod, $zipExportFile): void {
+                dispatch(new CreateFilePDFAndSaveJob($surveyPeriod, $zipExportFile, auth()->user()->id, $listSurveyResponseChunk))->onQueue('import');
+            });
+
+            return $zipExportFile;
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function downloadZipSurveyResponse($zipFileId, array $data): StreamedResponse
+    {
+        $zipFile = ZipExportFile::where('id', $zipFileId)->first();
+
+        // Danh sách các file cần nén
+        $directoryPathPDF = 'public/pdf/' . strtok($zipFile->name, '.');
+        if (! Storage::exists($directoryPathPDF)) {
+            Storage::makeDirectory($directoryPathPDF);
+        }
+
+        // Tạo file ZIP
+        $zipFilePath = storage_path('app/public/zip/' . $zipFile->name);
+
+        // Đường dẫn thư mục
+        $directoryPath = storage_path('app/' . $directoryPathPDF);
+
+        // Lấy tất cả các file trong thư mục và thư mục con
+        $files = File::allFiles($directoryPath);
+        // Thêm từng file vào ZIP với tên mới
+        $zip = Zip::create(storage_path('app/public/zip/' . $zipFile->name));
+        foreach ($files as $file) {
+            $zip->add(storage_path('app/' . $directoryPathPDF . '/' . $file->getFilename()));
+        }
+        $zip->close();
+
+        $response = new StreamedResponse(function () use ($zipFilePath): void {
+            $stream = fopen($zipFilePath, 'rb');
+            fpassthru($stream);
+            fclose($stream);
+        });
+
+        $response->headers->set('Content-Type', 'application/zip');
+        $response->headers->set('Content-Disposition', 'attachment; filename="' . $zipFile->name . '"');
+        $response->headers->set('Cache-Control', 'max-age=0');
+
+        event(new DownloadSurveyResponseEvent(
+            $zipFile
+        ));
+
+        // Trả về file ZIP để người dùng tải xuống
+        return $response;
+    }
+
+    public function getFileZipSurveyResponse($zipFileId): ZipExportFile
+    {
+        return ZipExportFile::where('id', $zipFileId)->first();
     }
 
     private function generateCodeVerifySendMail(int $studentId, int $surveyPeriodId): string

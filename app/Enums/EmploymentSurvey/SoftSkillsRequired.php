@@ -25,4 +25,19 @@ enum SoftSkillsRequired: int
     // Kỹ năng khác
     case OtherSkills = 0;
 
+    public function getName()
+    {
+        return match ($this) {
+            self::CommunicationSkills => 'Kỹ năng giao tiếp',
+            self::LeadershipSkills => 'Kỹ năng lãnh đạo',
+            self::PresentationSkills => 'Kỹ năng thuyết trình',
+            self::EnglishSkills => 'Kỹ năng tiếng Anh',
+            self::TeamworkSkills => 'Kỹ năng làm việc nhóm',
+            self::ComputerSkills => 'Kỹ năng tin học',
+            self::ReportWritingSkills => 'Kỹ năng viết báo cáo tài liệu',
+            self::InternationalIntegrationSkills => 'Kỹ năng hội nhập quốc tế',
+            self::OtherSkills => 'Kỹ năng khác',
+        };
+    }
+
 }
