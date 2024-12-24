@@ -23,11 +23,11 @@ class ImportStudentGraduateEvent implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return ['import-student-graduate-channel.' . $this->userId];
+        return ['import-student-graduation-channel.' . $this->userId];
     }
 
     public function broadcastAs()
     {
-        return 'import-student-graduate-event';
+        return 'import-student-graduation-event';
     }
 }

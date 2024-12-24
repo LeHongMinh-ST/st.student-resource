@@ -18,4 +18,16 @@ enum SolutionsGetJob: int
     case EnhancePracticeActivities = 5;
     // Các giải pháp khác
     case OtherSolutions = 0;
+
+    public function getName(): string
+    {
+        return match ($this) {
+            self::AcademyOrganizesJobSharing => 'Học viện tổ chức các buổi trao đổi, chia sẻ kinh nghiệm tìm kiếm việc làm giữa cựu sinh viên với sinh viên',
+            self::AcademyOrganizesJobExchange => 'Học viện tổ chức các buổi trao đổi giữa đơn vị sử dụng lao động với sinh viên',
+            self::EmployersParticipateTraining => 'Đơn vị sử dụng lao động tham gia vào quá trình đào tạo',
+            self::TrainingProgramsUpdated => 'Chương trình đào tạo được điều chỉnh và cập nhật theo nhu cầu của thị trường lao động',
+            self::EnhancePracticeActivities => 'Tăng cường các hoạt động thực hành và chuyên môn tại cơ sở',
+            self::OtherSolutions => 'Các giải pháp khác',
+        };
+    }
 }

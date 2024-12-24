@@ -10,4 +10,12 @@ enum ProfessionalQualificationField: int
     case NotMatched = 1;
     // Phù hợp với trình độ chuyên môn
     case Matched = 2;
+
+    public function getName(): string
+    {
+        return match ($this) {
+            self::NotMatched => 'Chưa phù hợp với trình độ chuyên môn',
+            self::Matched => 'Phù hợp với trình độ chuyên môn',
+        };
+    }
 }

@@ -13,4 +13,13 @@ enum LevelKnowledgeAcquired: int
     // Chỉ học được một phần
     case Partial = 3;
 
+    public function getName(): string
+    {
+        return match ($this) {
+            self::Full => 'Đã học được',
+            self::None => 'Không học được',
+            self::Partial => 'Chỉ học được một phần',
+        };
+    }
+
 }

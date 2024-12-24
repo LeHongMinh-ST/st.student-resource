@@ -18,4 +18,16 @@ enum RecruitmentType: int
     case Mobilized = 5;
     // Khác
     case Other = 0;
+
+    public function getName(): string
+    {
+        return match ($this) {
+            self::Exam => 'Thi tuyển',
+            self::Recruitment => 'Xét tuyển',
+            self::Contract => 'Hợp đồng',
+            self::Seconded => 'Biệt phái',
+            self::Mobilized => 'Điều động',
+            self::Other => 'Khác',
+        };
+    }
 }

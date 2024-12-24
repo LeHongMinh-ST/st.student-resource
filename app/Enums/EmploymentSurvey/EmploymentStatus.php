@@ -14,4 +14,14 @@ enum EmploymentStatus: int
     case ContinuingEducation = 3;
     // Chưa đi tìm việc
     case NotLookingForJob = 4;
+
+    public function getName(): string
+    {
+        return match ($this) {
+            self::Employed => 'Đã có việc làm',
+            self::Unemployed => 'Chưa có việc làm',
+            self::ContinuingEducation => 'Đang tiếp tục học',
+            self::NotLookingForJob => 'Chưa đi tìm việc',
+        };
+    }
 }

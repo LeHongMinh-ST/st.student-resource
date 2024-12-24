@@ -25,3 +25,5 @@ Route::get('/', function () {
     ));
     return view('welcome');
 });
+
+Route::get('/test', fn () => view('pdf.1response-survey'));
