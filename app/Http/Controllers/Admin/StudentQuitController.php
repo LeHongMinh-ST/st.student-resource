@@ -24,7 +24,6 @@ use App\Http\Resources\StudentQuit\StudentQuitCollection;
 use App\Http\Resources\StudentQuit\StudentQuitResource;
 use App\Models\Quit;
 use App\Models\Student;
-use App\Models\StudentQuit;
 use App\Services\Student\StudentQuitService;
 use App\Supports\Constants;
 use Illuminate\Auth\Access\AuthorizationException;
