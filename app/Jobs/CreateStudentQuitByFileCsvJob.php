@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
+use App\Enums\StudentStatus;
 use App\Events\ImportStudentQuitEvent;
 use App\Models\ExcelImportFile;
 use App\Models\ExcelImportFileError;
 use App\Models\ExcelImportFileJob;
 use App\Models\Faculty;
+use App\Models\Quit;
 use App\Models\StudentQuit;
 use App\Services\Student\StudentService;
 use App\Traits\HandlesCsvImportJob;
@@ -19,6 +21,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class CreateStudentQuitByFileCsvJob implements ShouldQueue
 {
@@ -65,6 +69,7 @@ class CreateStudentQuitByFileCsvJob implements ShouldQueue
         // Remove row header from worksheet
         array_shift($worksheet);
         foreach ($listRowMapKey as $row) {
+            DB::beginTransaction();
             try {
                 $student = $studentService->getStudentByCode($row['code']);
 
@@ -74,17 +79,37 @@ class CreateStudentQuitByFileCsvJob implements ShouldQueue
                     'student_id' => $student->id,
                 ];
 
-                $studentQuit = StudentQuit::query()->updateOrCreate($studentQuitData);
+                $studentQuit = StudentQuit::query()
+                    ->updateOrCreate($studentQuitData);
 
-                foreach ($row as $index => $value) {
-                    if (null === $rowHeader[$index]) {
-                        continue;
-                    }
-                    $studentQuitData[$rowHeader[$index]] = $value;
+                $studentQuit->note_quit = @$row['note_quit'];
+                $studentQuit->save();
+                $quit = Quit::find($this->quitId);
+
+                if ($quit->type == StudentStatus::Expelled->value) {
+                    $student->status = StudentStatus::Expelled;
                 }
 
-                $studentQuit->fill($studentQuitData);
-                $studentQuit->save();
+                if ($quit->type == StudentStatus::ToDropOut->value) {
+                    Log::info('Check status ....');
+                    if (@$row['type']) {
+                        Log::info('Check status ....check type.....');
+                        if ($row['type'] == 'NH') {
+                            $student->status = StudentStatus::ToDropOut;
+                        }
+
+                        if ($row['type'] == 'CN') {
+                            $student->status = StudentStatus::TransferStudy;
+                        }
+
+                        if ($row['type'] == 'BL') {
+                            $student->status = StudentStatus::Deferred;
+                        }
+                    }
+
+                }
+
+                $student->save();
 
                 $studentQuit->excelImportFileRecord()->create([
                     'excel_import_files_id' => $this->excelImportFileId,
@@ -94,9 +119,10 @@ class CreateStudentQuitByFileCsvJob implements ShouldQueue
                 $excelImportFileModel->where('id', $this->excelImportFileId)
                     ->increment('process_record');
 
-
+                DB::commit();
 
             } catch (Exception $exception) {
+                DB::rollback();
                 $hasError = true;
                 $this->handleException($exception, $rowStart, $excelImportFileErrorModel, $this->excelImportFileId);
             }

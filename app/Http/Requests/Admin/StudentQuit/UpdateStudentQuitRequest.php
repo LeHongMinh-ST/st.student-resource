@@ -26,13 +26,6 @@ class UpdateStudentQuitRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'year' => [
-                'required',
-            ],
-            'certification' => 'required',
-            'certification_date' => [
-                'required',
-            ],
         ];
     }
 }

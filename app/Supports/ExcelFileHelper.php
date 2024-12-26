@@ -136,7 +136,8 @@ class ExcelFileHelper
         $keys = [
             'STT' => 'index',
             'Mã SV' => 'code',
-            'Lý do' => 'quit_note',
+            'Ghi chú' => 'note_quit',
+            'Nội dung' => 'type',
         ];
 
         return Arr::get($keys, trim($keyMap));

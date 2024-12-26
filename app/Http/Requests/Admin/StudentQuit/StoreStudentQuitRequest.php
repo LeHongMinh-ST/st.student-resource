@@ -27,13 +27,6 @@ class StoreStudentQuitRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'type' => ['required', 'string'],
-            'year' => [
-                'required',
-            ],
-            'certification' => 'required',
-            'certification_date' => [
-                'required',
-            ],
         ];
     }
 }

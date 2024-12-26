@@ -22,6 +22,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class CreateStudentByFileCsvJob implements ShouldQueue
 {
@@ -69,6 +70,7 @@ class CreateStudentByFileCsvJob implements ShouldQueue
         array_shift($worksheet);
 
         foreach ($worksheet as $row) {
+            DB::beginTransaction();
             try {
                 $studentData = [
                     'faculty_id' => $this->faculty->id,
@@ -119,8 +121,10 @@ class CreateStudentByFileCsvJob implements ShouldQueue
                     ->increment('process_record');
 
                 // CrawlDataLearningOutcomeJob::dispatch($student)->onQueue('default');
-
+                DB::commit();
             } catch (Exception $exception) {
+
+                DB::rollback();
                 $hasError = true;
                 $this->handleException($exception, $rowStart, $excelImportFileErrorModel, $this->excelImportFileId);
             }

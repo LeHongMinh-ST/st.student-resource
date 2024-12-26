@@ -26,7 +26,7 @@ return new class () extends Migration {
             }
 
             if (!Schema::hasColumn('quits', 'certification_date')) {
-                $table->date('certification_date', 255)->nullable();
+                $table->date('certification_date')->nullable();
             }
         });
     }

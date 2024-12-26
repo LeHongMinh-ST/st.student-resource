@@ -29,6 +29,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class CreateStudentGraduateByFileCsvJob implements ShouldQueue
 {
@@ -95,6 +96,8 @@ class CreateStudentGraduateByFileCsvJob implements ShouldQueue
         $listTrainingIndustry = $trainingIndustryModel->whereIn('code', Arr::pluck($listRowMapKey, 'training_industry_code'))->get();
 
         foreach ($listRowMapKey as $rowMapKey) {
+
+            DB::beginTransaction();
             try {
                 $student = $listStudent->where('code', $rowMapKey['code'])->first();
 
@@ -175,8 +178,10 @@ class CreateStudentGraduateByFileCsvJob implements ShouldQueue
                 // Log successful process.
                 $excelImportFileModel->where('id', $this->excelImportFileId)
                     ->increment('process_record');
+                DB::commit();
 
             } catch (Exception $exception) {
+                DB::rollback();
                 $hasError = true;
                 $this->handleException($exception, $rowStart, $excelImportFileErrorModel, $this->excelImportFileId);
             }

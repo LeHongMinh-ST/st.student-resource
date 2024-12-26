@@ -101,7 +101,7 @@ class ExcelImportFileService
             ExcelImportType::Graduate => public_path() . '/template/template_graduation_student.xlsx',
             ExcelImportType::Course => public_path() . '/template/template_student.xlsx',
             ExcelImportType::Warning => public_path() . '/template/template_student_warning.xlsx',
-            ExcelImportType::Quit => public_path() . '/template/template_student_warning.xlsx',
+            ExcelImportType::Quit => public_path() . '/template/template_student_quit.xlsx',
             default => throw new Exception('Type not found'),
         };
 
@@ -124,8 +124,8 @@ class ExcelImportFileService
                 'type' => $importStudentGraduateDTO->getType(),
                 'total_record' => $data['total_row_data'] - Constants::getNumberRowNotRecord(),
                 'process_record' => 0,
-                'faculty_id' => auth(AuthApiSection::Admin->value)->user()?->faculty_id,
                 'user_id' => auth(AuthApiSection::Admin->value)->id(),
+                'faculty_id' => auth(AuthApiSection::Admin->value)->user()?->faculty_id,
                 'type_id' => $importStudentGraduateDTO->getTypeId(),
                 'total_job' => count($data['file_names']),
             ]);

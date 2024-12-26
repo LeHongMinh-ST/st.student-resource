@@ -19,6 +19,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class CreateStudentWarningByFileCsvJob implements ShouldQueue
 {
@@ -66,6 +67,7 @@ class CreateStudentWarningByFileCsvJob implements ShouldQueue
         array_shift($listRowMapKey);
 
         foreach ($listRowMapKey as $row) {
+            DB::beginTransaction();
             try {
                 $student = $studentService->getStudentByCode((string)$row['code']);
 
@@ -85,7 +87,9 @@ class CreateStudentWarningByFileCsvJob implements ShouldQueue
                 $excelImportFileModel->where('id', $this->excelImportFileId)
                     ->increment('process_record');
 
+                DB::commit();
             } catch (Exception $exception) {
+                DB::rollback();
                 $hasError = true;
                 $this->handleException($exception, $rowStart, $excelImportFileErrorModel, $this->excelImportFileId);
             }
