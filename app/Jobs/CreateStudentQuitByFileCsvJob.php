@@ -90,8 +90,11 @@ class CreateStudentQuitByFileCsvJob implements ShouldQueue
                     $student->status = StudentStatus::Expelled;
                 }
 
+                if ($quit->type == StudentStatus::Deferred->value) {
+                    $student->status = StudentStatus::Deferred;
+                }
+
                 if ($quit->type == StudentStatus::ToDropOut->value) {
-                    Log::info('Check status ....');
                     if (@$row['type']) {
                         Log::info('Check status ....check type.....');
                         if ($row['type'] == 'NH') {
@@ -101,12 +104,7 @@ class CreateStudentQuitByFileCsvJob implements ShouldQueue
                         if ($row['type'] == 'CN') {
                             $student->status = StudentStatus::TransferStudy;
                         }
-
-                        if ($row['type'] == 'BL') {
-                            $student->status = StudentStatus::Deferred;
-                        }
                     }
-
                 }
 
                 $student->save();
