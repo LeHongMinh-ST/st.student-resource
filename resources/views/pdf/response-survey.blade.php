@@ -103,10 +103,10 @@
                 <div class="col-6" style="float: right; width: 50%;">
                     <p class="text-end fw-light pb-4" style="text-align: right; opacity: 0.7; padding-bottom: 10px">Ngày {{$surveyPeriod['end_time_format']}}</p>
                     <div style="text-align: center;">
-                        <p class="text-center" style="font-size: 12px !important; margin-top: 0">BỘ NÔNG NGHIỆP</p>
-                        <p class="text-center" style="font-size: 12px !important; margin-top: 0">VÀ PHÁT TRIỂN NÔNG THÔN</p>
-                        <h3 class="text-center" style="padding-bottom: 0;">HỌC VIỆN NÔNG NGHIỆP VIỆT NAM</h3>
-                        <p class="text-center" style="margin-top: 0">Thị trấn Trâu Quỳ, huyện Gia Lâm, thành phố Hà Nội
+                        <p class="text-center" style="font-size: 14px !important; margin-top: 0">BỘ NÔNG NGHIỆP</p>
+                        <p class="text-center" style="font-size: 14px !important; margin-top: 0">VÀ PHÁT TRIỂN NÔNG THÔN</p>
+                        <h1 class="text-center" style="padding-bottom: 0;">HỌC VIỆN NÔNG NGHIỆP VIỆT NAM</h1>
+                        <p class="text-center" style="margin-top: 0; font-size: 13px !important;">Thị trấn Trâu Quỳ, huyện Gia Lâm, thành phố Hà Nội
                             Điện thoại: 024.62617586 - Fax: 024.62617586
                         </p>
                     </div>
@@ -115,9 +115,9 @@
         </div>
         <div class="container">
             <div class="row">
-                <h1 class="text-center mb-2" style="text-align: center !important;">{{$surveyPeriod['title']}}</h1>
-                <p class="text-center mb-2">{{$surveyPeriod['description']}}</p>
-                <p class="text-start mb-2">
+                <h1 class="text-center mt-2" style="text-align: center !important; margin-top: 5px !important;">{{$surveyPeriod['title']}}</h1>
+                <p class="text-center">{{$surveyPeriod['description']}}</p>
+                <p class="text-start">
                     Thời gian khảo sát từ ngày <span class="fw-bold">{{
                         $surveyPeriod['start_time_format']
 }}</span> đến ngày <span class="fw-bold">{{$surveyPeriod['end_time_format']}}</span>
