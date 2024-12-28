@@ -179,13 +179,13 @@
                     <label>{{'K'.mb_substr($surveyResponse['code_student'], 0, 2) ?? '   '}}</label>
                 </div>
             </div>
+            <div class="page-break"></div>
             <div class="row">
                 <p class="fw-bold text-muted">7. Tên ngành đào tạo</p>
                 <div class="custom-input">
                     <label>{{$surveyResponse['trainingIndustry_name'] ?? '   '}}</label>
                 </div>
             </div>
-            <div class="page-break"></div>
             <div class="row">
                 <p class="fw-bold text-muted {{($surveyResponse['phone_number']) ?? 'mb-2'}}">8. Điện thoại</p>
                 <div class="custom-input">
