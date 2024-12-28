@@ -84,7 +84,7 @@
         }
 
         .mb-2 {
-            margin-bottom: 12px !important;
+            margin-bottom: 30px !important;
         }
 
 
