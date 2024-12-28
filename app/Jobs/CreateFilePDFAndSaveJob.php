@@ -18,6 +18,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
+use Log;
 
 class CreateFilePDFAndSaveJob implements ShouldQueue
 {
@@ -46,14 +47,23 @@ class CreateFilePDFAndSaveJob implements ShouldQueue
     public function handle(
     ): void {
 
-        foreach ($this->surveyResponses as $surveyResponse) {
-            $this->createPDFFile($this->surveyPeriod, $surveyResponse);
-        }
+        try {
+            foreach ($this->surveyResponses as $surveyResponse) {
+                $this->createPDFFile($this->surveyPeriod, $surveyResponse);
+            }
 
-        // Create PDF file and save to storage
-        event(new ExportSurveyResponseEvent(
-            userId: $this->userId
-        ));
+            // Create PDF file and save to storage
+            event(new ExportSurveyResponseEvent(
+                userId: $this->userId
+            ));
+        } catch (Exception $e) {
+            Log::info([
+                'message' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+        }
     }
 
     private function createPDFFile(SurveyPeriod $surveyPeriod, EmploymentSurveyResponse $surveyResponse): string
