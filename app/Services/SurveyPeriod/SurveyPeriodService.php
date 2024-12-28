@@ -214,6 +214,7 @@ class SurveyPeriodService
                     path: storage_path('app/public/pdf/' . $fileName)
                 );
             }
+            $zip->finish();
         });
 
         $response->headers->set('Content-Type', 'application/zip');
