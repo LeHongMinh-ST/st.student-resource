@@ -52,7 +52,7 @@
         label {
             font-weight: 450;
             font-size: 10px;,
-        margin: 0;
+            margin: 0;
             padding: 0;
             margin-bottom: 0 !important;
         }
