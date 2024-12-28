@@ -52,7 +52,7 @@
         label {
             font-weight: 450;
             font-size: 10px;,
-        margin: 0;
+            margin: 0;
             padding: 0;
             margin-bottom: 0 !important;
         }
@@ -84,7 +84,7 @@
         }
 
         .mb-2 {
-            margin-bottom: 12px !important;
+            margin-bottom: 30px !important;
         }
 
 
