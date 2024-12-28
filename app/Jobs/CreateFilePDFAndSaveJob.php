@@ -36,8 +36,8 @@ class CreateFilePDFAndSaveJob implements ShouldQueue
         private int $zipExportFileId,
         private int $userId,
         private ?Collection $surveyResponses = null,
-    ) {
-    }
+        private mixed $imgBase64 = null,
+    ) {}
 
     /**
      * Execute the job.
@@ -77,7 +77,11 @@ class CreateFilePDFAndSaveJob implements ShouldQueue
         $surveyResponse->identification_issuance_date_format = $surveyResponse?->identification_issuance_date?->format('d/m/Y');
         $surveyResponse->recruit_partner_date_format = $surveyResponse?->recruit_partner_date?->format('d/m/Y');
         // Create PDF file
-        $pdfResponse = Pdf::loadView('pdf.response-survey', ['surveyResponse' => $surveyResponse->toArray(), 'surveyPeriod' => $surveyPeriod->toArray()]);
+        $pdfResponse = Pdf::loadView('pdf.response-survey', [
+            'surveyResponse' => $surveyResponse->toArray(),
+            'surveyPeriod' => $surveyPeriod->toArray(),
+            'imgBase64' => $this->imgBase64,
+        ]);
         $fileName = $surveyResponse->code_student . '_' . $this->zipExportFileId . '.pdf';
 
         $pdfResponse->setOptions([
