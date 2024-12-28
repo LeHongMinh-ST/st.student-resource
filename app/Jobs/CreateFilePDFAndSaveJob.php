@@ -37,7 +37,8 @@ class CreateFilePDFAndSaveJob implements ShouldQueue
         private int $userId,
         private ?Collection $surveyResponses = null,
         private mixed $imgBase64 = null,
-    ) {}
+    ) {
+    }
 
     /**
      * Execute the job.
