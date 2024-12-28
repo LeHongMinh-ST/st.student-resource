@@ -169,7 +169,7 @@ class SurveyPeriodService
     {
         try {
             if (Arr::get($data, 'is_all_student')) {
-                $listSurveyResponse = $surveyPeriod->employmentSurveyResponses()->limit(3);
+                $listSurveyResponse = $surveyPeriod->employmentSurveyResponses();
             } else {
                 $listSurveyResponse = EmploymentSurveyResponse::whereIn('id', $data['student_ids']);
             }
@@ -183,8 +183,8 @@ class SurveyPeriodService
                 'process_total' => 0,
             ]);
 
-            $listSurveyResponse->chunk(10, function ($listSurveyResponseChunk) use ($surveyPeriod, $zipExportFile): void {
-                dispatch(new CreateFilePDFAndSaveJob($surveyPeriod, $zipExportFile, auth()->user()->id, $listSurveyResponseChunk))
+            $listSurveyResponse->chunk(1, function ($listSurveyResponseChunk) use ($surveyPeriod, $zipExportFile): void {
+                dispatch(new CreateFilePDFAndSaveJob($surveyPeriod, $zipExportFile->id, auth()->user()->id, $listSurveyResponseChunk))
                     ->onQueue('import');
             });
 

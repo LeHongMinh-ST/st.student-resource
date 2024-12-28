@@ -21,8 +21,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CreateStudentQuitByFileCsvJob implements ShouldQueue
 {
@@ -86,22 +86,22 @@ class CreateStudentQuitByFileCsvJob implements ShouldQueue
                 $studentQuit->save();
                 $quit = Quit::find($this->quitId);
 
-                if ($quit->type == StudentStatus::Expelled->value) {
+                if ($quit->type === StudentStatus::Expelled->value) {
                     $student->status = StudentStatus::Expelled;
                 }
 
-                if ($quit->type == StudentStatus::Deferred->value) {
+                if ($quit->type === StudentStatus::Deferred->value) {
                     $student->status = StudentStatus::Deferred;
                 }
 
-                if ($quit->type == StudentStatus::ToDropOut->value) {
+                if ($quit->type === StudentStatus::ToDropOut->value) {
                     if (@$row['type']) {
                         Log::info('Check status ....check type.....');
-                        if ($row['type'] == 'NH') {
+                        if ('NH' === $row['type']) {
                             $student->status = StudentStatus::ToDropOut;
                         }
 
-                        if ($row['type'] == 'CN') {
+                        if ('CN' === $row['type']) {
                             $student->status = StudentStatus::TransferStudy;
                         }
                     }

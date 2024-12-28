@@ -4,15 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phiếu Khảo Sát Tình Hình Việc Làm Của Sinh Viên Tốt Nghiệp</title>
-    <script src="{{ asset('assets/bootstrap/js/bootstrap.bundle.js') }}"></script>
-    <script src="{{ asset('assets/bootstrap/js/bootstrap.esm.js') }}"></script>
-    <script src="{{ asset('assets/bootstrap/js/bootstrap.js') }}"></script>
-    <script src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
-
-    <link href="{{ asset('assets/bootstrap/css/bootstrap.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('assets/bootstrap/css/bootstrap-grid.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('assets/bootstrap/css/bootstrap-reboot.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('assets/bootstrap/css/bootstrap-utilities.css') }}" rel="stylesheet" type="text/css">
 
     <style>
         .container-survey {
@@ -102,7 +93,7 @@
 </head>
 <body>
 <main class="container-survey">
-    <div class="container content">
+    <div class="container content" style="margin: 0 auto">
         <div class="header">
             <div class="row">
                     <img src="data:image/png;base64,{{base64_encode(file_get_contents(asset('assets/images/logo-vnua.png'))) }}" alt="logo" style="width: 21%; object-fit: cover;
@@ -123,12 +114,12 @@
         </div>
         <div class="container">
             <div class="row">
-                <h1 class="text-center mb-2" style="text-align: center !important;">{{$surveyPeriod->title}}</h1>
-                <p class="text-center mb-2">{{$surveyPeriod->description}}</p>
+                <h1 class="text-center mb-2" style="text-align: center !important;">{{$surveyPeriod['title']}}</h1>
+                <p class="text-center mb-2">{{$surveyPeriod['description']}}</p>
                 <p class="text-start mb-2">
                     Thời gian khảo sát từ ngày <span class="fw-bold">{{
-                        $surveyPeriod->start_time->format('d/m/Y')
-}}</span> đến ngày <span class="fw-bold">{{$surveyPeriod->end_time->format('d/m/Y')}}</span>
+                        $surveyPeriod['start_time_format']
+}}</span> đến ngày <span class="fw-bold">{{$surveyPeriod['end_time_format']}}</span>
                 </p>
             </div>
             <div class="row">
@@ -138,71 +129,72 @@
                 <p class="fw-bold">1. Mã sinh viên</p>
                 <div class="custom-input">
 
-                    <label>{{$surveyResponse->code_student ?? '   '}}</label>
+                    <label>{{$surveyResponse['code_student'] ?? '   '}}</label>
                 </div>
             </div>
             <div class="row">
+                <p class="fw-bold">2. Họ và tên</p>
                 <div class="custom-input">
-                    <label>{{$surveyResponse->full_name ?? '   '}}</label>
+                    <label>{{$surveyResponse['full_name'] ?? '   '}}</label>
                 </div>
             </div>
             <div class="row">
                 <p class="fw-bold text-muted">3. Giới tính</p>
                 <div class="custom-input">
-                    <label>{{$surveyResponse->gender->getName() ?? '   '}}</label>
+                    <label>{{$surveyResponse['gender_txt'] ?? '   '}}</label>
                 </div>
             </div>
             <div class="row">
                 <p class="fw-bold text-muted">4. Ngày sinh</p>
                 <div class="custom-input">
-                    <label>{{$surveyResponse->dob->format('d/m/Y') ?? '   '}}</label>
+                    <label>{{$surveyResponse['dob_format'] ?? '   '}}</label>
                 </div>
             </div>
             <div class="row">
                 <div class="">
-                    <p class="fw-bold text-muted {{($surveyResponse->identification_card_number) ?? 'mb-2'}}">5. Số căn cước công dân</p>
+                    <p class="fw-bold text-muted {{($surveyResponse['identification_card_number']) ?? 'mb-2'}}">5. Số căn cước công dân</p>
                     <div class="custom-input">
-                        <label>{{$surveyResponse->identification_card_number ?? '   '}}</label>
+                        <label>{{$surveyResponse['identification_card_number'] ?? '   '}}</label>
                     </div>
                 </div>
                 <div class="">
-                    <p class="fw-bold text-muted {{($surveyResponse->identification_issuance_date) ?? 'mb-2'}}">Ngày cấp</p>
+                    <p class="fw-bold text-muted {{($surveyResponse['identification_issuance_date']) ?? 'mb-2'}}">Ngày cấp</p>
                     <div class="custom-input">
                         <label
-                        >{{$surveyResponse->identification_issuance_date?->format('d/m/Y') ?? '   '}}</label>
+                        >{{$surveyResponse['identification_issuance_date_format'] ?? '   '}}</label>
                     </div>
                 </div>
                 <div class="">
-                    <p class="fw-bold text-muted {{($surveyResponse->identification_issuance_place) ?? 'mb-2'}}">Nơi cấp</p>
+                    <p class="fw-bold text-muted {{($surveyResponse['identification_issuance_place']) ?? 'mb-2'}}">Nơi cấp</p>
                     <div class="custom-input">
                         <label
-                        >{{$surveyResponse->identification_issuance_place ?? '   '}}</label>
+                        >{{$surveyResponse['identification_issuance_place'] ?? '   '}}</label>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <p class="fw-bold text-muted">6. Khoá học</p>
                 <div class="custom-input">
-                    <label>{{'K'.mb_substr($surveyResponse->code_student, 0, 2) ?? '   '}}</label>
+                    <label>{{'K'.mb_substr($surveyResponse['code_student'], 0, 2) ?? '   '}}</label>
                 </div>
             </div>
             <div class="row">
                 <p class="fw-bold text-muted">7. Tên ngành đào tạo</p>
                 <div class="custom-input">
-                    <label>{{$surveyResponse->trainingIndustry?->name ?? '   '}}</label>
+                    <label>{{$surveyResponse['trainingIndustry_name'] ?? '   '}}</label>
                 </div>
             </div>
             <div class="page-break"></div>
             <div class="row">
-                <p class="fw-bold text-muted {{($surveyResponse->phone_number) ?? 'mb-2'}}">8. Điện thoại</p>
+                <p class="fw-bold text-muted {{($surveyResponse['phone_number']) ?? 'mb-2'}}">8. Điện thoại</p>
                 <div class="custom-input">
-                    <label>{{$surveyResponse->phone_number ?? '   '}}</label>
+                    <label>{{$surveyResponse['phone_number'] ?? '   '}}</label>
                 </div>
             </div>
             <div class="row">
-                <p class="fw-bold text-muted {{($surveyResponse->email) ?? 'mb-2'}}">9. Email</p>
+                <p class="fw-bold text-muted {{($surveyResponse['email']) ?? 'mb-2'}}">9. Email</p>
                 <div class="custom-input">
-                    <label>{{$surveyResponse->email ?? '   '}}</label>
+                    <label>{{$surveyResponse['email'] ?? '   '}}</label>
                 </div>
             </div>
             <div class="row">
@@ -211,7 +203,7 @@
                     @foreach(\App\Enums\EmploymentSurvey\EmploymentStatus::cases() as $status)
                         <div class="form-check checkbox-custom">
                             <input class="form-check-input" type="radio" name="flexRadioDisabled"
-                                   {{$surveyResponse->employment_status == $status ? 'checked' : ''}}
+                                   {{$surveyResponse['employment_status'] == $status ? 'checked' : ''}}
                                    id="flexRadioDisabled">
                             <label class="form-check-label" for="flexRadioDisabled">
                                 {{$status->getName()}}
@@ -221,35 +213,35 @@
                 </div>
             </div>
             <div class="row">
-                <p class="fw-bold text-muted {{($surveyResponse->recruit_partner_name) ?? 'mb-2'}}">11. Tên đơn vị tuyển dụng</p>
+                <p class="fw-bold text-muted {{($surveyResponse['recruit_partner_name']) ?? 'mb-2'}}">11. Tên đơn vị tuyển dụng</p>
                 <div class="custom-input">
-                    <label>{{$surveyResponse->recruit_partner_name ?? '   '}}</label>
+                    <label>{{$surveyResponse['recruit_partner_name'] ?? '   '}}</label>
                 </div>
             </div>
             <div class="row">
                 <div class="">
-                    <p class="fw-bold text-muted {{($surveyResponse->recruit_partner_address) ?? 'mb-2'}}">12. Địa chỉ đơn vị tuyển dụng</p>
+                    <p class="fw-bold text-muted {{($surveyResponse['recruit_partner_address']) ?? 'mb-2'}}">12. Địa chỉ đơn vị tuyển dụng</p>
                     <div class="custom-input">
-                        <label>{{$surveyResponse->recruit_partner_address ?? '   '}}</label>
+                        <label>{{$surveyResponse['recruit_partner_address'] ?? '   '}}</label>
                     </div>
                 </div>
                 <div class="">
-                    <p class="fw-bold text-muted {{($surveyResponse->cityWork) ?? 'mb-2'}}">Tỉnh/ Thành phố</p>
+                    <p class="fw-bold text-muted {{($surveyResponse['cityWork']) ?? 'mb-2'}}">Tỉnh/ Thành phố</p>
                     <div class="custom-input">
-                        <label>{{$surveyResponse->cityWork?->name ?? '' ?? '   '}}</label>
+                        <label>{{$surveyResponse['cityWork_name'] ?? '' ?? '   '}}</label>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <p class="fw-bold text-muted {{($surveyResponse->recruit_partner_date) ?? 'mb-2'}}">13. Thời gian tuyển dụng</p>
+                <p class="fw-bold text-muted {{($surveyResponse['recruit_partner_date']) ?? 'mb-2'}}">13. Thời gian tuyển dụng</p>
                 <div class="custom-input">
-                    <label>{{$surveyResponse->recruit_partner_date?->format('d/m/Y') ?? '   '}}</label>
+                    <label>{{$surveyResponse['recruit_partner_date_format'] ?? '   '}}</label>
                 </div>
             </div>
             <div class="row">
-                <p class="fw-bold text-muted {{($surveyResponse->recruit_partner_position) ?? 'mb-2'}}">14. Chức vụ, vị trí việc làm</p>
+                <p class="fw-bold text-muted {{($surveyResponse['recruit_partner_position']) ?? 'mb-2'}}">14. Chức vụ, vị trí việc làm</p>
                 <div class="custom-input">
-                    <label>{{$surveyResponse->recruit_partner_position ?? '   '}}</label>
+                    <label>{{$surveyResponse['recruit_partner_position'] ?? '   '}}</label>
                 </div>
             </div>
             <div class="row">
@@ -261,7 +253,7 @@
                     @foreach(\App\Enums\EmploymentSurvey\WorkArea::cases() as $status)
                         <div class="form-check checkbox-custom">
                             <input class="form-check-input" type="radio" name="flexRadioDisabled"
-                                   {{$surveyResponse->work_area == $status ? 'checked' : ''}}
+                                   {{$surveyResponse['work_area'] == $status ? 'checked' : ''}}
                                    id="flexRadioDisabled">
                             <label class="form-check-label" for="flexRadioDisabled">
                                 {{$status->getName()}}
@@ -277,7 +269,7 @@
                     @foreach(\App\Enums\EmploymentSurvey\EmployedSince::cases() as $status)
                         <div class="form-check checkbox-custom">
                             <input class="form-check-input" type="radio" name="flexRadioDisabled"
-                                   {{$surveyResponse->employed_since == $status ? 'checked' : ''}}
+                                   {{$surveyResponse['employed_since'] == $status ? 'checked' : ''}}
 
                                    id="flexRadioDisabled">
                             <label class="form-check-label" for="flexRadioDisabled">
@@ -294,7 +286,7 @@
                     @foreach(\App\Enums\EmploymentSurvey\TrainedField::cases() as $status)
                         <div class="form-check checkbox-custom">
                             <input class="form-check-input" type="radio" name="flexRadioDisabled"
-                                   {{$surveyResponse->trained_field == $status ? 'checked' : ''}}
+                                   {{$surveyResponse['trained_field'] == $status ? 'checked' : ''}}
 
                                    id="flexRadioDisabled">
                             <label class="form-check-label" for="flexRadioDisabled">
@@ -311,7 +303,7 @@
                     @foreach(\App\Enums\EmploymentSurvey\ProfessionalQualificationField::cases() as $status)
                         <div class="form-check checkbox-custom">
                             <input class="form-check-input" type="radio" name="flexRadioDisabled"
-                                   {{$surveyResponse->professional_qualification_field == $status ? 'checked' : ''}}
+                                   {{$surveyResponse['professional_qualification_field'] == $status ? 'checked' : ''}}
 
                                    id="flexRadioDisabled">
                             <label class="form-check-label" for="flexRadioDisabled">
@@ -329,7 +321,7 @@
                     @foreach(\App\Enums\EmploymentSurvey\LevelKnowledgeAcquired::cases() as $status)
                         <div class="form-check checkbox-custom">
                             <input class="form-check-input" type="radio" name="flexRadioDisabled"
-                                   {{$surveyResponse->level_knowledge_acquired == $status ? 'checked' : ''}}
+                                   {{$surveyResponse['level_knowledge_acquired'] == $status ? 'checked' : ''}}
 
                                    id="flexRadioDisabled">
                             <label class="form-check-label" for="flexRadioDisabled">
@@ -340,9 +332,9 @@
                 </div>
             </div>
             <div class="row">
-                <p class="fw-bold text-muted {{($surveyResponse->starting_salary) ?? 'mb-2'}}">20. Mức lương khởi điểm của Anh/Chị (đơn vị triệu đồng/1 tháng)</p>
+                <p class="fw-bold text-muted {{($surveyResponse['starting_salary']) ?? 'mb-2'}}">20. Mức lương khởi điểm của Anh/Chị (đơn vị triệu đồng/1 tháng)</p>
                 <div class="custom-input">
-                    <label>{{$surveyResponse->starting_salary ?? '   '}}</label>
+                    <label>{{$surveyResponse['starting_salary'] ?? '   '}}</label>
                 </div>
             </div>
             <div class="row">
@@ -351,7 +343,7 @@
                     @foreach(\App\Enums\EmploymentSurvey\AverageIncome::cases() as $status)
                         <div class="form-check checkbox-custom">
                             <input class="form-check-input" type="radio" name="flexRadioDisabled"
-                                   {{$surveyResponse->average_income == $status ? 'checked' : ''}}
+                                   {{$surveyResponse['average_income'] == $status ? 'checked' : ''}}
                                    id="flexRadioDisabled">
                             <label class="form-check-label" for="flexRadioDisabled">
                                 {{$status->getName()}}
@@ -368,7 +360,7 @@
                         <div class="form-check checkbox-custom">
                             <input class="form-check-input" type="checkbox" value="{{$status->value}}"
                                    id="flexCheckDefault"
-                                {{in_array($status->value, Arr::get($surveyResponse->job_search_method, 'value') ?? []) ? 'checked' : ''}}
+                                {{in_array($status->value, Arr::get($surveyResponse['job_search_method'], 'value') ?? []) ? 'checked' : ''}}
                             >
                             @if($status->value == 0)
                                 <div class="d-flex">
@@ -378,7 +370,7 @@
                                     <div class="custom-input">
                                         <label type="text" class="custom-input"
                                         >
-                                            {{Arr::get($surveyResponse->job_search_method, 'content_other') ?? ''}}
+                                            {{Arr::get($surveyResponse['job_search_method'], 'content_other') ?? ''}}
                                         </label>
 
                                     </div>
@@ -399,7 +391,7 @@
                         <div class="form-check checkbox-custom">
                             <input class="form-check-input" type="checkbox" value="{{$status->value}}"
                                    id="flexCheckDefault"
-                                {{in_array($status->value, Arr::get($surveyResponse->recruitment_type, 'value') ?? []) ? 'checked' : ''}}
+                                {{in_array($status->value, Arr::get($surveyResponse['recruitment_type'], 'value') ?? []) ? 'checked' : ''}}
                             >
                             @if($status->value == 0)
                                 <div class="d-flex">
@@ -409,7 +401,7 @@
                                     <div class="custom-input">
                                         <label type="text" class="custom-input"
                                         >
-                                            {{Arr::get($surveyResponse->recruitment_type, 'content_other') ?? ''}}
+                                            {{Arr::get($surveyResponse['recruitment_type'], 'content_other') ?? ''}}
                                         </label>
                                     </div>
                                 </div>
@@ -430,7 +422,7 @@
                         <div class="form-check checkbox-custom">
                             <input class="form-check-input" type="checkbox" value="{{$status->value}}"
                                    id="flexCheckDefault"
-                                {{in_array($status->value, Arr::get($surveyResponse->soft_skills_required, 'value') ?? []) ? 'checked' : ''}}
+                                {{in_array($status->value, Arr::get($surveyResponse['soft_skills_required'], 'value') ?? []) ? 'checked' : ''}}
                             >
                             @if($status->value == 0)
                                 <div class="d-flex">
@@ -440,7 +432,7 @@
                                     <div class="custom-input">
                                         <label type="text" class="custom-input"
                                         >
-                                            {{Arr::get($surveyResponse->soft_skills_required, 'content_other') ?? ''}}
+                                            {{Arr::get($surveyResponse['soft_skills_required'], 'content_other') ?? ''}}
                                         </label>
                                     </div>
                                 </div>
@@ -463,7 +455,7 @@
                         <div class="form-check checkbox-custom">
                             <input class="form-check-input" type="checkbox" value="{{$status->value}}"
                                    id="flexCheckDefault"
-                                {{in_array($status->value, Arr::get($surveyResponse->must_attended_courses, 'value') ?? []) ? 'checked' : ''}}
+                                {{in_array($status->value, Arr::get($surveyResponse['must_attended_courses'], 'value') ?? []) ? 'checked' : ''}}
                             >
                             @if($status->value == 0)
                                 <div class="d-flex">
@@ -473,7 +465,7 @@
                                     <div class="custom-input">
                                     <label type="text" class="custom-input"
                                     >
-                                        {{Arr::get($surveyResponse->must_attended_courses, 'content_other') ?? ''}}
+                                        {{Arr::get($surveyResponse['must_attended_courses'], 'content_other') ?? ''}}
                                     </label>
                                     </div>
                                 </div>
@@ -495,7 +487,7 @@
                         <div class="form-check checkbox-custom">
                             <input class="form-check-input" type="checkbox" value="{{$status->value}}"
                                    id="flexCheckDefault"
-                                {{in_array($status->value, Arr::get($surveyResponse->solutions_get_job, 'value') ?? []) ? 'checked' : ''}}
+                                {{in_array($status->value, Arr::get($surveyResponse['solutions_get_job'], 'value') ?? []) ? 'checked' : ''}}
                             >
                             @if($status->value == 0)
                                 <div class="d-flex">
@@ -505,7 +497,7 @@
                                     <div class="custom-input">
                                         <label
                                         >
-                                            {{Arr::get($surveyResponse->solutions_get_job, 'content_other') ?? ''}}
+                                            {{Arr::get($surveyResponse['solutions_get_job'], 'content_other') ?? ''}}
                                         </label>
                                     </div>
                                 </div>
