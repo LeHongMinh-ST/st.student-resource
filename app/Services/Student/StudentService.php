@@ -413,6 +413,73 @@ class StudentService
         return $studentsCount;
     }
 
+
+    public function getTotalStudentTransferStudyByAdmissionYearId($admissionYearId): int
+    {
+
+        $studentsCount = Student::query()
+            ->where('status', StudentStatus::TransferStudy)
+            ->where('admission_year_id', $admissionYearId)
+            ->count();
+
+        return $studentsCount;
+    }
+
+
+    public function getTotalStudentGraduatedByAdmissionYearId($admissionYearId): int
+    {
+        $studentsCount = Student::query()
+            ->where('admission_year_id', $admissionYearId)
+            ->where('status', StudentStatus::Graduated)
+            ->count();
+
+        return $studentsCount;
+    }
+
+    public function getTotalStudentToDropOutByAdmissionYearId($admissionYearId): int
+    {
+        $studentsCount = Student::query()
+            ->where('admission_year_id', $admissionYearId)
+            ->where(function ($query): void {
+                $query->where('status', StudentStatus::ToDropOut)
+                    ->orWhere('status', StudentStatus::Expelled)
+                    ->orWhere('status', StudentStatus::TransferStudy);
+            })
+            ->count();
+
+        return $studentsCount;
+    }
+
+    public function getTotalStudentStudyByAdmissionYearId($admissionYearId): int
+    {
+        $studentsCount = Student::query()
+            ->where('admission_year_id', $admissionYearId)
+            ->where('status', StudentStatus::CurrentlyStudying)
+            ->count();
+
+        return $studentsCount;
+    }
+
+    public function getTotalStudentDeferredByAdmissionYearId($admissionYearId): int
+    {
+        $studentsCount = Student::query()
+            ->where('admission_year_id', $admissionYearId)
+            ->where('status', StudentStatus::Deferred)
+            ->count();
+
+        return $studentsCount;
+    }
+
+    public function getTotalStudentQuitByAdmissionYearId($admissionYearId): int
+    {
+        $studentsCount = Student::query()
+            ->where('admission_year_id', $admissionYearId)
+            ->where('status', StudentStatus::Expelled)
+            ->count();
+
+        return $studentsCount;
+    }
+
     public function changeStatus($studentId, $status): bool|int
     {
         return Student::query()->findOrFail($studentId)->update(['status' => $status]);
