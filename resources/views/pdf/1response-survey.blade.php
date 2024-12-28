@@ -98,12 +98,12 @@
                         padding-left: 20px;
                     "/>
                 <div class="col-6" style="float: right; width: 50%;">
-                    <p class="text-end fw-light pb-4" style="text-align: right; opacity: 0.7; padding-bottom: 10px">Ngày {{\Carbon\Carbon::now()->format('d/m/Y')}}</p>
+                    <p class="text-end fw-light pb-4" style="text-align: right; opacity: 0.7; padding-bottom: 10px">Ngày {{$surveyPeriod['end_time']->format('d/m/Y')}}</p>
                     <div style="text-align: center;">
-                        <h3 class="text-center">BỘ NÔNG NGHIỆP</h3>
-                        <h3 class="text-center">VÀ PHÁT TRIỂN NÔNG THÔN</h3>
+                        <h3 class="text-center" style="font-weight: 300">BỘ NÔNG NGHIỆP</h3>
+                        <h3 class="text-center" style="font-weight: 300">VÀ PHÁT TRIỂN NÔNG THÔN</h3>
                         <h3 class="text-center" style="padding-bottom: 0;">HỌC VIỆN NÔNG NGHIỆP VIỆT NAM</h3>
-                        <p class="text-center">Thị trấn Trâu Quỳ, huyện Gia Lâm, thành phố Hà Nội
+                        <p class="text-center" style="margin-top: 0">Thị trấn Trâu Quỳ, huyện Gia Lâm, thành phố Hà Nội
                             Điện thoại: 024.62617586 - Fax: 024.62617586
                         </p>
                     </div>
