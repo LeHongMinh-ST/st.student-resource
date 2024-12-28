@@ -26,4 +26,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test', fn () => view('pdf.1response-survey'));
+Route::get('/test', function () {
+    $surveyPeriod = App\Models\SurveyPeriod::find(10);
+    $surveyResponse = $surveyPeriod->employmentSurveyResponses;
+    return view('pdf.1response-survey', [
+        'surveyResponse' => $surveyResponse[0],
+        'surveyPeriod' => $surveyPeriod
+    ]);
+});

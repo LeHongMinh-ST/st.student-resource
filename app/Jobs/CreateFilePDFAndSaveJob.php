@@ -32,7 +32,7 @@ class CreateFilePDFAndSaveJob implements ShouldQueue
      */
     public function __construct(
         private SurveyPeriod $surveyPeriod,
-        private ZipExportFile $zipExportFile,
+        private int $zipExportFileId,
         private int $userId,
         private ?Collection $surveyResponses = null,
     ) {
@@ -58,9 +58,17 @@ class CreateFilePDFAndSaveJob implements ShouldQueue
 
     private function createPDFFile(SurveyPeriod $surveyPeriod, EmploymentSurveyResponse $surveyResponse): string
     {
+        $surveyPeriod->start_time_format = $surveyPeriod->start_time->format('d/m/Y');
+        $surveyPeriod->end_time_format = $surveyPeriod->end_time->format('d/m/Y');
+        $surveyResponse->dob_format = $surveyResponse?->dob?->format('d/m/Y');
+        $surveyResponse->gender_txt = $surveyResponse?->gender?->getName();
+        $surveyResponse->trainingIndustry_name = $surveyResponse?->trainingIndustry?->name;
+        $surveyResponse->cityWork_name = $surveyResponse?->cityWork?->name;
+        $surveyResponse->identification_issuance_date_format = $surveyResponse?->identification_issuance_date?->format('d/m/Y');
+        $surveyResponse->recruit_partner_date_format = $surveyResponse?->recruit_partner_date?->format('d/m/Y');
         // Create PDF file
-        $pdfResponse = Pdf::loadView('pdf.response-survey', ['surveyResponse' => $surveyResponse, 'surveyPeriod' => $surveyPeriod]);
-        $fileName = $surveyResponse->code_student . '_' . $this->zipExportFile->id . '.pdf';
+        $pdfResponse = Pdf::loadView('pdf.response-survey', ['surveyResponse' => $surveyResponse->toArray(), 'surveyPeriod' => $surveyPeriod->toArray()]);
+        $fileName = $surveyResponse->code_student . '_' . $this->zipExportFileId . '.pdf';
 
         $pdfResponse->setOptions([
             'defaultFont' => 'DejaVu Sans', // Sử dụng font mặc định của DomPDF
@@ -74,10 +82,10 @@ class CreateFilePDFAndSaveJob implements ShouldQueue
         // create pdf file record
         PdfExportFile::create([
             'name' => $fileName,
-            'zip_export_file_id' => $this->zipExportFile->id,
+            'zip_export_file_id' => $this->zipExportFileId,
         ]);
 
-        ZipExportFile::where('id', $this->zipExportFile->id)
+        ZipExportFile::where('id', $this->zipExportFileId)
             ->increment('process_total');
 
         return $fileName;
