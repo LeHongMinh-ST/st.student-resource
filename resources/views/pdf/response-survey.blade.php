@@ -96,7 +96,8 @@
     <div class="container content" style="margin: 0 auto">
         <div class="header">
             <div class="row">
-                    <img src="data:image/png;base64,{{base64_encode(file_get_contents(asset('assets/images/logo-vnua.png'))) }}" alt="logo" style="width: 21%; object-fit: cover;
+                    <img src="data:image/png;base64,{{$imgBase64 }}" alt="logo" style="width: 21%; object-fit: cover;
+{{--                    <img src="data:image/png;base64,{{base64_encode(file_get_contents(asset('assets/images/logo-vnua.png'))) }}" alt="logo" style="width: 21%; object-fit: cover;--}}
                         padding-left: 20px;
                     "/>
                 <div class="col-6" style="float: right; width: 50%;">

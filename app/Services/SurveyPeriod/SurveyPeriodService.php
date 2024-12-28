@@ -183,8 +183,10 @@ class SurveyPeriodService
                 'process_total' => 0,
             ]);
 
-            $listSurveyResponse->chunk(1, function ($listSurveyResponseChunk) use ($surveyPeriod, $zipExportFile): void {
-                dispatch(new CreateFilePDFAndSaveJob($surveyPeriod, $zipExportFile->id, auth()->user()->id, $listSurveyResponseChunk))
+            $image = base64_encode(file_get_contents(base_path('public/assets/images/logo-vnua.png')));
+
+            $listSurveyResponse->chunk(1, function ($listSurveyResponseChunk) use ($surveyPeriod, $zipExportFile, $image): void {
+                dispatch(new CreateFilePDFAndSaveJob($surveyPeriod, $zipExportFile->id, auth()->user()->id, $listSurveyResponseChunk, $image))
                     ->onQueue('import');
             });
 
