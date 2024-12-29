@@ -27,6 +27,7 @@ class GeneralClass extends Model
         'teacher_id',
         'sub_teacher_id',
         'type',
+        'admission_year_id'
     ];
 
     protected $table = 'classes';
@@ -35,6 +36,12 @@ class GeneralClass extends Model
     public function faculty(): BelongsTo
     {
         return $this->belongsTo(Faculty::class);
+    }
+
+    public function admissionYear(): BelongsTo
+    {
+        return $this->belongsTo(AdmissionYear::class);
+        ;
     }
 
     public function major(): BelongsTo

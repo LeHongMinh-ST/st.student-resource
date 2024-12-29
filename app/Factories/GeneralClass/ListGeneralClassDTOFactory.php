@@ -20,6 +20,9 @@ class ListGeneralClassDTOFactory
         $command->setType($request->type);
         $command->setSubTeacherId($request->teacher_id);
         $command->setTeacherId($request->sub_teacher_id);
+        if ($request->has('admission_year_id')) {
+            $command->setAdmissionYearId((int)$request->admission_year_id);
+        }
 
         // Set command properties based on the request parameters, if they exist
         return MakeDataHelper::makeListData($request, $command);

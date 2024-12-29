@@ -23,6 +23,7 @@ class CreateGeneralClassDTOFactory
         $command->setFacultyId(auth()->user()->faculty_id);
         $command->setMajorId($request->get('major_id'));
         $command->setTeacherId($request->get('teacher_id'));
+        $command->setAdmissionYearId((int)$request->get('admission_year_id'));
         $command->setType($request->get('type', ClassType::Basic->value));
 
         return $command;

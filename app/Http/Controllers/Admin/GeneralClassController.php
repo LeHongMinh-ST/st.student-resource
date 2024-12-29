@@ -147,7 +147,7 @@ class GeneralClassController extends Controller
     ])]
     public function show(GeneralClass $generalClass, ShowGeneralClassRequest $request): GeneralClassResource
     {
-        $generalClass->load('teacher', 'faculty', 'studentPresident', 'studentSecretary', 'subTeacher');
+        $generalClass->load('teacher', 'faculty', 'studentPresident', 'studentSecretary', 'subTeacher', 'admissionYear');
 
         // Return a JSON response with the generated token and the admin API section
         return new GeneralClassResource($generalClass);

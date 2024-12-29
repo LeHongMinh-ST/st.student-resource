@@ -29,11 +29,13 @@ class GeneralClassService
             ->when($listFacultyDTO->getQ(), fn ($q) => $q->where('code', 'like', "%{$listFacultyDTO->getQ()}%"))
             ->when($listFacultyDTO->getTeacherId(), fn ($q) => $q->where('teacher_id', $listFacultyDTO->getTeacherId()))
             ->when($listFacultyDTO->getSubTeacherId(), fn ($q) => $q->where('sub_teacher_id', $listFacultyDTO->getSubTeacherId()))
-//            ->when($listFacultyDTO->getCode(), fn($q) => $q->where('code', $listFacultyDTO->getCode()))
             ->when($listFacultyDTO->getFacultyId(), fn ($q) => $q->where('faculty_id', $listFacultyDTO->getFacultyId()))
             ->when($listFacultyDTO->getStatus(), fn ($q) => $q->where('status', $listFacultyDTO->getStatus()))
-            ->with(['teacher', 'subTeacher'])
-            ->orderBy($listFacultyDTO->getOrderBy(), $listFacultyDTO->getOrder()->value);
+            ->when($listFacultyDTO->getAdmissionYearId(), fn ($q) => $q->where('admission_year_id', $listFacultyDTO->getAdmissionYearId()))
+            ->with(['teacher', 'subTeacher', 'admissionYear'])
+            ->join('admission_years', 'admission_years.id', '=', 'classes.admission_year_id')
+            ->orderBy('admission_years.admission_year', 'desc')
+            ->orderBy('classes.' . $listFacultyDTO->getOrderBy(), $listFacultyDTO->getOrder()->value);
         return $listFacultyDTO->getPage() ? $query->paginate($listFacultyDTO->getLimit()) : $query->get();
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\GeneralClass;
 
+use App\Http\Resources\AdmissionYear\AdmissionYearResource;
 use App\Http\Resources\Faculty\FacultyForLoadResource;
 use App\Http\Resources\Student\StudentResource;
 use App\Http\Resources\User\UserForLoadResource;
@@ -37,7 +38,10 @@ class GeneralClassResource extends JsonResource
             'officer' => [
                 'student_president' => new StudentResource($this->whenLoaded('studentPresident')),
                 'student_secretary' => new StudentResource($this->whenLoaded('studentSecretary')),
-            ]
+            ],
+            'admission_year_id' => $this->admission_year_id,
+
+            'admission_year' => new AdmissionYearResource($this->whenLoaded('admissionYear')),
         ];
     }
 }

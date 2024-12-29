@@ -24,6 +24,8 @@ class CreateGeneralClassDTO
 
     private ?string $type;
 
+    private int $admissionYearId;
+
     public function __construct(array $data = [])
     {
         if (! empty($data)) {
@@ -34,6 +36,7 @@ class CreateGeneralClassDTO
             $this->majorId = Arr::get($data, 'major_id');
             $this->teacherId = Arr::get($data, 'teacher_id');
             $this->type = Arr::get($data, 'type', ClassType::Basic->value);
+            $this->admissionYearId = Arr::get($data, 'admission_year_id');
         } else {
             $this->name = null;
             $this->code = null;
@@ -42,7 +45,18 @@ class CreateGeneralClassDTO
             $this->majorId = null;
             $this->teacherId = null;
             $this->type = null;
+            $this->admissionYearId = null;
         }
+    }
+
+    public function getAdmissionYearId(): int
+    {
+        return $this->admissionYearId;
+    }
+
+    public function setAdmissionYearId(int $admissionYearId): void
+    {
+        $this->admissionYearId = $admissionYearId;
     }
 
     public function getName(): ?string
@@ -126,6 +140,7 @@ class CreateGeneralClassDTO
             'major_id' => $this->majorId,
             'teacher_id' => $this->teacherId,
             'type' => $this->type,
+            'admission_year_id' => $this->admissionYearId
         ];
     }
 }

@@ -37,6 +37,7 @@ class StoreGeneralClassRequest extends FormRequest
                 Rule::unique('classes', 'code'),
             ],
             'status' => 'nullable',
+            'admission_year_id' => 'required|integer',
         ];
     }
 }
