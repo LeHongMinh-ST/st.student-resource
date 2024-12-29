@@ -65,7 +65,7 @@ class GeneralClass extends Model
     public function studentSecretary()
     {
         return $this->hasOneThrough(Student::class, ClassStudent::class, 'class_id', 'id', 'id', 'student_id')
-            ->where('class_students.role', StudentRole::President);
+            ->where('class_students.role', StudentRole::Secretary);
     }
 
     public function teacher(): BelongsTo

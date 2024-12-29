@@ -36,6 +36,8 @@ class UpdateGeneralClassDTO
         $this->type = null;
         $this->teacherId = null;
         $this->subTeacherId = null;
+        $this->studentPresidentId = null;
+        $this->studentSecretaryId = null;
     }
 
     public function getStudentPresidentId(): ?int
