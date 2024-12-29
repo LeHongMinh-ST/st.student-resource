@@ -71,6 +71,7 @@
 
         .checkbox-custom {
             margin: 0.375rem 0.75rem;
+            margin-left: 0px;
         }
 
         .content {
@@ -84,6 +85,26 @@
         .mb-2 {
             margin-bottom: 25px !important;
         }
+
+        .form-check-input {
+            float: left;
+            margin-right: 10px;
+            margin-top: 5px;
+        }
+        /*.checkbox-custom {*/
+        /*    overflow: hidden; !* Clear float *!*/
+        /*}*/
+
+        /*.checkbox-custom input {*/
+        /*    float: left; !* Đưa checkbox sang trái *!*/
+        /*    margin-right: 10px; !* Khoảng cách giữa checkbox và label *!*/
+        /*    vertical-align: middle; !* Căn giữa checkbox theo chiều dọc *!*/
+        /*}*/
+
+        /*.checkbox-custom label {*/
+        /*    float: left; !* Đưa label sang trái *!*/
+        /*    vertical-align: middle; !* Căn giữa label theo chiều dọc *!*/
+        /*}*/
 
 
     </style>

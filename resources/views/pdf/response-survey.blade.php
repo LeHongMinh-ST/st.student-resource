@@ -87,6 +87,12 @@
             margin-bottom: 30px !important;
         }
 
+        .form-check-input {
+            float: left;
+            margin-right: 10px;
+            margin-top: 3px;
+        }
+
 
     </style>
     {{--    <link href="{{ asset('assets/css/response-survey.css') }}" id="stylesheet" rel="stylesheet" type="text/css">--}}
@@ -204,7 +210,7 @@
                     @foreach(\App\Enums\EmploymentSurvey\EmploymentStatus::cases() as $status)
                         <div class="form-check checkbox-custom">
                             <input class="form-check-input" type="radio" name="flexRadioDisabled"
-                                   {{$surveyResponse['employment_status'] == $status ? 'checked' : ''}}
+                                   {{$surveyResponse['employment_status'] == $status->value ? 'checked' : ''}}
                                    id="flexRadioDisabled">
                             <label class="form-check-label" for="flexRadioDisabled">
                                 {{$status->getName()}}
@@ -254,7 +260,7 @@
                     @foreach(\App\Enums\EmploymentSurvey\WorkArea::cases() as $status)
                         <div class="form-check checkbox-custom">
                             <input class="form-check-input" type="radio" name="flexRadioDisabled"
-                                   {{$surveyResponse['work_area'] == $status ? 'checked' : ''}}
+                                   {{$surveyResponse['work_area'] == $status->value ? 'checked' : ''}}
                                    id="flexRadioDisabled">
                             <label class="form-check-label" for="flexRadioDisabled">
                                 {{$status->getName()}}
@@ -270,7 +276,7 @@
                     @foreach(\App\Enums\EmploymentSurvey\EmployedSince::cases() as $status)
                         <div class="form-check checkbox-custom">
                             <input class="form-check-input" type="radio" name="flexRadioDisabled"
-                                   {{$surveyResponse['employed_since'] == $status ? 'checked' : ''}}
+                                   {{$surveyResponse['employed_since'] == $status->value ? 'checked' : ''}}
 
                                    id="flexRadioDisabled">
                             <label class="form-check-label" for="flexRadioDisabled">
@@ -287,7 +293,7 @@
                     @foreach(\App\Enums\EmploymentSurvey\TrainedField::cases() as $status)
                         <div class="form-check checkbox-custom">
                             <input class="form-check-input" type="radio" name="flexRadioDisabled"
-                                   {{$surveyResponse['trained_field'] == $status ? 'checked' : ''}}
+                                   {{$surveyResponse['trained_field'] == $status->value ? 'checked' : ''}}
 
                                    id="flexRadioDisabled">
                             <label class="form-check-label" for="flexRadioDisabled">
@@ -304,7 +310,7 @@
                     @foreach(\App\Enums\EmploymentSurvey\ProfessionalQualificationField::cases() as $status)
                         <div class="form-check checkbox-custom">
                             <input class="form-check-input" type="radio" name="flexRadioDisabled"
-                                   {{$surveyResponse['professional_qualification_field'] == $status ? 'checked' : ''}}
+                                   {{$surveyResponse['professional_qualification_field'] == $status->value ? 'checked' : ''}}
 
                                    id="flexRadioDisabled">
                             <label class="form-check-label" for="flexRadioDisabled">
@@ -322,7 +328,7 @@
                     @foreach(\App\Enums\EmploymentSurvey\LevelKnowledgeAcquired::cases() as $status)
                         <div class="form-check checkbox-custom">
                             <input class="form-check-input" type="radio" name="flexRadioDisabled"
-                                   {{$surveyResponse['level_knowledge_acquired'] == $status ? 'checked' : ''}}
+                                   {{$surveyResponse['level_knowledge_acquired'] == $status->value ? 'checked' : ''}}
 
                                    id="flexRadioDisabled">
                             <label class="form-check-label" for="flexRadioDisabled">
@@ -344,7 +350,7 @@
                     @foreach(\App\Enums\EmploymentSurvey\AverageIncome::cases() as $status)
                         <div class="form-check checkbox-custom">
                             <input class="form-check-input" type="radio" name="flexRadioDisabled"
-                                   {{$surveyResponse['average_income'] == $status ? 'checked' : ''}}
+                                   {{$surveyResponse['average_income'] == $status->value ? 'checked' : ''}}
                                    id="flexRadioDisabled">
                             <label class="form-check-label" for="flexRadioDisabled">
                                 {{$status->getName()}}
