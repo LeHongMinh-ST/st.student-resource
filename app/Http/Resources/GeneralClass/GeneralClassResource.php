@@ -40,7 +40,6 @@ class GeneralClassResource extends JsonResource
                 'student_secretary' => new StudentResource($this->whenLoaded('studentSecretary')),
             ],
             'admission_year_id' => $this->admission_year_id,
-
             'admission_year' => new AdmissionYearResource($this->whenLoaded('admissionYear')),
         ];
     }

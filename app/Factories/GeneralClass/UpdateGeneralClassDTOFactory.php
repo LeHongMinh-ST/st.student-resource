@@ -24,6 +24,13 @@ class UpdateGeneralClassDTOFactory
         $command->setType($request->get('type'));
         $command->setTeacherId((int)$request->get('teacher_id'));
         $command->setSubTeacherId((int)$request->get('sub_teacher_id'));
+        if ($request->has('officer.student_president.id')) {
+            $command->setStudentPresidentId((int) $request->get('officer.student_president.id'));
+        }
+
+        if ($request->has('officer.student_secretary.id')) {
+            $command->setStudentPresidentId((int) $request->get('officer.student_secretary.id'));
+        }
 
         return $command;
     }

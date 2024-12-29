@@ -22,6 +22,10 @@ class UpdateGeneralClassDTO
 
     private ?string $type;
 
+    private ?int $studentPresidentId;
+
+    private ?int $studentSecretaryId;
+
     public function __construct()
     {
         $this->id = null;
@@ -32,6 +36,26 @@ class UpdateGeneralClassDTO
         $this->type = null;
         $this->teacherId = null;
         $this->subTeacherId = null;
+    }
+
+    public function getStudentPresidentId(): ?int
+    {
+        return $this->studentPresidentId;
+    }
+
+    public function getStudentSecretaryId(): ?int
+    {
+        return $this->studentSecretaryId;
+    }
+
+    public function setStudentPresidentId(int $studentPresidentId): void
+    {
+        $this->studentPresidentId = $studentPresidentId;
+    }
+
+    public function setStudentSecretaryId(int $studentSecretaryId): void
+    {
+        $this->studentSecretaryId = $studentSecretaryId;
     }
 
     public function getSubTeacherId(): ?int

@@ -26,6 +26,7 @@ class CreateGeneralClassDTOFactory
         $command->setAdmissionYearId((int)$request->get('admission_year_id'));
         $command->setType($request->get('type', ClassType::Basic->value));
 
+
         return $command;
     }
 }

@@ -9,6 +9,7 @@ use App\DTO\GeneralClass\ListGeneralClassDTO;
 use App\DTO\GeneralClass\UpdateGeneralClassDTO;
 use App\Enums\AuthApiSection;
 use App\Enums\Status;
+use App\Enums\StudentRole;
 use App\Enums\UserRole;
 use App\Models\GeneralClass;
 use Illuminate\Validation\ValidationException;
@@ -45,10 +46,22 @@ class GeneralClassService
         return GeneralClass::create($createFacultyDTO->toArray());
     }
 
-    public function update(UpdateGeneralClassDTO $createFacultyDTO): GeneralClass
+    public function update(UpdateGeneralClassDTO $dto): GeneralClass
     {
-        $class = GeneralClass::where('id', $createFacultyDTO->getId())->first();
-        $class->update($createFacultyDTO->toArray());
+        $class = GeneralClass::where('id', $dto->getId())->first();
+        $class->update($dto->toArray());
+
+        if ($dto->getStudentPresidentId()) {
+            $class->students()->updateExistingPivot($dto->getStudentPresidentId(), [
+                'role' => StudentRole::President->value,
+            ]);
+        }
+
+        if ($dto->getStudentSecretaryId()) {
+            $class->students()->updateExistingPivot($dto->getStudentSecretaryId(), [
+                'role' => StudentRole::Secretary->value,
+            ]);
+        }
 
         return $class;
     }
