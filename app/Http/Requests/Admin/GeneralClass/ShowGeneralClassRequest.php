@@ -16,7 +16,6 @@ class ShowGeneralClassRequest extends FormRequest
      */
     public function authorize(): bool
     {
-
         $auth = auth(AuthApiSection::Admin->value)->user();
         $class = $this->route('generalClass');
         if (UserRole::Teacher === $auth->role) {

@@ -34,6 +34,7 @@ class GeneralClassService
             ->when($listFacultyDTO->getAdmissionYearId(), fn ($q) => $q->where('admission_year_id', $listFacultyDTO->getAdmissionYearId()))
             ->with(['teacher', 'subTeacher', 'admissionYear'])
             ->join('admission_years', 'admission_years.id', '=', 'classes.admission_year_id')
+            ->select('classes.*')
             ->orderBy('admission_years.admission_year', 'desc')
             ->orderBy('classes.' . $listFacultyDTO->getOrderBy(), $listFacultyDTO->getOrder()->value);
         return $listFacultyDTO->getPage() ? $query->paginate($listFacultyDTO->getLimit()) : $query->get();
