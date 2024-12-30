@@ -331,15 +331,19 @@ class StudentService
             return 0;
         }
 
-        return DB::table('students')
+        $query = DB::table('students')
             ->join('student_warnings', 'students.id', '=', 'student_warnings.student_id')
-            ->whereIn('student_warnings.warning_id', $latestWarningIds)
-            ->when(UserRole::Teacher === $auth->role, fn ($q) => $q->whereHas('generalClass', function ($q) {
-                return $q->where('teacher_id', auth(AuthApiSection::Admin->value)->id())
-                    ->orWhere('sub_teacher_id', auth(AuthApiSection::Admin->value)->id());
-            }))
-            ->distinct('students.id')
-            ->count();
+            ->whereIn('student_warnings.warning_id', $latestWarningIds);
+
+        if (UserRole::Teacher === $auth->role) {
+            $query->join('general_classes', 'students.general_class_id', '=', 'general_classes.id')
+                  ->where(function ($q) use ($auth) {
+                      $q->where('general_classes.teacher_id', $auth->id)
+                        ->orWhere('general_classes.sub_teacher_id', $auth->id);
+                  });
+        }
+
+        return $query->distinct('students.id')->count();
 
     }
 
