@@ -336,15 +336,15 @@ class StudentService
             ->whereIn('student_warnings.warning_id', $latestWarningIds);
 
         if (UserRole::Teacher === $auth->role) {
-            $query->join('general_classes', 'students.general_class_id', '=', 'general_classes.id')
+            $query->join('class_students', 'students.id', '=', 'class_students.student_id')
+                  ->join('classes', 'class_students.class_id', '=', 'classes.id')
                   ->where(function ($q) use ($auth) {
-                      $q->where('general_classes.teacher_id', $auth->id)
-                        ->orWhere('general_classes.sub_teacher_id', $auth->id);
+                      $q->where('classes.teacher_id', $auth->id)
+                        ->orWhere('classes.sub_teacher_id', $auth->id);
                   });
         }
 
         return $query->distinct('students.id')->count();
-
     }
 
     public function getTotalStudentGraduatedByClassId($classId): int
