@@ -159,7 +159,7 @@ class Student extends Authenticatable implements JWTSubject
 
     public function getWarningStatusAttribute(): WarningStatus
     {
-        $latestWarningIds = Warning::orderBy('semester_id', 'desc')
+        $latestWarningIds = Warning::orderBy('created_at', 'desc')
             ->take(2)
             ->pluck('id')
             ->toArray();
