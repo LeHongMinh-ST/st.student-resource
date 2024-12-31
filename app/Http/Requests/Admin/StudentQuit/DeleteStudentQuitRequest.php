@@ -14,7 +14,7 @@ class DeleteStudentQuitRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.quit.delete');
+        return Gate::allows('admin.quit.destroy');
     }
 
     /**

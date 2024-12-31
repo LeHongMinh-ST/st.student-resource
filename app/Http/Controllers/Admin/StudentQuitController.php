@@ -137,6 +137,10 @@ class StudentQuitController extends Controller
      */
     public function destroy(Quit $quit, DeleteStudentQuitRequest $request): JsonResponse
     {
+        if ($quit->students()->count() > 0) {
+            throw new DeleteResourceFailedException();
+        }
+
         $this->studentQuitService->delete($quit->id);
 
         return $this->noContent();
