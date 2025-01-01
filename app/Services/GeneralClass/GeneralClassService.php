@@ -57,7 +57,8 @@ class GeneralClassService
             ]);
         } else {
             $class->students()->wherePivot('role', StudentRole::President->value)->update([
-                'role' => null,    ]);
+                'role' => StudentRole::Basic,
+            ]);
         }
 
         if ($dto->getStudentSecretaryId()) {
@@ -66,7 +67,7 @@ class GeneralClassService
             ]);
         } else {
             $class->students()->wherePivot('role', StudentRole::Secretary->value)->update([
-                'role' => null,
+                'role' => StudentRole::Basic,
             ]);
         }
 
