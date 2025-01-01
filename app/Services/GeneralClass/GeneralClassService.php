@@ -51,25 +51,27 @@ class GeneralClassService
         $class = GeneralClass::where('id', $dto->getId())->first();
         $class->update($dto->toArray());
 
+        $class->students()->wherePivot('role', StudentRole::President->value)->update([
+            'role' => StudentRole::Basic,
+        ]);
+
         if ($dto->getStudentPresidentId()) {
             $class->students()->updateExistingPivot($dto->getStudentPresidentId(), [
                 'role' => StudentRole::President->value,
             ]);
-        } else {
-            $class->students()->wherePivot('role', StudentRole::President->value)->update([
-                'role' => StudentRole::Basic,
-            ]);
         }
+
+
+        $class->students()->wherePivot('role', StudentRole::Secretary->value)->update([
+            'role' => StudentRole::Basic,
+        ]);
 
         if ($dto->getStudentSecretaryId()) {
             $class->students()->updateExistingPivot($dto->getStudentSecretaryId(), [
                 'role' => StudentRole::Secretary->value,
             ]);
-        } else {
-            $class->students()->wherePivot('role', StudentRole::Secretary->value)->update([
-                'role' => StudentRole::Basic,
-            ]);
         }
+
 
         return $class;
     }
