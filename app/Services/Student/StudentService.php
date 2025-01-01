@@ -337,11 +337,11 @@ class StudentService
 
         if (UserRole::Teacher === $auth->role) {
             $query->join('class_students', 'students.id', '=', 'class_students.student_id')
-                  ->join('classes', 'class_students.class_id', '=', 'classes.id')
-                  ->where(function ($q) use ($auth) {
-                      $q->where('classes.teacher_id', $auth->id)
+                ->join('classes', 'class_students.class_id', '=', 'classes.id')
+                ->where(function ($q) use ($auth): void {
+                    $q->where('classes.teacher_id', $auth->id)
                         ->orWhere('classes.sub_teacher_id', $auth->id);
-                  });
+                });
         }
 
         return $query->distinct('students.id')->count();
