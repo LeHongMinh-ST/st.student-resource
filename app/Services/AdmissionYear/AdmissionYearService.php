@@ -15,11 +15,16 @@ class AdmissionYearService
     public function getList(ListAdmissionYearDTO $admissionYearDTO): Collection|LengthAwarePaginator|array
     {
         $query = AdmissionYear::query()
-            ->with('students', function ($q): void {
+            ->with(['students' => function ($q): void {
                 if (auth('api')->check()) {
                     $q->where('faculty_id', auth('api')->user()->faculty_id);
                 }
-            })
+
+            }], ['generalClasses' => function ($q): void {
+                if (auth('api')->check()) {
+                    $q->where('faculty_id', auth('api')->user()->faculty_id);
+                }
+            }])
             ->withCount([
                 'students' => function ($query): void {
                     $query->where('faculty_id', auth('api')->user()->faculty_id);
@@ -27,7 +32,11 @@ class AdmissionYearService
                 'students as currently_studying_count' => function ($query): void {
                     $query->where('faculty_id', auth('api')->user()->faculty_id)
                         ->where('status', StudentStatus::CurrentlyStudying);
-                }])
+                },
+                'generalClasses' => function ($query): void {
+                    $query->where('faculty_id', auth('api')->user()->faculty_id);
+                }
+            ])
             ->orderBy($admissionYearDTO->getOrderBy(), $admissionYearDTO->getOrder()->value);
         return $admissionYearDTO->getPage() ? $query->paginate($admissionYearDTO->getLimit()) : $query->get();
     }

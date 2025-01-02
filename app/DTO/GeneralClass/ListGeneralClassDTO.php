@@ -21,6 +21,8 @@ class ListGeneralClassDTO extends BaseListDTO implements BaseDTO
 
     private ?int $admissionYearId;
 
+    private ?int $majorId;
+
     private ?int $facultyId;
 
     private ?string $type;
@@ -35,6 +37,17 @@ class ListGeneralClassDTO extends BaseListDTO implements BaseDTO
         $this->facultyId = null;
         $this->type = 'teacher';
         $this->admissionYearId = null;
+        $this->majorId = null;
+    }
+
+    public function getMajorId(): ?int
+    {
+        return $this->majorId;
+    }
+
+    public function setMajorId(?int $majorId): void
+    {
+        $this->majorId = $majorId;
     }
 
     public function getAdmissionYearId(): ?int
@@ -46,6 +59,7 @@ class ListGeneralClassDTO extends BaseListDTO implements BaseDTO
     {
         $this->admissionYearId = $admissionYearId;
     }
+
     public function getType(): ?string
     {
         return $this->type;

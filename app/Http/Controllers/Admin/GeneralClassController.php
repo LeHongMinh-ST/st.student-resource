@@ -163,6 +163,7 @@ class GeneralClassController extends Controller
             'study' => $this->studentService->getTotalStudentStudyByClassId($generalClass->id),
             'transfer_study' => $this->studentService->getTotalStudentTransferStudyByClassId($generalClass->id),
             'deferred' => $this->studentService->getTotalStudentDeferredByClassId($generalClass->id),
+            'warning' => $this->studentService->getTotalStudentWarningByClassId($generalClass->id),
         ]);
     }
 }

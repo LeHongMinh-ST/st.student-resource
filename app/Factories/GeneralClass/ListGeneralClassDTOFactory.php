@@ -23,6 +23,9 @@ class ListGeneralClassDTOFactory
         if ($request->has('admission_year_id')) {
             $command->setAdmissionYearId((int)$request->admission_year_id);
         }
+        if ($request->has('major_id')) {
+            $command->setMajorId((int)$request->major_id);
+        }
 
         // Set command properties based on the request parameters, if they exist
         return MakeDataHelper::makeListData($request, $command);

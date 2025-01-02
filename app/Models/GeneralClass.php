@@ -41,7 +41,6 @@ class GeneralClass extends Model
     public function admissionYear(): BelongsTo
     {
         return $this->belongsTo(AdmissionYear::class);
-        ;
     }
 
     public function major(): BelongsTo

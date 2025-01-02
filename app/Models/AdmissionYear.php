@@ -22,6 +22,11 @@ class AdmissionYear extends Model
         return $this->hasMany(Student::class);
     }
 
+    public function generalClasses(): HasMany
+    {
+        return $this->hasMany(GeneralClass::class);
+    }
+
     //    public function getStudentCountAttribute(): int
     //    {
     //        return $this->students()

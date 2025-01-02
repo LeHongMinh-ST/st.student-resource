@@ -347,6 +347,38 @@ class StudentService
         return $query->distinct('students.id')->count();
     }
 
+
+    public function getTotalStudentWarningByClassId(int $classId): int
+    {
+        $auth = auth(AuthApiSection::Admin->value)->user();
+
+        $latestWarningIds = DB::table('warnings')
+            ->orderBy('semester_id', 'desc')
+            ->take(2)
+            ->pluck('id');
+
+        if (count($latestWarningIds) < 2) {
+            return 0;
+        }
+
+        $query = DB::table('students')
+            ->join('student_warnings', 'students.id', '=', 'student_warnings.student_id')
+            ->join('class_students', 'class_students.student_id', 'students.id')
+            ->where('class_students.class_id', $classId)
+            ->whereIn('student_warnings.warning_id', $latestWarningIds);
+
+        if (UserRole::Teacher === $auth->role) {
+            $query->join('class_students', 'students.id', '=', 'class_students.student_id')
+                ->join('classes', 'class_students.class_id', '=', 'classes.id')
+                ->where(function ($q) use ($auth): void {
+                    $q->where('classes.teacher_id', $auth->id)
+                        ->orWhere('classes.sub_teacher_id', $auth->id);
+                });
+        }
+
+        return $query->distinct('students.id')->count();
+    }
+
     public function getTotalStudentGraduatedByClassId($classId): int
     {
 
