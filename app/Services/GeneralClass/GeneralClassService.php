@@ -32,7 +32,7 @@ class GeneralClassService
             ->when($listFacultyDTO->getSubTeacherId(), fn ($q) => $q->where('sub_teacher_id', $listFacultyDTO->getSubTeacherId()))
             ->when($listFacultyDTO->getFacultyId(), fn ($q) => $q->where('faculty_id', $listFacultyDTO->getFacultyId()))
             ->when($listFacultyDTO->getStatus(), fn ($q) => $q->where('status', $listFacultyDTO->getStatus()))
-            ->when($listFacultyDTO->getTypeClass(), fn ($q) => $q->where('type', $listFacultyDTO->getTypeClass()))
+            ->when($listFacultyDTO->getTypeClass(), fn ($q) => $q->where('type', $listFacultyDTO->getTypeClass())->where('training_industry_id', null))
             ->when($listFacultyDTO->getAdmissionYearId(), fn ($q) => $q->where('admission_year_id', $listFacultyDTO->getAdmissionYearId()))
             ->when($listFacultyDTO->getTrainingIndustryId(), fn ($q) => $q->where('training_industry_id', $listFacultyDTO->getTrainingIndustryId()))
             ->with(['teacher', 'subTeacher', 'admissionYear', 'students', 'trainingIndustry'])

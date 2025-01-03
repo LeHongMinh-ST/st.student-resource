@@ -357,7 +357,7 @@ class StudentService
             ->take(2)
             ->pluck('id');
 
-        if (count($latestWarningIds) < 2) {
+        if (count($latestWarningIds) < 1) {
             return 0;
         }
 
@@ -514,6 +514,36 @@ class StudentService
             ->count();
 
         return $studentsCount;
+    }
+
+    public function getTotalStudentWarningByAdmissionId($admissionYearId): int
+    {
+        $auth = auth(AuthApiSection::Admin->value)->user();
+
+        $latestWarningIds = DB::table('warnings')
+            ->orderBy('semester_id', 'desc')
+            ->take(2)
+            ->pluck('id');
+
+        if (count($latestWarningIds) < 1) {
+            return 0;
+        }
+
+        $query = DB::table('students')
+            ->join('student_warnings', 'students.id', '=', 'student_warnings.student_id')
+            ->where('students.admission_year_id', $admissionYearId)
+            ->whereIn('student_warnings.warning_id', $latestWarningIds);
+
+        if (UserRole::Teacher === $auth->role) {
+            $query->join('class_students', 'students.id', '=', 'class_students.student_id')
+                ->join('classes', 'class_students.class_id', '=', 'classes.id')
+                ->where(function ($q) use ($auth): void {
+                    $q->where('classes.teacher_id', $auth->id)
+                        ->orWhere('classes.sub_teacher_id', $auth->id);
+                });
+        }
+
+        return $query->distinct('students.id')->count();
     }
 
     public function changeStatus($studentId, $status): bool|int

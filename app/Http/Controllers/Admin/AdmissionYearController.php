@@ -66,12 +66,16 @@ class AdmissionYearController extends Controller
     {
         return $this->json([
             'class_total' => $admissionYear->generalClasses()->count(),
-            'class_basic_total' => $admissionYear->generalClasses()->where('type', ClassType::Basic)->count()
+            'class_basic_total' => $admissionYear->generalClasses()->where('type', ClassType::Basic)->count(),
+            'class_major_none_total' => $admissionYear->generalClasses()->where('type', ClassType::Major)->whereNull(
+                'training_industry_id'
+            )->count()
         ]);
     }
 
-    public function getStatisticalAdmissionYear(int $admissionYearId, ShowStatisticalAdmissionYear $showAdmissionYearRequest): JsonResponse
+    public function getStatisticalAdmissionYear(AdmissionYear $admissionYear, ShowStatisticalAdmissionYear $showAdmissionYearRequest): JsonResponse
     {
+        $admissionYearId = $admissionYear->id;
         return $this->json([
             'total' => Student::query()->where('admission_year_id', $admissionYearId)->count(),
             'graduated' => $this->studentService->getTotalStudentGraduatedByAdmissionYearId($admissionYearId),
@@ -80,6 +84,7 @@ class AdmissionYearController extends Controller
             'study' => $this->studentService->getTotalStudentStudyByAdmissionYearId($admissionYearId),
             'transfer_study' => $this->studentService->getTotalStudentTransferStudyByAdmissionYearId($admissionYearId),
             'deferred' => $this->studentService->getTotalStudentDeferredByAdmissionYearId($admissionYearId),
+            'warning' => $this->studentService->getTotalStudentWarningByAdmissionId($admissionYearId)
         ]);
     }
 
