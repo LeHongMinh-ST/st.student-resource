@@ -138,9 +138,7 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
     Route::prefix('warning')->group(function (): void {
         Route::get('/', [StudentWarningController::class, 'index']);
         Route::post('/', [StudentWarningController::class, 'store']);
-        Route::post('/import-student', [StudentWarningController::class, 'importStudent']);
         Route::get('/import-student/{excelImportFileError}/download-error', [StudentWarningController::class, 'importStudent']);
-        Route::get('/import-student/download-template', [StudentWarningController::class, 'downloadTemplateImport']);
         Route::get('/{warning}', [StudentWarningController::class, 'show']);
         Route::get('/{warning}/students', [StudentWarningController::class, 'getStudents']);
         Route::patch('/{warning}', [StudentWarningController::class, 'update']);
@@ -150,9 +148,7 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
     Route::prefix('quit')->group(function (): void {
         Route::get('/', [StudentQuitController::class, 'index']);
         Route::post('/', [StudentQuitController::class, 'store']);
-        Route::post('/import-student', [StudentQuitController::class, 'importStudent']);
         Route::post('/import-student/{excelImportFileError}/download', [StudentQuitController::class, 'importStudent']);
-        Route::get('/import-student/download-template', [StudentQuitController::class, 'downloadTemplateImport']);
         Route::get('/{quit}/students', [StudentQuitController::class, 'getStudents']);
         Route::get('/{quit}', [StudentQuitController::class, 'show']);
         Route::patch('/{quit}', [StudentQuitController::class, 'update']);

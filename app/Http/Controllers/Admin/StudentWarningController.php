@@ -143,48 +143,6 @@ class StudentWarningController extends Controller
     }
 
     /**
-     * Import student warning
-     *
-     * This endpoint allows student to import a student graduate
-     *
-     * @authenticated Indicates that users must be authenticated to access this endpoint.
-     *
-     * @return JsonResponse Returns a response with no content upon successful deletion.
-     *
-     * @throws CreateResourceFailedException
-     *
-     * @response 204
-     */
-    public function importStudent(ImportStudentWarningRequest $request): JsonResponse
-    {
-        $command = ImportStudentWarningDTOFactory::make($request);
-
-        $this->studentWarningService->importStudentWarning($command);
-
-        return $this->noContent();
-    }
-
-    /**
-     * Download template import
-     *
-     * This endpoint allows student to download file student warning import
-     *
-     * @authenticated Indicates that users must be authenticated to access this endpoint.
-     *
-     * @response 200
-     *
-     * @throws AuthorizationException
-     */
-    public function downloadTemplateImport(): BinaryFileResponse
-    {
-        $this->authorize('admin.warning.import');
-
-        $file = public_path() . '/template/template_student_warning.xlsx';
-
-        return response()->download($file, 'template-student-warning.xlsx');
-    }
-
-    /**
      * Show student warning session
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.

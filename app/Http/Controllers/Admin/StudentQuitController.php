@@ -147,48 +147,6 @@ class StudentQuitController extends Controller
     }
 
     /**
-     * Import student quit
-     *
-     * This endpoint allows student to import a student graduate
-     *
-     * @authenticated Indicates that users must be authenticated to access this endpoint.
-     *
-     * @return JsonResponse Returns a response with no content upon successful deletion.
-     *
-     * @throws CreateResourceFailedException
-     *
-     * @response 204
-     */
-    public function importStudent(ImportStudentQuitRequest $request): JsonResponse
-    {
-        $command = ImportStudentQuitDTOFactory::make($request);
-
-        $this->studentQuitService->importStudentQuit($command);
-
-        return $this->noContent();
-    }
-
-    /**
-     * Download template import
-     *
-     * This endpoint allows student to download file student quit import
-     *
-     * @authenticated Indicates that users must be authenticated to access this endpoint.
-     *
-     * @response 200
-     *
-     * @throws AuthorizationException
-     */
-    public function downloadTemplateImport(): BinaryFileResponse
-    {
-        $this->authorize('admin.quit.import');
-
-        $file = public_path() . '/template/template_student_quit.xlsx';
-
-        return response()->download($file, 'template-student-quit.xlsx');
-    }
-
-    /**
      * Show student quit session
      *
      * @authenticated Indicates that users must be authenticated to access this endpoint.
