@@ -14,7 +14,7 @@ class UpdateGeneralClassDTO
 
     private ?string $status;
 
-    private ?int $majorId;
+    private ?int $trainingIndustryId;
 
     private ?int $teacherId;
 
@@ -32,7 +32,7 @@ class UpdateGeneralClassDTO
         $this->name = null;
         $this->code = null;
         $this->status = null;
-        $this->majorId = null;
+        $this->trainingIndustryId = null;
         $this->type = null;
         $this->teacherId = null;
         $this->subTeacherId = null;
@@ -120,14 +120,14 @@ class UpdateGeneralClassDTO
         $this->status = $status;
     }
 
-    public function getMajorId(): ?int
+    public function getTrainingIndustryId(): ?int
     {
-        return $this->majorId;
+        return $this->trainingIndustryId;
     }
 
-    public function setMajorId(?int $majorId): void
+    public function setTrainingIndustryId(?int $trainingIndustryId): void
     {
-        $this->majorId = $majorId;
+        $this->trainingIndustryId = $trainingIndustryId;
     }
 
     public function getType(): ?string
@@ -147,7 +147,7 @@ class UpdateGeneralClassDTO
             'name' => $this->name,
             'code' => $this->code,
             'status' => $this->status,
-            'major_id' => $this->majorId,
+            'training_industry_id' => $this->trainingIndustryId,
             'type' => $this->type,
             'teacher_id' => $this->teacherId,
             'sub_teacher_id' => $this->subTeacherId,

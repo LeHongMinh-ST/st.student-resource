@@ -45,7 +45,7 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
         Route::post('/', [GeneralClassController::class, 'store']);
         Route::get('/{generalClass}', [GeneralClassController::class, 'show']);
         Route::get('/{generalClass}/student-statistical', [GeneralClassController::class, 'getStatisticalClass']);
-        Route::patch('/{generalClass}', [GeneralClassController::class, 'update']);
+        Route::put('/{generalClass}', [GeneralClassController::class, 'update']);
         Route::delete('/{generalClass}', [GeneralClassController::class, 'destroy']);
     });
 
@@ -71,7 +71,9 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
     Route::prefix('admission-year')->group(function (): void {
         Route::get('/', [AdmissionYearController::class, 'index']);
         Route::get('/{admissionYear}/student-file-imports', [AdmissionYearController::class, 'getListStudentFileImports']);
-        Route::get('/{admissionYear}/student-statistical', [AdmissionYearController::class, 'getStudentStatisticalAdmission']);
+        Route::get('/{admissionYear}/student-statistical', [AdmissionYearController::class, 'getStatisticalAdmissionYear']);
+        Route::get('/{admissionYear}/class-statistical', [AdmissionYearController::class, 'getStatisticalClassAdmissionYear']);
+        Route::get('/{admissionYear}/training-industry-class', [AdmissionYearController::class, 'getTrainingIndustryClass']);
     });
 
     Route::prefix('school-year')->group(function (): void {

@@ -23,7 +23,7 @@ class GeneralClass extends Model
         'code',
         'status',
         'faculty_id',
-        'major_id',
+        'training_industry_id',
         'teacher_id',
         'sub_teacher_id',
         'type',
@@ -43,9 +43,9 @@ class GeneralClass extends Model
         return $this->belongsTo(AdmissionYear::class);
     }
 
-    public function major(): BelongsTo
+    public function trainingIndustry(): BelongsTo
     {
-        return $this->belongsTo(Major::class);
+        return $this->belongsTo(TrainingIndustry::class);
     }
 
     public function students(): BelongsToMany

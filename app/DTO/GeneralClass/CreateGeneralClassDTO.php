@@ -18,7 +18,7 @@ class CreateGeneralClassDTO
 
     private ?int $facultyId;
 
-    private ?int $majorId;
+    private ?int $trainingIndustryId;
 
     private ?int $teacherId;
 
@@ -33,7 +33,7 @@ class CreateGeneralClassDTO
             $this->code = Arr::get($data, 'code');
             $this->status = Arr::get($data, 'status', Status::Enable->value);
             $this->facultyId = Arr::get($data, 'faculty_id');
-            $this->majorId = Arr::get($data, 'major_id');
+            $this->trainingIndustryId = Arr::get($data, 'training_industry_id');
             $this->teacherId = Arr::get($data, 'teacher_id');
             $this->type = Arr::get($data, 'type', ClassType::Basic->value);
             $this->admissionYearId = Arr::get($data, 'admission_year_id');
@@ -42,7 +42,7 @@ class CreateGeneralClassDTO
             $this->code = null;
             $this->status = null;
             $this->facultyId = null;
-            $this->majorId = null;
+            $this->trainingIndustryId = null;
             $this->teacherId = null;
             $this->type = null;
             $this->admissionYearId = null;
@@ -99,14 +99,14 @@ class CreateGeneralClassDTO
         $this->facultyId = $facultyId;
     }
 
-    public function getMajorId(): ?int
+    public function getTrainingIndustryId(): ?int
     {
-        return $this->majorId;
+        return $this->trainingIndustryId;
     }
 
-    public function setMajorId(?int $majorId): void
+    public function setTrainingIndustryId(?int $trainingIndustryId): void
     {
-        $this->majorId = $majorId;
+        $this->trainingIndustryId = $trainingIndustryId;
     }
 
     public function getTeacherId(): ?int
@@ -137,7 +137,7 @@ class CreateGeneralClassDTO
             'code' => $this->code,
             'status' => $this->status,
             'faculty_id' => $this->facultyId,
-            'major_id' => $this->majorId,
+            'training_industry_id' => $this->trainingIndustryId,
             'teacher_id' => $this->teacherId,
             'type' => $this->type,
             'admission_year_id' => $this->admissionYearId

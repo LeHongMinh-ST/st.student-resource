@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Admin;
 
 use App\DTO\AdmissionYear\ListStudentImportDTO;
+use App\Enums\ClassType;
 use App\Factories\AdmissionYear\ListAdmissionYearDTOFactory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdmissionYear\ListAdmissionYearRequest;
@@ -61,6 +62,14 @@ class AdmissionYearController extends Controller
         return new AdmissionYearCollection($this->admissionYearService->getList($admissionYearDto));
     }
 
+    public function getStatisticalClassAdmissionYear(AdmissionYear $admissionYear): JsonResponse
+    {
+        return $this->json([
+            'class_total' => $admissionYear->generalClasses()->count(),
+            'class_basic_total' => $admissionYear->generalClasses()->where('type', ClassType::Basic)->count()
+        ]);
+    }
+
     public function getStatisticalAdmissionYear(int $admissionYearId, ShowStatisticalAdmissionYear $showAdmissionYearRequest): JsonResponse
     {
         return $this->json([
@@ -98,5 +107,11 @@ class AdmissionYearController extends Controller
         $excelFiles = $this->excelImportFileService->getListStudentFileImports($paramsDTO);
 
         return new ExcelImportFileCollection($excelFiles);
+    }
+
+
+    public function getTrainingIndustryClass(AdmissionYear $admissionYear)
+    {
+        return $this->json($this->admissionYearService->getTrainingIndustryClassByAdmissionId($admissionYear));
     }
 }

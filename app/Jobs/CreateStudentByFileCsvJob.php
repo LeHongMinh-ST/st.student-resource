@@ -88,9 +88,10 @@ class CreateStudentByFileCsvJob implements ShouldQueue
 
                 // Check exist class if not exist create new class
                 $commandClass = new CreateGeneralClassDTO([
-                    'name' => $this->faculty->name,
+                    'name' => $studentData['class_code'],
                     'code' => $studentData['class_code'],
                     'faculty_id' => $this->faculty->id,
+                    'admission_year_id' => $this->admissionYearId,
                 ]);
 
                 // get class or create new class

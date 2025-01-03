@@ -21,7 +21,7 @@ class CreateGeneralClassDTOFactory
         $command->setCode($request->get('code'));
         $command->setStatus($request->get('status', Status::Enable->value));
         $command->setFacultyId(auth()->user()->faculty_id);
-        $command->setMajorId($request->get('major_id'));
+        $command->setTrainingIndustryId((int)$request->get('training_industry_id', ));
         $command->setTeacherId($request->get('teacher_id'));
         $command->setAdmissionYearId((int)$request->get('admission_year_id'));
         $command->setType($request->get('type', ClassType::Basic->value));

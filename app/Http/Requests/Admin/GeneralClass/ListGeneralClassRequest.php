@@ -28,8 +28,9 @@ class ListGeneralClassRequest extends ListRequest
             'teacher_id' => 'nullable',
             'admission_year_id' => 'nullable',
             'sub_teacher_id' => 'nullable',
-            'major_id' => 'nullable',
+            'training_industry_id' => 'nullable',
             'type' => 'nullable',
+            'type_class' => 'nullable',
             ...parent::rules(),
         ];
     }

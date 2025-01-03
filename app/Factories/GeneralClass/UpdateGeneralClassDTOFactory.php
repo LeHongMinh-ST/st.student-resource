@@ -20,7 +20,7 @@ class UpdateGeneralClassDTOFactory
         $command->setName($request->get('name'));
         $command->setCode($request->get('code'));
         $command->setStatus($request->get('status'));
-        $command->setMajorId($request->get('major_id'));
+        $command->setTrainingIndustryId((int)$request->get('training_industry_id', null));
         $command->setType($request->get('type'));
         $command->setTeacherId((int)$request->get('teacher_id'));
         $command->setSubTeacherId((int)$request->get('sub_teacher_id'));

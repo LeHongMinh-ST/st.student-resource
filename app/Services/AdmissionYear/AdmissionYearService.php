@@ -7,6 +7,7 @@ namespace App\Services\AdmissionYear;
 use App\DTO\AdmissionYear\ListAdmissionYearDTO;
 use App\Enums\StudentStatus;
 use App\Models\AdmissionYear;
+use App\Models\TrainingIndustry;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -41,5 +42,15 @@ class AdmissionYearService
         return $admissionYearDTO->getPage() ? $query->paginate($admissionYearDTO->getLimit()) : $query->get();
     }
 
+
+    public function getTrainingIndustryClassByAdmissionId(AdmissionYear $admissionYear)
+    {
+        $trainingIndustryIds = $admissionYear->generalClasses()->pluck('training_industry_id');
+        $trainingIndustries = TrainingIndustry::query()
+            ->whereIn('id', $trainingIndustryIds)
+            ->withCount('generalClasses')
+            ->get();
+        return $trainingIndustries;
+    }
 
 }

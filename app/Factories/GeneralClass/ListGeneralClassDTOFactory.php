@@ -18,13 +18,14 @@ class ListGeneralClassDTOFactory
         $command->setStatus($request->status);
         $command->setFacultyId(auth()->user()->faculty_id);
         $command->setType($request->type);
+        $command->setTypeClass($request->type_class);
         $command->setSubTeacherId($request->teacher_id);
         $command->setTeacherId($request->sub_teacher_id);
         if ($request->has('admission_year_id')) {
             $command->setAdmissionYearId((int)$request->admission_year_id);
         }
-        if ($request->has('major_id')) {
-            $command->setMajorId((int)$request->major_id);
+        if ($request->has('training_industry_id')) {
+            $command->setTrainingIndustryId((int)$request->training_industry_id);
         }
 
         // Set command properties based on the request parameters, if they exist

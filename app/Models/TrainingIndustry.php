@@ -39,6 +39,11 @@ class TrainingIndustry extends Model
         return $this->hasMany(Student::class);
     }
 
+    public function generalClasses(): HasMany
+    {
+        return $this->hasMany(GeneralClass::class);
+    }
+
     // ------------------------ CASTS -------------------------//
     protected function casts(): array
     {

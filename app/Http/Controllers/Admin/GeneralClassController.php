@@ -147,11 +147,21 @@ class GeneralClassController extends Controller
     ])]
     public function show(GeneralClass $generalClass, ShowGeneralClassRequest $request): GeneralClassResource
     {
-        $generalClass->load('teacher', 'faculty', 'studentPresident', 'studentSecretary', 'subTeacher', 'admissionYear');
+        $generalClass->load('teacher', 'faculty', 'studentPresident', 'studentSecretary', 'subTeacher', 'admissionYear', 'trainingIndustry');
 
         // Return a JSON response with the generated token and the admin API section
         return new GeneralClassResource($generalClass);
     }
+
+    public function getStatisticalAllClass()
+    {
+        $this->authorize('admin.class.index');
+
+        return $this->json([
+
+        ]);
+    }
+
 
     public function getStatisticalClass(GeneralClass $generalClass, ShowGeneralClassRequest $showGeneralClassRequest): JsonResponse
     {
