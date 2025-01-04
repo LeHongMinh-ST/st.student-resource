@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\DTO\AdmissionYear\ListStudentImportDTO;
 use App\Enums\ClassType;
+use App\Enums\Status;
 use App\Factories\AdmissionYear\ListAdmissionYearDTOFactory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdmissionYear\ListAdmissionYearRequest;
@@ -65,11 +66,17 @@ class AdmissionYearController extends Controller
     public function getStatisticalClassAdmissionYear(AdmissionYear $admissionYear): JsonResponse
     {
         return $this->json([
-            'class_total' => $admissionYear->generalClasses()->count(),
-            'class_basic_total' => $admissionYear->generalClasses()->where('type', ClassType::Basic)->count(),
-            'class_major_none_total' => $admissionYear->generalClasses()->where('type', ClassType::Major)->whereNull(
-                'training_industry_id'
-            )->count()
+            'class_total' => $admissionYear->generalClasses()
+                ->where('status', Status::Enable)
+                ->count(),
+            'class_basic_total' => $admissionYear->generalClasses()
+                ->where('status', Status::Enable)
+                ->where('type', ClassType::Basic)->count(),
+            'class_major_none_total' => $admissionYear->generalClasses()
+                ->where('status', Status::Enable)
+                ->where('type', ClassType::Major)->whereNull(
+                    'training_industry_id'
+                )->count()
         ]);
     }
 

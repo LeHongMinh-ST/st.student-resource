@@ -8,6 +8,7 @@ use App\DTO\Student\CreateRequestUpdateFamilyStudentDTO;
 use App\DTO\Student\CreateRequestUpdateStudentDTO;
 use App\DTO\Student\ListRequestUpdateStudentDTO;
 use App\DTO\Student\UpdateRequestUpdateStudentDTO;
+use App\Enums\AuthApiSection;
 use App\Enums\StudentInfoUpdateStatus;
 use App\Exceptions\ConflictRecordException;
 use App\Exceptions\CreateResourceFailedException;
@@ -28,7 +29,21 @@ class StudentInfoUpdateService
             ->when($listRequestUpdateStudentDTO->getStatus(), fn ($q) => $q->where('status', $listRequestUpdateStudentDTO->getStatus()))
             ->when($listRequestUpdateStudentDTO->getStudentId(), fn ($q) => $q->where('student_id', $listRequestUpdateStudentDTO->getStudentId()))
             ->when($listRequestUpdateStudentDTO->getClassId(), fn ($q) => $q->whereHas('student', fn ($q) => $q->whereHas('currentClass', fn ($q) => $q->where('id', $listRequestUpdateStudentDTO->getClassId()))))
-            ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
+            ->whereHas('student', fn ($q) => $q->where('faculty_id', auth()->user()->faculty_id ?? null))
+            ->with(['families'])
+            ->orderBy($listRequestUpdateStudentDTO->getOrderBy(), $listRequestUpdateStudentDTO->getOrder()->value);
+
+        return $listRequestUpdateStudentDTO->getPage() ? $query->paginate($listRequestUpdateStudentDTO->getLimit()) : $query->get();
+    }
+
+
+    public function getMyList(ListRequestUpdateStudentDTO $listRequestUpdateStudentDTO)
+    {
+        $query = StudentInfoUpdate::query()
+            ->when($listRequestUpdateStudentDTO->getStatus(), fn ($q) => $q->where('status', $listRequestUpdateStudentDTO->getStatus()))
+            ->when($listRequestUpdateStudentDTO->getClassId(), fn ($q) => $q->whereHas('student', fn ($q) => $q->whereHas('currentClass', fn ($q) => $q->where('id', $listRequestUpdateStudentDTO->getClassId()))))
+            ->whereHas('student', fn ($q) => $q->where('faculty_id', auth()->user()->faculty_id ?? null))
+            ->where('student_id', auth(AuthApiSection::Student->value)->id())
             ->with(['families'])
             ->orderBy($listRequestUpdateStudentDTO->getOrderBy(), $listRequestUpdateStudentDTO->getOrder()->value);
 

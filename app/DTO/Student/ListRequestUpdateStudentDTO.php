@@ -19,6 +19,7 @@ class ListRequestUpdateStudentDTO extends BaseListDTO implements BaseDTO
     {
         parent::__construct();
         $this->status = null;
+        $this->classId = null;
     }
 
     public function getStatus(): ?StudentInfoUpdateStatus

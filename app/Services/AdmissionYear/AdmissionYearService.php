@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\AdmissionYear;
 
 use App\DTO\AdmissionYear\ListAdmissionYearDTO;
+use App\Enums\Status;
 use App\Enums\StudentStatus;
 use App\Models\AdmissionYear;
 use App\Models\TrainingIndustry;
@@ -35,7 +36,9 @@ class AdmissionYearService
                         ->where('status', StudentStatus::CurrentlyStudying);
                 },
                 'generalClasses' => function ($query): void {
-                    $query->where('faculty_id', auth('api')->user()->faculty_id);
+                    $query
+                        ->where('status', Status::Enable)
+                        ->where('faculty_id', auth('api')->user()->faculty_id);
                 }
             ])
             ->orderBy($admissionYearDTO->getOrderBy(), $admissionYearDTO->getOrder()->value);
@@ -48,7 +51,14 @@ class AdmissionYearService
         $trainingIndustryIds = $admissionYear->generalClasses()->pluck('training_industry_id');
         $trainingIndustries = TrainingIndustry::query()
             ->whereIn('id', $trainingIndustryIds)
-            ->withCount('generalClasses')
+            ->withCount(
+                'generalClasses',
+                function ($query): void {
+                    $query
+                        ->where('status', Status::Enable)
+                        ->where('faculty_id', auth('api')->user()->faculty_id);
+                }
+            )
             ->get();
         return $trainingIndustries;
     }

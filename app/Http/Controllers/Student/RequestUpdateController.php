@@ -96,7 +96,7 @@ class RequestUpdateController extends Controller
             studentId: auth(AuthApiSection::Student->value)->id(),
         );
 
-        $studentUpdate = $this->studentInfoUpdateService->getList($dto);
+        $studentUpdate = $this->studentInfoUpdateService->getMyList($dto);
 
         return new StudentInfoUpdateCollection($studentUpdate);
     }

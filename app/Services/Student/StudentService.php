@@ -333,6 +333,7 @@ class StudentService
 
         $query = DB::table('students')
             ->join('student_warnings', 'students.id', '=', 'student_warnings.student_id')
+            ->where('status', StudentStatus::CurrentlyStudying)
             ->whereIn('student_warnings.warning_id', $latestWarningIds);
 
         if (UserRole::Teacher === $auth->role) {
@@ -364,6 +365,7 @@ class StudentService
         $query = DB::table('students')
             ->join('student_warnings', 'students.id', '=', 'student_warnings.student_id')
             ->join('class_students', 'class_students.student_id', 'students.id')
+            ->where('students.status', StudentStatus::CurrentlyStudying)
             ->where('class_students.class_id', $classId)
             ->whereIn('student_warnings.warning_id', $latestWarningIds);
 
@@ -531,6 +533,7 @@ class StudentService
 
         $query = DB::table('students')
             ->join('student_warnings', 'students.id', '=', 'student_warnings.student_id')
+            ->where('students.status', StudentStatus::CurrentlyStudying)
             ->where('students.admission_year_id', $admissionYearId)
             ->whereIn('student_warnings.warning_id', $latestWarningIds);
 

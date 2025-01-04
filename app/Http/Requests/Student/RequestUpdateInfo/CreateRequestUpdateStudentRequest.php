@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Requests\Student\RequestUpdateInfo;
 
 use App\Enums\FamilyRelationship;
-use App\Enums\Gender;
 use App\Enums\SocialPolicyObject;
 use App\Enums\TrainingType;
 use Illuminate\Contracts\Validation\ValidationRule;
@@ -30,10 +29,8 @@ class CreateRequestUpdateStudentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'gender' => ['nullable', Rule::enum(Gender::class)],
             'person_email' => ['nullable', 'email', 'max:255'],
             'permanent_residence' => ['nullable', 'string', 'max:255'],
-            'dob' => ['nullable', 'date', 'date_format:d-m-Y'],
             'pob' => ['nullable', 'string', 'max:255'],
             'countryside' => ['nullable', 'string', 'max:255'],
             'address' => ['nullable', 'string', 'max:255'],
@@ -44,7 +41,6 @@ class CreateRequestUpdateStudentRequest extends FormRequest
             'ethnic' => ['nullable', 'string', 'max:255'],
             'religion' => ['nullable', 'string', 'max:255'],
             'social_policy_object' => ['nullable', 'string', Rule::enum(SocialPolicyObject::class)],
-            'note' => ['nullable', 'string', 'max:1000'],
             'families' => ['array', 'nullable'],
             'families.*.relationship' => ['nullable', Rule::enum(FamilyRelationship::class)],
             'families.*.full_name' => ['nullable', 'string'],

@@ -15,11 +15,8 @@ class CreateRequestUpdateStudentDTOFactory
         $command = new CreateRequestUpdateStudentDTO();
         $command->setStudentId(auth(AuthApiSection::Student->value)->id());
         $command->setPersonEmail($request->get('person_email'));
-        $command->setNote($request->get('note'));
-        $command->setDob($request->get('dob'));
         $command->setPob($request->get('pob'));
         $command->setPhone($request->get('phone'));
-        $command->setGender($request->get('gender'));
         $command->setEthnic($request->get('ethnic'));
         $command->setNationality($request->get('nationality'));
         $command->setReligion($request->get('religion'));

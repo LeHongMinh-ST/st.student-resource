@@ -5,45 +5,48 @@ declare(strict_types=1);
 namespace App\DTO\Student;
 
 use App\DTO\BaseDTO;
-use App\Enums\SocialPolicyObject;
-use App\Enums\TrainingType;
 use InvalidArgumentException;
 
 class CreateRequestUpdateStudentDTO implements BaseDTO
 {
     private int $studentId;
 
-    private string $personEmail;
+    private ?string $personEmail;
 
-    private string $gender;
+    private ?string $permanentResidence;
 
-    private string $permanentResidence;
+    private ?string $pob;
 
-    private string $dob;
+    private ?string $countryside;
 
-    private string $pob;
+    private ?string $address;
 
-    private string $countryside;
+    private ?string $phone;
 
-    private string $address;
+    private ?string $nationality;
 
-    private TrainingType $trainingType;
+    private ?string $citizenIdentification;
 
-    private string $phone;
+    private ?string $ethnic;
 
-    private string $nationality;
-
-    private string $citizenIdentification;
-
-    private string $ethnic;
-
-    private string $religion;
-
-    private SocialPolicyObject $socialPolicyObject;
-
-    private string $note;
+    private ?string $religion;
 
     private array $family;
+
+    public function __construct()
+    {
+        $this->personEmail = null;
+        $this->permanentResidence = null;
+        $this->countryside = null;
+        $this->pob = null;
+        $this->address = null;
+        $this->phone = null;
+        $this->nationality = null;
+        $this->citizenIdentification = null;
+        $this->ethnic = null;
+        $this->religion = null;
+
+    }
 
     public function getFamily(): array
     {
@@ -81,16 +84,6 @@ class CreateRequestUpdateStudentDTO implements BaseDTO
         $this->personEmail = $personEmail;
     }
 
-    public function getGender(): string
-    {
-        return $this->gender;
-    }
-
-    public function setGender(string $gender): void
-    {
-        $this->gender = $gender;
-    }
-
     public function getPermanentResidence(): string
     {
         return $this->permanentResidence;
@@ -101,15 +94,6 @@ class CreateRequestUpdateStudentDTO implements BaseDTO
         $this->permanentResidence = $permanentResidence;
     }
 
-    public function getDob(): string
-    {
-        return $this->dob;
-    }
-
-    public function setDob(string $dob): void
-    {
-        $this->dob = $dob;
-    }
 
     public function getPob(): string
     {
@@ -141,15 +125,6 @@ class CreateRequestUpdateStudentDTO implements BaseDTO
         $this->address = $address;
     }
 
-    public function getTrainingType(): TrainingType
-    {
-        return $this->trainingType;
-    }
-
-    public function setTrainingType(TrainingType $trainingType): void
-    {
-        $this->trainingType = $trainingType;
-    }
 
     public function getPhone(): string
     {
@@ -161,84 +136,62 @@ class CreateRequestUpdateStudentDTO implements BaseDTO
         $this->phone = $phone;
     }
 
-    public function getNationality(): string
+    public function getNationality(): ?string
     {
         return $this->nationality;
     }
 
-    public function setNationality(string $nationality): void
+    public function setNationality(?string $nationality): void
     {
         $this->nationality = $nationality;
     }
 
-    public function getCitizenIdentification(): string
+    public function getCitizenIdentification(): ?string
     {
         return $this->citizenIdentification;
     }
 
-    public function setCitizenIdentification(string $citizenIdentification): void
+    public function setCitizenIdentification(?string $citizenIdentification): void
     {
         $this->citizenIdentification = $citizenIdentification;
     }
 
-    public function getEthnic(): string
+    public function getEthnic(): ?string
     {
         return $this->ethnic;
     }
 
-    public function setEthnic(string $ethnic): void
+    public function setEthnic(?string $ethnic): void
     {
         $this->ethnic = $ethnic;
     }
 
-    public function getReligion(): string
+    public function getReligion(): ?string
     {
         return $this->religion;
     }
 
-    public function setReligion(string $religion): void
+    public function setReligion(?string $religion): void
     {
         $this->religion = $religion;
     }
 
-    public function getSocialPolicyObject(): SocialPolicyObject
-    {
-        return $this->socialPolicyObject;
-    }
 
-    public function setSocialPolicyObject(SocialPolicyObject $socialPolicyObject): void
-    {
-        $this->socialPolicyObject = $socialPolicyObject;
-    }
-
-    public function getNote(): string
-    {
-        return $this->note;
-    }
-
-    public function setNote(string $note): void
-    {
-        $this->note = $note;
-    }
 
     public function toArray(): array
     {
         return array_filter([
             'person_email' => $this->personEmail,
-            'gender' => $this->gender,
             'permanent_residence' => $this->permanentResidence,
-            'dob' => $this->dob,
+            'student_id' => $this->studentId,
             'pob' => $this->pob,
             'countryside' => $this->countryside,
             'address' => $this->address,
-            'training_type' => $this->trainingType->value,
             'phone' => $this->phone,
             'nationality' => $this->nationality,
             'citizen_identification' => $this->citizenIdentification,
             'ethnic' => $this->ethnic,
             'religion' => $this->religion,
-            'social_policy_object' => $this->socialPolicyObject->value,
-            'note' => $this->note,
         ], fn ($value) => null !== $value);
     }
 }
