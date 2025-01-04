@@ -55,8 +55,7 @@ class AdmissionYearService
                 'generalClasses' => function ($query) use ($admissionYear): void {
                     $query
                         ->where('status', Status::Enable)
-                        ->where('admission_year_id', $admissionYear->id)
-                        ->where('faculty_id', auth('api')->user()->faculty_id);
+                        ->where('admission_year_id', $admissionYear->id);
                 }
             ])
             ->get();
