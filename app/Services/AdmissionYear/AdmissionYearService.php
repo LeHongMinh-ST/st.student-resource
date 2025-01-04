@@ -54,7 +54,7 @@ class AdmissionYearService
             ->withCount([
                 'generalClasses' => function ($query): void {
                     $query
-                        ->where('status', Status::Enable)
+                        ->where('classes.status', Status::Enable)
                         ->where('faculty_id', auth('api')->user()->faculty_id);
                 }
             ])
