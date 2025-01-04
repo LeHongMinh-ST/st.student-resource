@@ -44,6 +44,11 @@ class TrainingIndustry extends Model
         return $this->hasMany(GeneralClass::class);
     }
 
+    public function generalClassesEnable(): HasMany
+    {
+        return $this->hasMany(GeneralClass::class)->where('status', Status::Enable);
+    }
+
     // ------------------------ CASTS -------------------------//
     protected function casts(): array
     {
