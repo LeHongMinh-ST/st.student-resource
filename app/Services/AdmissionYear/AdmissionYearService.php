@@ -51,7 +51,7 @@ class AdmissionYearService
         $trainingIndustryIds = $admissionYear->generalClasses()->pluck('training_industry_id');
         $trainingIndustries = TrainingIndustry::query()
             ->whereIn('id', $trainingIndustryIds)
-            ->withCount(['generalClassesEnable as generalClasses'])
+            ->withCount(['generalClassesEnable as general_classes_count'])
             ->get();
         return $trainingIndustries;
     }
