@@ -118,9 +118,12 @@ Route::middleware(['auth:' . AuthApiSection::Admin->value])->group(function (): 
     });
 
     Route::prefix('reports')->group(function (): void {
-        Route::get('/employment-survey-template-one', [ReportSurveyController::class, 'getReportEmploymentSurveyTemplateOne']);
-        Route::get('/employment-survey-template-two', [ReportSurveyController::class, 'getReportEmploymentSurveyTemplateTwo']);
-        Route::get('/employment-survey-template-three', [ReportSurveyController::class, 'getReportEmploymentSurveyTemplateThree']);
+        Route::get('/get-employment-survey-template-one', [ReportSurveyController::class, 'getReportEmploymentSurveyTemplateOne']);
+        Route::get('/get-employment-survey-template-two', [ReportSurveyController::class, 'getReportEmploymentSurveyTemplateTwo']);
+        Route::get('/get-employment-survey-template-three', [ReportSurveyController::class, 'getReportEmploymentSurveyTemplateThree']);
+        Route::get('/employment-survey-template-one', [ReportSurveyController::class, 'downloadReportEmploymentSurveyTemplateOne']);
+        Route::get('/employment-survey-template-two', [ReportSurveyController::class, 'downloadReportEmploymentSurveyTemplateTwo']);
+        Route::get('/employment-survey-template-three', [ReportSurveyController::class, 'downloadReportEmploymentSurveyTemplateThree']);
     });
 
     Route::prefix('reflects')->group(function (): void {

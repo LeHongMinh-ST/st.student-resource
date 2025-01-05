@@ -32,7 +32,14 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ReportSurveyService
 {
-    public function getReportEmploymentSurveyTemplateOne(mixed $surveyId): StreamedResponse
+    public function downloadReportEmploymentSurveyTemplateOne(mixed $surveyId): StreamedResponse
+    {
+        $dataReport = $this->getReportEmploymentSurveyTemplateOne($surveyId);
+
+        return $this->exportTemplateOne($dataReport['data'], $dataReport['faculty']);
+    }
+
+    public function getReportEmploymentSurveyTemplateOne(mixed $surveyId): array
     {
         $data = EmploymentSurveyResponse::selectRaw('
         training_industry_id' .
@@ -115,40 +122,25 @@ class ReportSurveyService
             return $dataTransform;
         });
 
-        return $this->exportTemplateOne($dataTransfer->toArray(), $faculty);
+        return [
+            'data' => $dataTransfer->toArray(),
+            'faculty' => $faculty,
+        ];
     }
 
-    public function getReportEmploymentSurveyTemplateTwo(mixed $surveyId): StreamedResponse
+    public function getDatReportEmploymentSurveyTemplateOne(mixed $surveyId): array
     {
-        $studentList = Student::with(['info', 'trainingIndustry.faculty', 'currentGraduationCeremony', 'employmentSurveyResponses'])
-            ->whereHas('surveyPeriods', fn ($q) => $q->where('survey_period_id', $surveyId))
-            ->get();
-
-        // transfer data
-        $dataTransfer = $studentList->map(function ($item) use ($surveyId) {
-            $employmentSurveyResponse = $item->employmentSurveyResponses->where('survey_period_id', $surveyId)->first();
-
-            return [
-                'student_code' => $item->code,
-                'full_name' => $item->full_name,
-                'gender_female' => Gender::Female->value === $item->info->gender ? '1' : '',
-                'identification_card_number' => $item->info->citizen_identification,
-                'training_industry_code' => $item->trainingIndustry->code,
-                'certification' => $item->currentGraduationCeremony->certification,
-                'certification_date' => $item->currentGraduationCeremony->certification_date?->format('d/m/Y'),
-                'phone_number' => $item->info->phone,
-                'email' => $item->info->person_email,
-                'type_survey' => null !== $employmentSurveyResponse ? 'Online' : '',
-                'status_survey' => null !== $employmentSurveyResponse ? 'x' : '',
-                'training_industry_name' => $item->trainingIndustry->name,
-                'faculty_name' => $item->trainingIndustry->faculty->name,
-            ];
+        $data = $this->getReportEmploymentSurveyTemplateOne($surveyId)['data'];
+        return collect($data)->map(function ($item) {
+            $listCodeCity = explode(', ', Arr::get($item, 'work_code_cities'));
+            $cities = Cities::select(['id', 'code', 'name'])->whereIn('code', $listCodeCity)->get();
+            $citiesName = implode(', ', $cities->pluck('name')->toArray());
+            $item['work_code_cities'] = $citiesName;
+            return $item;
         })->toArray();
-
-        return $this->exportTemplateTwo($dataTransfer, $studentList->first()?->trainingIndustry->faculty);
     }
 
-    public function getReportEmploymentSurveyTemplateThree(mixed $surveyId): StreamedResponse
+    public function getReportEmploymentSurveyTemplateThree(mixed $surveyId): array
     {
         $employmentSurveyResponses = EmploymentSurveyResponse::with(['student.info', 'trainingIndustry.faculty'])
             ->where('survey_period_id', $surveyId)->get();
@@ -221,7 +213,57 @@ class ReportSurveyService
             ];
         })->toArray();
 
-        return $this->exportTemplateThree($dataTransfer, $employmentSurveyResponses->first()?->trainingIndustry->faculty);
+        return [
+            'data' => $dataTransfer,
+            'faculty' => $employmentSurveyResponses->first()?->trainingIndustry->faculty,
+        ];
+    }
+
+    public function getReportEmploymentSurveyTemplateTwo(mixed $surveyId): array
+    {
+        $studentList = Student::with(['info', 'trainingIndustry.faculty', 'currentGraduationCeremony', 'employmentSurveyResponses'])
+            ->whereHas('surveyPeriods', fn ($q) => $q->where('survey_period_id', $surveyId))
+            ->get();
+
+        // transfer data
+        $data = $studentList->map(function ($item) use ($surveyId) {
+            $employmentSurveyResponse = $item->employmentSurveyResponses->where('survey_period_id', $surveyId)->first();
+            return [
+                'student_code' => $item->code,
+                'full_name' => $item->full_name,
+                'gender_female' => Gender::Female->value === $item->info->gender ? '1' : '',
+                'identification_card_number' => $item->info->citizen_identification,
+                'training_industry_code' => $item->trainingIndustry->code,
+                'certification' => $item->currentGraduationCeremony->certification,
+                'certification_date' => $item->currentGraduationCeremony->certification_date?->format('d/m/Y'),
+                'phone_number' => $item->info->phone,
+                'email' => $item->info->person_email,
+                'type_survey' => null !== $employmentSurveyResponse ? 'Online' : '',
+                'status_survey' => null !== $employmentSurveyResponse ? 'x' : '',
+                'training_industry_name' => $item->trainingIndustry->name,
+                'faculty_name' => $item->trainingIndustry->faculty->name,
+            ];
+        })->toArray();
+
+        return [
+            'data' => $data,
+            'faculty' => $studentList->first()?->trainingIndustry->faculty,
+        ];
+    }
+
+    public function downloadReportEmploymentSurveyTemplateTwo(mixed $surveyId): StreamedResponse
+    {
+        // transfer data
+        $dataReport = $this->getReportEmploymentSurveyTemplateTwo($surveyId);
+
+        return $this->exportTemplateTwo($dataReport['data'], $dataReport['faculty']);
+    }
+
+    public function downloadReportEmploymentSurveyTemplateThree(mixed $surveyId): StreamedResponse
+    {
+        $dataReport = $this->getReportEmploymentSurveyTemplateThree($surveyId);
+
+        return $this->exportTemplateThree($dataReport['data'], $dataReport['faculty']);
     }
 
     public function exportTemplateThree(array $data, ?Faculty $faculty, $filename = 'error_record.xlsx'): StreamedResponse
