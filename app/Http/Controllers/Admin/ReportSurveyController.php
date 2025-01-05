@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Services\ReportSurvey\ReportSurveyService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -33,11 +34,13 @@ class ReportSurveyController extends Controller
      *
      * @param  Request  $request  The HTTP request object containing the role ID.
      */
-    public function getReportEmploymentSurveyTemplateOne(Request $request): StreamedResponse
+    public function getReportEmploymentSurveyTemplateOne(Request $request): JsonResponse
     {
         // Create a ListReportSurveyDTOFactory object using the provided request
 
-        return $this->reportSurveyService->getReportEmploymentSurveyTemplateOne($request->survey_id);
+        return $this->json([
+            'data' => $this->reportSurveyService->getDatReportEmploymentSurveyTemplateOne($request->survey_id),
+        ]);
     }
 
     /**
@@ -49,11 +52,13 @@ class ReportSurveyController extends Controller
      *
      * @param  Request  $request  The HTTP request object containing the role ID.
      */
-    public function getReportEmploymentSurveyTemplateTwo(Request $request): StreamedResponse
+    public function getReportEmploymentSurveyTemplateTwo(Request $request): JsonResponse
     {
         // Create a ListReportSurveyDTOFactory object using the provided request
 
-        return $this->reportSurveyService->getReportEmploymentSurveyTemplateTwo($request->survey_id);
+        return $this->json([
+            'data' => $this->reportSurveyService->getReportEmploymentSurveyTemplateTwo($request->survey_id)['data'],
+        ]);
     }
 
     /**
@@ -65,10 +70,58 @@ class ReportSurveyController extends Controller
      *
      * @param  Request  $request  The HTTP request object containing the role ID.
      */
-    public function getReportEmploymentSurveyTemplateThree(Request $request): StreamedResponse
+    public function getReportEmploymentSurveyTemplateThree(Request $request): JsonResponse
     {
         // Create a ListReportSurveyDTOFactory object using the provided request
 
-        return $this->reportSurveyService->getReportEmploymentSurveyTemplateThree($request->survey_id);
+        return $this->json([
+            'data' => $this->reportSurveyService->getReportEmploymentSurveyTemplateThree($request->survey_id)['data'],
+        ]);
+    }
+
+    /**
+     * downloadReportEmploymentSurveyTemplateOne
+     *
+     * This endpoint lets you views list a ReportSurvey
+     *
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @param  Request  $request  The HTTP request object containing the role ID.
+     */
+    public function downloadReportEmploymentSurveyTemplateOne(Request $request): StreamedResponse
+    {
+        // Create a ListReportSurveyDTOFactory object using the provided request
+
+        return $this->reportSurveyService->downloadReportEmploymentSurveyTemplateOne($request->survey_id);
+    }
+
+    /**
+     * downloadReportEmploymentSurveyTemplateTwo
+     *
+     * This endpoint lets you views list a ReportSurvey
+     *
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @param  Request  $request  The HTTP request object containing the role ID.
+     */
+    public function downloadReportEmploymentSurveyTemplateTwo(Request $request): StreamedResponse
+    {
+        return $this->reportSurveyService->downloadReportEmploymentSurveyTemplateTwo($request->survey_id);
+    }
+
+    /**
+     * downloadReportEmploymentSurveyTemplateThree
+     *
+     * This endpoint lets you views list a ReportSurvey
+     *
+     * @authenticated Indicates that users must be authenticated to access this endpoint.
+     *
+     * @param  Request  $request  The HTTP request object containing the role ID.
+     */
+    public function downloadReportEmploymentSurveyTemplateThree(Request $request): StreamedResponse
+    {
+        // Create a ListReportSurveyDTOFactory object using the provided request
+
+        return $this->reportSurveyService->downloadReportEmploymentSurveyTemplateThree($request->survey_id);
     }
 }
