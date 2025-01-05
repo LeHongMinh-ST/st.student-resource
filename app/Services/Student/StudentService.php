@@ -364,14 +364,14 @@ class StudentService
 
         $query = DB::table('students')
             ->join('student_warnings', 'students.id', '=', 'student_warnings.student_id')
-            ->join('class_students', 'class_students.student_id', 'students.id')
+            ->join('class_students as cs1', 'cs1.student_id', '=', 'students.id') // Alias for the first join
             ->where('students.status', StudentStatus::CurrentlyStudying)
-            ->where('class_students.class_id', $classId)
+            ->where('cs1.class_id', $classId)
             ->whereIn('student_warnings.warning_id', $latestWarningIds);
 
         if (UserRole::Teacher === $auth->role) {
-            $query->join('class_students', 'students.id', '=', 'class_students.student_id')
-                ->join('classes', 'class_students.class_id', '=', 'classes.id')
+            $query->join('class_students as cs2', 'students.id', '=', 'cs2.student_id') // Alias for the second join
+                ->join('classes', 'cs2.class_id', '=', 'classes.id') // Use the aliased join here
                 ->where(function ($q) use ($auth): void {
                     $q->where('classes.teacher_id', $auth->id)
                         ->orWhere('classes.sub_teacher_id', $auth->id);
