@@ -19,8 +19,8 @@ class ListGeneralClassDTOFactory
         $command->setFacultyId(auth()->user()->faculty_id);
         $command->setType($request->type);
         $command->setTypeClass($request->type_class);
-        $command->setSubTeacherId($request->teacher_id);
-        $command->setTeacherId($request->sub_teacher_id);
+        $command->setTeacherId($request->teacher_id ? (int) $request->teacher_id : null);
+        $command->setSubTeacherId($request->sub_teacher_id ? (int) $request->sub_teacher_id : null);
         if ($request->has('admission_year_id')) {
             $command->setAdmissionYearId((int)$request->admission_year_id);
         }

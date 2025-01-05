@@ -25,9 +25,9 @@ class ListGeneralClassRequest extends ListRequest
         return [
             'q' => 'nullable',
             'status' => 'nullable',
-            'teacher_id' => 'nullable',
+            'teacher_id' => 'nullable|integer',
             'admission_year_id' => 'nullable',
-            'sub_teacher_id' => 'nullable',
+            'sub_teacher_id' => 'nullable|integer',
             'training_industry_id' => 'nullable',
             'type' => 'nullable',
             'type_class' => 'nullable',
