@@ -44,7 +44,7 @@ class StudentInfoUpdateService
             ->when($listRequestUpdateStudentDTO->getClassId(), fn ($q) => $q->whereHas('student', fn ($q) => $q->whereHas('currentClass', fn ($q) => $q->where('id', $listRequestUpdateStudentDTO->getClassId()))))
             ->whereHas('student', fn ($q) => $q->where('faculty_id', auth()->user()->faculty_id ?? null))
             ->where('student_id', auth(AuthApiSection::Student->value)->id())
-            ->with(['families'])
+            ->with(['families', 'student'])
             ->orderBy($listRequestUpdateStudentDTO->getOrderBy(), $listRequestUpdateStudentDTO->getOrder()->value);
 
         return $listRequestUpdateStudentDTO->getPage() ? $query->paginate($listRequestUpdateStudentDTO->getLimit()) : $query->get();

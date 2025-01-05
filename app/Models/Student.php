@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\ClassType;
 use App\Enums\Status;
+use App\Enums\StudentInfoUpdateStatus;
 use App\Enums\StudentStatus;
 use App\Enums\WarningStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -146,6 +147,12 @@ class Student extends Authenticatable implements JWTSubject
         return $this->belongsToMany(Warning::class, 'student_warnings');
     }
 
+
+    public function studentInfoUpdate(): HasMany
+    {
+        return $this->hasMany(StudentInfoUpdate::class);
+    }
+
     // ---------------------- ACCESSORS AND MUTATORS --------------------//
     public function getFullNameAttribute(): string
     {
@@ -180,6 +187,14 @@ class Student extends Authenticatable implements JWTSubject
         }
 
         return WarningStatus::NoWarning;
+    }
+
+    public function getHasRequestUpdateAttribute(): bool
+    {
+        $count = $this->studentInfoUpdate()->where('status', StudentInfoUpdateStatus::Pending)
+            ->orWhere('status', StudentInfoUpdateStatus::ClassOfficerApproved)
+            ->orWhere('status', StudentInfoUpdateStatus::TeacherApproved)->count();
+        return $count > 0;
     }
 
     //----------------------- SCOPES ----------------------------------//

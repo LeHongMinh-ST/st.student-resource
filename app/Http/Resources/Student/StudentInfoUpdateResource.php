@@ -30,9 +30,12 @@ class StudentInfoUpdateResource extends JsonResource
             'nationality' => $this->nationality,
             'citizen_identification' => $this->citizen_identification,
             'ethnic' => $this->ethnic,
+            'status' => $this->status,
+            'student' => new StudentResource($this->whenLoaded('student')),
             'religion' => $this->religion,
             'social_policy_object' => $this->social_policy_object,
             'families' => StudentFamilyResource::collection($this->whenLoaded('families')),
+            'created_at' => $this->created_at
         ];
     }
 }

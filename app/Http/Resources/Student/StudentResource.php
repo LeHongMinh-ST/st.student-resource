@@ -48,6 +48,7 @@ class StudentResource extends JsonResource
             'warning_status' => $this->warning_status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'has_request_update' => $this->has_request_update
         ];
     }
 }

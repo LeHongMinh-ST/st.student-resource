@@ -333,7 +333,7 @@ class StudentService
 
         $query = DB::table('students')
             ->join('student_warnings', 'students.id', '=', 'student_warnings.student_id')
-            ->where('status', StudentStatus::CurrentlyStudying)
+            ->where('students.status', StudentStatus::CurrentlyStudying)
             ->whereIn('student_warnings.warning_id', $latestWarningIds);
 
         if (UserRole::Teacher === $auth->role) {
