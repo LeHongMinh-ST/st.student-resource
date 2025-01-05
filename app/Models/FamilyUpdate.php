@@ -23,6 +23,8 @@ class FamilyUpdate extends Model
         'student_info_update_id',
     ];
 
+    protected $table = 'families_updates';
+
     // ------------------------ CASTS -------------------------//
 
     protected $casts = [
