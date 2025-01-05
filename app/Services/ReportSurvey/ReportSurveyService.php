@@ -128,14 +128,32 @@ class ReportSurveyService
         ];
     }
 
-    public function getDatReportEmploymentSurveyTemplateOne(mixed $surveyId): array
+    public function getDataReportEmploymentSurveyTemplateOne(mixed $surveyId): array
     {
         $data = $this->getReportEmploymentSurveyTemplateOne($surveyId)['data'];
+
         return collect($data)->map(function ($item) {
             $listCodeCity = explode(', ', Arr::get($item, 'work_code_cities'));
             $cities = Cities::select(['id', 'code', 'name'])->whereIn('code', $listCodeCity)->get();
             $citiesName = implode(', ', $cities->pluck('name')->toArray());
             $item['work_code_cities'] = $citiesName;
+
+            return $item;
+        })->toArray();
+    }
+
+    public function getDataReportEmploymentSurveyTemplateThree(mixed $surveyId): array
+    {
+        $data = $this->getReportEmploymentSurveyTemplateThree($surveyId)['data'];
+
+        return collect($data)->map(function ($item) {
+            $listCodeCity = explode(', ', Arr::get($item, 'work_cities') ?? '');
+            if (count($listCodeCity)) {
+                $cities = Cities::select(['id', 'code', 'name'])->whereIn('code', $listCodeCity)->get();
+                $citiesName = implode(', ', $cities->pluck('name')->toArray());
+                $item['work_cities'] = $citiesName;
+            }
+
             return $item;
         })->toArray();
     }
@@ -228,6 +246,7 @@ class ReportSurveyService
         // transfer data
         $data = $studentList->map(function ($item) use ($surveyId) {
             $employmentSurveyResponse = $item->employmentSurveyResponses->where('survey_period_id', $surveyId)->first();
+
             return [
                 'student_code' => $item->code,
                 'full_name' => $item->full_name,

@@ -39,7 +39,7 @@ class ReportSurveyController extends Controller
         // Create a ListReportSurveyDTOFactory object using the provided request
 
         return $this->json([
-            'data' => $this->reportSurveyService->getDatReportEmploymentSurveyTemplateOne($request->survey_id),
+            'data' => $this->reportSurveyService->getDataReportEmploymentSurveyTemplateOne($request->survey_id),
         ]);
     }
 
@@ -75,7 +75,7 @@ class ReportSurveyController extends Controller
         // Create a ListReportSurveyDTOFactory object using the provided request
 
         return $this->json([
-            'data' => $this->reportSurveyService->getReportEmploymentSurveyTemplateThree($request->survey_id)['data'],
+            'data' => $this->reportSurveyService->getDataReportEmploymentSurveyTemplateThree($request->survey_id),
         ]);
     }
 
