@@ -20,6 +20,7 @@ Route::prefix('auth')->group(function (): void {
 });
 
 Route::prefix('external')->group(function (): void {
+    Route::get('/survey-periods/{id}/student-verify', [SurveyPeriodController::class, 'verifyInfoStudent']);
     Route::post('/employment-survey-response', [EmploymentSurveyResponseController::class, 'store']);
     Route::patch('/employment-survey-response/{id}', [EmploymentSurveyResponseController::class, 'update']);
     Route::get('/employment-survey-response-search', [EmploymentSurveyResponseController::class, 'search']);
