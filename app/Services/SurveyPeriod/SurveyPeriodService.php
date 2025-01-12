@@ -12,6 +12,7 @@ use App\Events\DownloadSurveyResponseEvent;
 use App\Jobs\CreateFilePDFAndSaveJob;
 use App\Jobs\SendMailForm;
 use App\Models\EmploymentSurveyResponse;
+use App\Models\Student;
 use App\Models\SurveyPeriod;
 use App\Models\SurveyPeriodStudent;
 use App\Models\ZipExportFile;
@@ -110,6 +111,35 @@ class SurveyPeriodService
                 },
             ])->with(['graduationCeremonies'])
             ->first();
+    }
+
+    public function verifyInfoStudent(mixed $id, array $dataVerify): ?array
+    {
+        $student = Student::where('code', $dataVerify['code'])->whereHas('surveyPeriods', fn ($query) => $query->where('survey_periods.id', $id))
+            ->when(
+                count(Arr::only($dataVerify, ['dob', 'training_industry_id', 'email', 'phone'])),
+                fn ($q) => $q->whereHas('info', function ($q) use ($dataVerify) {
+                    return $q->where(
+                        'dob',
+                        Arr::get($dataVerify, 'dob') ?
+                            Carbon::createFromFormat('d/m/Y', Arr::get($dataVerify, 'dob'))->format('Y-m-d')
+                            : now()->format('Y-m-d')
+                    )
+                        ->orWhere('training_industry_id', Arr::get($dataVerify, 'training_industry_id'))
+                        ->orWhere('person_email', trim(Arr::get($dataVerify, 'email') ?? ''))
+                        ->orWhere('citizen_identification', trim(Arr::get($dataVerify, 'identification_card_number') ?? ''))
+                        ->orWhere('phone', trim(Arr::get($dataVerify, 'phone_number') ?? ''));
+                })
+            )->first();
+
+        if (null === $student) {
+            return null;
+        }
+
+        return array_merge($dataVerify, [
+            'full_name' => $student->full_name,
+            'gender' => $student->info->gender,
+        ]);
     }
 
     public function delete(mixed $id): bool
