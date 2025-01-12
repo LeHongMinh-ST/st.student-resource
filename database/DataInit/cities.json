@@ -565,5 +565,14 @@
         "map_name": "[\"dien-bien\",\"tinh-dien-bien\",\"tdien-bien\",\"t-dien-bien\",\"dienbien\"]",
         "created_at": "2023-01-10 04:31:32",
         "updated_at": "2024-05-23 17:57:40"
+    },
+    {
+        "code": "Nước ngoài",
+        "id": 99,
+        "name": "Nước ngoài",
+        "priority": 99,
+        "map_name": "",
+        "created_at": "2023-01-10 04:31:32",
+        "updated_at": "2024-05-23 17:57:40"
     }
 ]
