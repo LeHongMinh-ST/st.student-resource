@@ -18,6 +18,7 @@ use App\Exceptions\CreateResourceFailedException;
 use App\Exceptions\UpdateResourceFailedException;
 use App\Jobs\CreateStudentByFileCsvJob;
 use App\Models\ExcelImportFile;
+use App\Models\GeneralClass;
 use App\Models\Student;
 use App\Services\Student\StudentInfo\StudentInfoService;
 use App\Supports\Constants;
@@ -39,77 +40,84 @@ class StudentService
 
     public function getList(ListStudentDTO $listStudentDTO): Collection|LengthAwarePaginator|array
     {
+
         $query = Student::query()
-            ->when($listStudentDTO->getAdmissionYearId(), fn ($q) => $q->where('admission_year_id', $listStudentDTO->getAdmissionYearId()))
+            ->when($listStudentDTO->getAdmissionYearId(), fn($q) => $q->where('admission_year_id', $listStudentDTO->getAdmissionYearId()))
             ->when(
                 $listStudentDTO->getQ(),
-                fn ($q) => $q
+                fn($q) => $q
                     ->where(DB::raw("CONCAT(last_name, ' ', first_name)"), 'like', '%' . $listStudentDTO->getQ() . '%')
                     ->orWhere('email', 'like', '%' . $listStudentDTO->getQ() . '%')
                     ->orWhere('code', 'like', '%' . $listStudentDTO->getQ() . '%')
             )
-            ->when($listStudentDTO->getGraduationId(), fn ($q) => $q->whereHas('graduationCeremonies', fn ($q) => $q->where('graduation_ceremony_id', $listStudentDTO->getGraduationId())))
-            ->when($listStudentDTO->getStatus(), fn ($q) => $q->where('status', $listStudentDTO->getStatus()))
+            ->when($listStudentDTO->getGraduationId(), fn($q) => $q->whereHas('graduationCeremonies', fn($q) => $q->where('graduation_ceremony_id', $listStudentDTO->getGraduationId())))
+            ->when($listStudentDTO->getStatus(), fn($q) => $q->where('status', $listStudentDTO->getStatus()))
+            ->when($listStudentDTO->getClassId(), function ($q) use ($listStudentDTO) {
+                $class = GeneralClass::query()->whereIn('class_id', $listStudentDTO->getClassId())->first();
+                $studentIds = $class->students->pluck('id')->toArray();
+                return $q->whereIn('id', $studentIds);
+            })
             ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
-            ->when($listStudentDTO->getClassId(), fn ($q) => $q->whereHas('generalClass', fn ($q) => $q->where('classes.id', $listStudentDTO->getClassId())))
             ->with(['info', 'currentClass', 'families', 'graduationCeremonies'])
             ->orderBy($listStudentDTO->getOrderBy(), $listStudentDTO->getOrder()->value);
 
         return $listStudentDTO->getPage() ? $query->paginate($listStudentDTO->getLimit()) : $query->get();
     }
 
-    public function getBySurveyPeriod(ListStudentSurveyDTO $listStudentDTO): Collection|LengthAwarePaginator|array
+    public
+    function getBySurveyPeriod(ListStudentSurveyDTO $listStudentDTO): Collection|LengthAwarePaginator|array
     {
         $query = Student::query()->select(['students.*', 'employment_survey_responses.created_at as response_created_at'])
             ->with(['info', 'currentSurvey', 'currentClass', 'activeResponseSurvey.trainingIndustry', 'activeResponseSurvey.cityWork'])
             ->leftJoin('employment_survey_responses', 'students.id', '=', 'employment_survey_responses.student_id')
             ->when(
                 $listStudentDTO->getSurveyPeriodId(),
-                fn ($q) => $q->whereHas('surveyPeriods', fn ($q) => $q->where('survey_period_student.survey_period_id', $listStudentDTO->getSurveyPeriodId()))
+                fn($q) => $q->whereHas('surveyPeriods', fn($q) => $q->where('survey_period_student.survey_period_id', $listStudentDTO->getSurveyPeriodId()))
             )
             ->when(null !== $listStudentDTO->getIsResponse(), function ($q) use ($listStudentDTO) {
                 if (1 === $listStudentDTO->getIsResponse()) {
-                    return $q->whereHas('employmentSurveyResponses', fn ($q) => $q->where('employment_survey_responses.survey_period_id', $listStudentDTO->getSurveyPeriodId()));
+                    return $q->whereHas('employmentSurveyResponses', fn($q) => $q->where('employment_survey_responses.survey_period_id', $listStudentDTO->getSurveyPeriodId()));
                 }
 
-                return $q->whereDoesntHave('employmentSurveyResponses', fn ($q) => $q->where('employment_survey_responses.survey_period_id', $listStudentDTO->getSurveyPeriodId()));
+                return $q->whereDoesntHave('employmentSurveyResponses', fn($q) => $q->where('employment_survey_responses.survey_period_id', $listStudentDTO->getSurveyPeriodId()));
             })
-            ->when($listStudentDTO->getStatus(), fn ($q) => $q->where('status', $listStudentDTO->getStatus()))
+            ->when($listStudentDTO->getStatus(), fn($q) => $q->where('status', $listStudentDTO->getStatus()))
             ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
             ->when(
                 $listStudentDTO->getQ(),
-                fn ($q) => $q->where(function ($q) use ($listStudentDTO) {
+                fn($q) => $q->where(function ($q) use ($listStudentDTO) {
                     return $q->where(DB::raw("CONCAT(last_name, ' ', first_name)"), 'like', '%' . $listStudentDTO->getQ() . '%')
                         ->orWhere('code', 'like', '%' . $listStudentDTO->getQ() . '%');
                 })
             )
-
             ->orderBy('response_created_at', $listStudentDTO->getOrder()->value);
 
         return $listStudentDTO->getPage() ? $query->paginate($listStudentDTO->getLimit()) : $query->get();
     }
 
-    public function getTotalStudent(ListStudentDTO $listStudentDTO): int
+    public
+    function getTotalStudent(ListStudentDTO $listStudentDTO): int
     {
         return Student::query()
-            ->when($listStudentDTO->getAdmissionYearId(), fn ($q) => $q->where('admission_year_id', $listStudentDTO->getAdmissionYearId()))
+            ->when($listStudentDTO->getAdmissionYearId(), fn($q) => $q->where('admission_year_id', $listStudentDTO->getAdmissionYearId()))
             ->when(
                 $listStudentDTO->getQ(),
-                fn ($q) => $q
+                fn($q) => $q
                     ->where(DB::raw("CONCAT(last_name, ' ', first_name)"), 'like', '%' . $listStudentDTO->getQ() . '%')
                     ->orWhere('email', 'like', '%' . $listStudentDTO->getQ() . '%')
                     ->orWhere('code', 'like', '%' . $listStudentDTO->getQ() . '%')
             )
-            ->when($listStudentDTO->getStatus(), fn ($q) => $q->where('status', $listStudentDTO->getStatus()))
+            ->when($listStudentDTO->getStatus(), fn($q) => $q->where('status', $listStudentDTO->getStatus()))
             ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
-            ->when($listStudentDTO->getClassId(), fn ($q) => $q->whereHas('generalClass', fn ($q) => $q->where('classes.id', $listStudentDTO->getClassId())))
+            ->when($listStudentDTO->getClassId(), fn($q) => $q->whereHas('generalClass', fn($q) => $q->where('classes.id', $listStudentDTO->getClassId())))
             ->count();
     }
 
     /**
      * @throws CreateResourceFailedException
      */
-    public function createWithInfoStudent(CreateStudentDTO $command): Student
+    public
+    function createWithInfoStudent(CreateStudentDTO $command): Student
     {
         DB::beginTransaction();
         try {
@@ -139,7 +147,8 @@ class StudentService
     /**
      * @throws CreateResourceFailedException
      */
-    public function createWithInfoStudentByFile(CreateStudentCourseByFileDTO $command): Student
+    public
+    function createWithInfoStudentByFile(CreateStudentCourseByFileDTO $command): Student
     {
         DB::beginTransaction();
         try {
@@ -178,7 +187,8 @@ class StudentService
     /**
      * @throws UpdateResourceFailedException
      */
-    public function updateWithInfoStudent(UpdateStudentDTO $command): Student
+    public
+    function updateWithInfoStudent(UpdateStudentDTO $command): Student
     {
         DB::beginTransaction();
         try {
@@ -209,7 +219,8 @@ class StudentService
         }
     }
 
-    public function delete(mixed $id): bool
+    public
+    function delete(mixed $id): bool
     {
         $student = Student::find($id);
         $student->info()->delete();
@@ -221,7 +232,8 @@ class StudentService
     /**
      * @throws CreateResourceFailedException
      */
-    public function importCourse(ImportCourseStudentDTO $courseStudentDTO)
+    public
+    function importCourse(ImportCourseStudentDTO $courseStudentDTO)
     {
         try {
             $data = ExcelFileHelper::chunkFileToCsv($courseStudentDTO->getFile(), ExcelImportType::Course);
@@ -259,14 +271,16 @@ class StudentService
         }
     }
 
-    public function getStudentByCode(string $code): Model|Builder
+    public
+    function getStudentByCode(string $code): Model|Builder
     {
         return Student::query()->where(['code' => $code])->firstOrFail();
     }
 
-    public function searchOneStudent(array $filter): Model|Builder
+    public
+    function searchOneStudent(array $filter): Model|Builder
     {
-        return Student::when(Arr::get($filter, 'code'), fn ($q) => $q->where('code', $filter['code']))
+        return Student::when(Arr::get($filter, 'code'), fn($q) => $q->where('code', $filter['code']))
             ->when(Arr::get($filter, 'email'), function ($q) use ($filter) {
                 return $q->whereHas('graduationCeremonies', function ($q) use ($filter): void {
                     $q->where('email', $filter['email']);
@@ -286,14 +300,15 @@ class StudentService
             ->first();
     }
 
-    public function getTotalStudentStudy(): int
+    public
+    function getTotalStudentStudy(): int
     {
         $auth = auth(AuthApiSection::Admin->value)->user();
 
         $studentsCount = Student::query()
             ->where('status', StudentStatus::CurrentlyStudying)
             ->where('faculty_id', $auth->faculty_id)
-            ->when(UserRole::Teacher === $auth->role, fn ($q) => $q->whereHas('generalClass', function ($q) {
+            ->when(UserRole::Teacher === $auth->role, fn($q) => $q->whereHas('generalClass', function ($q) {
                 return $q->where('teacher_id', auth(AuthApiSection::Admin->value)->id())
                     ->orWhere('sub_teacher_id', auth(AuthApiSection::Admin->value)->id());
             }))
@@ -302,14 +317,15 @@ class StudentService
         return $studentsCount;
     }
 
-    public function getTotalStudentGraduated(): int
+    public
+    function getTotalStudentGraduated(): int
     {
         $auth = auth(AuthApiSection::Admin->value)->user();
 
         $studentsCount = Student::query()
             ->where('status', StudentStatus::Graduated)
             ->where('faculty_id', $auth->faculty_id)
-            ->when(UserRole::Teacher === $auth->role, fn ($q) => $q->whereHas('generalClass', function ($q) {
+            ->when(UserRole::Teacher === $auth->role, fn($q) => $q->whereHas('generalClass', function ($q) {
                 return $q->where('teacher_id', auth(AuthApiSection::Admin->value)->id())
                     ->orWhere('sub_teacher_id', auth(AuthApiSection::Admin->value)->id());
             }))
@@ -318,7 +334,8 @@ class StudentService
         return $studentsCount;
     }
 
-    public function getTotalStudentWarning(): int
+    public
+    function getTotalStudentWarning(): int
     {
         $auth = auth(AuthApiSection::Admin->value)->user();
 
@@ -349,7 +366,8 @@ class StudentService
     }
 
 
-    public function getTotalStudentWarningByClassId(int $classId): int
+    public
+    function getTotalStudentWarningByClassId(int $classId): int
     {
         $auth = auth(AuthApiSection::Admin->value)->user();
 
@@ -371,32 +389,34 @@ class StudentService
 
         if (UserRole::Teacher === $auth->role) {
             $query->join('class_students as cs2', 'students.id', '=', 'cs2.student_id') // Alias for the second join
-                ->join('classes', 'cs2.class_id', '=', 'classes.id') // Use the aliased join here
-                ->where(function ($q) use ($auth): void {
-                    $q->where('classes.teacher_id', $auth->id)
-                        ->orWhere('classes.sub_teacher_id', $auth->id);
-                });
+            ->join('classes', 'cs2.class_id', '=', 'classes.id') // Use the aliased join here
+            ->where(function ($q) use ($auth): void {
+                $q->where('classes.teacher_id', $auth->id)
+                    ->orWhere('classes.sub_teacher_id', $auth->id);
+            });
         }
 
         return $query->distinct('students.id')->count();
     }
 
-    public function getTotalStudentGraduatedByClassId($classId): int
+    public
+    function getTotalStudentGraduatedByClassId($classId): int
     {
 
         $studentsCount = Student::query()
-            ->whereHas('generalClass', fn ($query) => $query->where('classes.id', $classId))
+            ->whereHas('generalClass', fn($query) => $query->where('classes.id', $classId))
             ->where('status', StudentStatus::Graduated)
             ->count();
 
         return $studentsCount;
     }
 
-    public function getTotalStudentToDropOutByClassId($classId): int
+    public
+    function getTotalStudentToDropOutByClassId($classId): int
     {
         $studentsCount = Student::query()
             ->where(function ($query) use ($classId): void {
-                $query->whereHas('generalClass', fn ($q) => $q->where('classes.id', $classId))
+                $query->whereHas('generalClass', fn($q) => $q->where('classes.id', $classId))
                     ->where(function ($q): void {
                         $q->where('status', StudentStatus::ToDropOut)
                             ->orWhere('status', StudentStatus::Expelled)
@@ -408,43 +428,47 @@ class StudentService
         return $studentsCount;
     }
 
-    public function getTotalStudentStudyByClassId($classId): int
+    public
+    function getTotalStudentStudyByClassId($classId): int
     {
 
         $studentsCount = Student::query()
-            ->whereHas('generalClass', fn ($query) => $query->where('classes.id', $classId))
+            ->whereHas('generalClass', fn($query) => $query->where('classes.id', $classId))
             ->where('status', StudentStatus::CurrentlyStudying)
             ->count();
 
         return $studentsCount;
     }
 
-    public function getTotalStudentTransferStudyByClassId($classId): int
+    public
+    function getTotalStudentTransferStudyByClassId($classId): int
     {
 
         $studentsCount = Student::query()
-            ->whereHas('generalClass', fn ($query) => $query->where('classes.id', $classId))
+            ->whereHas('generalClass', fn($query) => $query->where('classes.id', $classId))
             ->where('status', StudentStatus::TransferStudy)
             ->count();
 
         return $studentsCount;
     }
 
-    public function getTotalStudentDeferredByClassId($classId): int
+    public
+    function getTotalStudentDeferredByClassId($classId): int
     {
 
         $studentsCount = Student::query()
-            ->whereHas('generalClass', fn ($query) => $query->where('classes.id', $classId))
+            ->whereHas('generalClass', fn($query) => $query->where('classes.id', $classId))
             ->where('status', StudentStatus::Deferred)
             ->count();
 
         return $studentsCount;
     }
 
-    public function getTotalStudentQuitByClassId($classId): int
+    public
+    function getTotalStudentQuitByClassId($classId): int
     {
         $studentsCount = Student::query()
-            ->whereHas('generalClass', fn ($query) => $query->where('classes.id', $classId))
+            ->whereHas('generalClass', fn($query) => $query->where('classes.id', $classId))
             ->where('status', StudentStatus::Expelled)
             ->count();
 
@@ -452,7 +476,8 @@ class StudentService
     }
 
 
-    public function getTotalStudentTransferStudyByAdmissionYearId($admissionYearId): int
+    public
+    function getTotalStudentTransferStudyByAdmissionYearId($admissionYearId): int
     {
 
         $studentsCount = Student::query()
@@ -464,7 +489,8 @@ class StudentService
     }
 
 
-    public function getTotalStudentGraduatedByAdmissionYearId($admissionYearId): int
+    public
+    function getTotalStudentGraduatedByAdmissionYearId($admissionYearId): int
     {
         $studentsCount = Student::query()
             ->where('admission_year_id', $admissionYearId)
@@ -474,7 +500,8 @@ class StudentService
         return $studentsCount;
     }
 
-    public function getTotalStudentToDropOutByAdmissionYearId($admissionYearId): int
+    public
+    function getTotalStudentToDropOutByAdmissionYearId($admissionYearId): int
     {
         $studentsCount = Student::query()
             ->where('admission_year_id', $admissionYearId)
@@ -488,7 +515,8 @@ class StudentService
         return $studentsCount;
     }
 
-    public function getTotalStudentStudyByAdmissionYearId($admissionYearId): int
+    public
+    function getTotalStudentStudyByAdmissionYearId($admissionYearId): int
     {
         $studentsCount = Student::query()
             ->where('admission_year_id', $admissionYearId)
@@ -498,7 +526,8 @@ class StudentService
         return $studentsCount;
     }
 
-    public function getTotalStudentDeferredByAdmissionYearId($admissionYearId): int
+    public
+    function getTotalStudentDeferredByAdmissionYearId($admissionYearId): int
     {
         $studentsCount = Student::query()
             ->where('admission_year_id', $admissionYearId)
@@ -508,7 +537,8 @@ class StudentService
         return $studentsCount;
     }
 
-    public function getTotalStudentQuitByAdmissionYearId($admissionYearId): int
+    public
+    function getTotalStudentQuitByAdmissionYearId($admissionYearId): int
     {
         $studentsCount = Student::query()
             ->where('admission_year_id', $admissionYearId)
@@ -518,7 +548,8 @@ class StudentService
         return $studentsCount;
     }
 
-    public function getTotalStudentWarningByAdmissionId($admissionYearId): int
+    public
+    function getTotalStudentWarningByAdmissionId($admissionYearId): int
     {
         $auth = auth(AuthApiSection::Admin->value)->user();
 
@@ -549,7 +580,8 @@ class StudentService
         return $query->distinct('students.id')->count();
     }
 
-    public function changeStatus($studentId, $status): bool|int
+    public
+    function changeStatus($studentId, $status): bool|int
     {
         return Student::query()->findOrFail($studentId)->update(['status' => $status]);
     }
