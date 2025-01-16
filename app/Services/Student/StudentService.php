@@ -43,10 +43,12 @@ class StudentService
             ->when($listStudentDTO->getAdmissionYearId(), fn ($q) => $q->where('admission_year_id', $listStudentDTO->getAdmissionYearId()))
             ->when(
                 $listStudentDTO->getQ(),
-                fn ($q) => $q
-                    ->where(DB::raw("CONCAT(last_name, ' ', first_name)"), 'like', '%' . $listStudentDTO->getQ() . '%')
-                    ->orWhere('email', 'like', '%' . $listStudentDTO->getQ() . '%')
-                    ->orWhere('code', 'like', '%' . $listStudentDTO->getQ() . '%')
+                fn ($q) => $q->where(function ($query) use ($listStudentDTO) {
+                    $searchTerm = '%' . $listStudentDTO->getQ() . '%';
+                    $query->where(DB::raw("CONCAT(last_name, ' ', first_name)"), 'like', $searchTerm)
+                        ->orWhere('email', 'like', $searchTerm)
+                        ->orWhere('code', 'like', $searchTerm);
+                })
             )
             ->when($listStudentDTO->getGraduationId(), fn ($q) => $q->whereHas('graduationCeremonies', fn ($q) => $q->where('graduation_ceremony_id', $listStudentDTO->getGraduationId())))
             ->when($listStudentDTO->getStatus(), fn ($q) => $q->where('status', $listStudentDTO->getStatus()))
