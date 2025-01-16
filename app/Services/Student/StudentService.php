@@ -40,6 +40,42 @@ class StudentService
 
     public function getList(ListStudentDTO $listStudentDTO): Collection|LengthAwarePaginator|array
     {
+        $query = Student::query()
+            ->when($listStudentDTO->getAdmissionYearId(), function ($q) use ($listStudentDTO) {
+                $q->where('admission_year_id', $listStudentDTO->getAdmissionYearId());
+            })
+            ->when($listStudentDTO->getQ(), function ($q) use ($listStudentDTO) {
+                $q->where(function ($q) use ($listStudentDTO) {
+                    $q->where(DB::raw("CONCAT(last_name, ' ', first_name)"), 'like', '%' . $listStudentDTO->getQ() . '%')
+                        ->orWhere('email', 'like', '%' . $listStudentDTO->getQ() . '%')
+                        ->orWhere('code', 'like', '%' . $listStudentDTO->getQ() . '%');
+                });
+            })
+            ->when($listStudentDTO->getGraduationId(), function ($q) use ($listStudentDTO) {
+                $q->whereHas('graduationCeremonies', function ($q) use ($listStudentDTO) {
+                    $q->where('graduation_ceremony_id', $listStudentDTO->getGraduationId());
+                });
+            })
+            ->when($listStudentDTO->getStatus(), function ($q) use ($listStudentDTO) {
+                $q->where('status', $listStudentDTO->getStatus());
+            })
+            ->when($listStudentDTO->getClassId(), function ($q) use ($listStudentDTO) {
+                $class = GeneralClass::query()->whereIn('class_id', $listStudentDTO->getClassId())->first();
+
+                if ($class) {
+                    $studentIds = $class->students->pluck('id')->toArray();
+                    $q->whereIn('id', $studentIds);
+                }
+            })
+            ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
+            ->with(['info', 'currentClass', 'families', 'graduationCeremonies'])
+            ->orderBy($listStudentDTO->getOrderBy(), $listStudentDTO->getOrder()->value);
+
+        return $listStudentDTO->getPage()
+            ? $query->paginate($listStudentDTO->getLimit())
+            : $query->get();
+    }
+    {
 
         $query = Student::query()
             ->when($listStudentDTO->getAdmissionYearId(), fn($q) => $q->where('admission_year_id', $listStudentDTO->getAdmissionYearId()))
