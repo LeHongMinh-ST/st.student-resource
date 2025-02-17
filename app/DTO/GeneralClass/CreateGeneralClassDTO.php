@@ -24,7 +24,7 @@ class CreateGeneralClassDTO
 
     private ?string $type;
 
-    private int $admissionYearId;
+    private ?int $admissionYearId;
 
     public function __construct(array $data = [])
     {
