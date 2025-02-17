@@ -27,12 +27,10 @@ class StudentSurveyResource extends JsonResource
             'code' => $this->code,
             'training_industry_id' => $this->training_industry_id,
             'current_employment_response' => new EmploymentSurveyResponseResource($this->whenLoaded('activeResponseSurvey')),
-            'current_survey_period' => $this->whenLoaded('currentSurvey', function () {
-                return [
-                    'number_mail_send' => (int) ($this->currentSurvey?->number_mail_send),
-                    'updated_at' => $this->currentSurvey?->send_mail_updated_at,
-                ];
-            }),
+            'current_survey_period' => $this->whenLoaded('currentSurvey', fn () => [
+                'number_mail_send' => (int) ($this->currentSurvey?->number_mail_send),
+                'updated_at' => $this->currentSurvey?->send_mail_updated_at,
+            ]),
             'status' => $this->status,
             'info' => new StudentInfoResource($this->whenLoaded('info')),
             'currentClass' => new GeneralClassForStudentResource($this->whenLoaded('currentClass')),

@@ -151,11 +151,9 @@ class StudentWarningController extends Controller
     public function getStudents(Warning $warning, ShowListStudentWarningRequest $request): StudentCollection
     {
         $students = $warning->students()
-            ->when($request->has('q'), function ($q) use ($request) {
-                return $q->where(DB::raw("CONCAT(last_name, ' ', first_name)"), 'like', '%' . $request->get('q') . '%')
-                    ->orWhere('email', 'like', '%' . $request->get('q') . '%')
-                    ->orWhere('code', 'like', '%' . $request->get('q') . '%');
-            })
+            ->when($request->has('q'), fn ($q) => $q->where(DB::raw("CONCAT(last_name, ' ', first_name)"), 'like', '%' . $request->get('q') . '%')
+                ->orWhere('email', 'like', '%' . $request->get('q') . '%')
+                ->orWhere('code', 'like', '%' . $request->get('q') . '%'))
             ->with(['info', 'currentClass', 'families'])
             ->paginate(Constants::PAGE_LIMIT);
 

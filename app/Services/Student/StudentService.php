@@ -43,7 +43,7 @@ class StudentService
             ->when($listStudentDTO->getAdmissionYearId(), fn ($q) => $q->where('admission_year_id', $listStudentDTO->getAdmissionYearId()))
             ->when(
                 $listStudentDTO->getQ(),
-                fn ($q) => $q->where(function ($query) use ($listStudentDTO) {
+                fn ($q) => $q->where(function ($query) use ($listStudentDTO): void {
                     $searchTerm = '%' . $listStudentDTO->getQ() . '%';
                     $query->where(DB::raw("CONCAT(last_name, ' ', first_name)"), 'like', $searchTerm)
                         ->orWhere('email', 'like', $searchTerm)
@@ -80,10 +80,8 @@ class StudentService
             ->where('faculty_id', '=', auth()->user()->faculty_id ?? null)
             ->when(
                 $listStudentDTO->getQ(),
-                fn ($q) => $q->where(function ($q) use ($listStudentDTO) {
-                    return $q->where(DB::raw("CONCAT(last_name, ' ', first_name)"), 'like', '%' . $listStudentDTO->getQ() . '%')
-                        ->orWhere('code', 'like', '%' . $listStudentDTO->getQ() . '%');
-                })
+                fn ($q) => $q->where(fn ($q) => $q->where(DB::raw("CONCAT(last_name, ' ', first_name)"), 'like', '%' . $listStudentDTO->getQ() . '%')
+                    ->orWhere('code', 'like', '%' . $listStudentDTO->getQ() . '%'))
             )
 
             ->orderBy('response_created_at', $listStudentDTO->getOrder()->value);
@@ -295,10 +293,8 @@ class StudentService
         $studentsCount = Student::query()
             ->where('status', StudentStatus::CurrentlyStudying)
             ->where('faculty_id', $auth->faculty_id)
-            ->when(UserRole::Teacher === $auth->role, fn ($q) => $q->whereHas('generalClass', function ($q) {
-                return $q->where('teacher_id', auth(AuthApiSection::Admin->value)->id())
-                    ->orWhere('sub_teacher_id', auth(AuthApiSection::Admin->value)->id());
-            }))
+            ->when(UserRole::Teacher === $auth->role, fn ($q) => $q->whereHas('generalClass', fn ($q) => $q->where('teacher_id', auth(AuthApiSection::Admin->value)->id())
+                ->orWhere('sub_teacher_id', auth(AuthApiSection::Admin->value)->id())))
             ->count();
 
         return $studentsCount;
@@ -311,10 +307,8 @@ class StudentService
         $studentsCount = Student::query()
             ->where('status', StudentStatus::Graduated)
             ->where('faculty_id', $auth->faculty_id)
-            ->when(UserRole::Teacher === $auth->role, fn ($q) => $q->whereHas('generalClass', function ($q) {
-                return $q->where('teacher_id', auth(AuthApiSection::Admin->value)->id())
-                    ->orWhere('sub_teacher_id', auth(AuthApiSection::Admin->value)->id());
-            }))
+            ->when(UserRole::Teacher === $auth->role, fn ($q) => $q->whereHas('generalClass', fn ($q) => $q->where('teacher_id', auth(AuthApiSection::Admin->value)->id())
+                ->orWhere('sub_teacher_id', auth(AuthApiSection::Admin->value)->id())))
             ->count();
 
         return $studentsCount;

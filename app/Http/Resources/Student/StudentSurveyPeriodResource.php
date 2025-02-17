@@ -27,11 +27,9 @@ class StudentSurveyPeriodResource extends JsonResource
             'status' => $this->status,
             'info' => new StudentInfoResource($this->whenLoaded('info')),
             'current_class' => new GeneralClassForStudentResource($this->whenLoaded('currentClass')),
-            'survey_period' => $this->whenPivotLoaded('survey_period_student', function () {
-                return [
-                    'number_mail_send' => $this->pivot->number_mail_send,
-                ];
-            }),
+            'survey_period' => $this->whenPivotLoaded('survey_period_student', fn () => [
+                'number_mail_send' => $this->pivot->number_mail_send,
+            ]),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
